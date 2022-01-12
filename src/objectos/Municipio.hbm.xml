@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Generated 12 ene 2022 16:51:47 by Hibernate Tools 5.5.7.Final --><!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping auto-import="true" default-access="property" default-cascade="none" default-lazy="true">
+    <class catalog="euskalmet" dynamic-insert="false" dynamic-update="false" mutable="true" name="objectos.Municipio" optimistic-lock="none" polymorphism="implicit" select-before-update="false" table="municipio">
+        <id name="id" type="java.lang.Integer">
+            <column name="id"/>
+            <generator class="identity"/>
+        </id>
+        <property generated="never" lazy="false" name="nombre" optimistic-lock="true" type="string" unique="false">
+            <column length="50" name="nombre" not-null="true"/>
+        </property>
+        <property generated="never" lazy="false" name="descripcion" optimistic-lock="true" type="string" unique="false">
+            <column length="1000" name="descripcion"/>
+        </property>
+        <property generated="never" lazy="false" name="localidad" optimistic-lock="true" type="string" unique="false">
+            <column length="50" name="localidad"/>
+        </property>
+        <property generated="never" lazy="false" name="marca" optimistic-lock="true" type="string" unique="false">
+            <column length="50" name="marca"/>
+        </property>
+        <property generated="never" lazy="false" name="territorio" optimistic-lock="true" type="string" unique="false">
+            <column length="50" name="territorio"/>
+        </property>
+        <property generated="never" lazy="false" name="tipo" optimistic-lock="true" type="string" unique="false">
+            <column length="50" name="tipo"/>
+        </property>
+        <property generated="never" lazy="false" name="territoryCode" optimistic-lock="true" type="java.lang.Integer" unique="false">
+            <column name="territoryCode"/>
+        </property>
+        <set embed-xml="true" fetch="select" inverse="true" lazy="true" mutable="true" name="estacions" optimistic-lock="true" sort="unsorted" table="estacion">
+            <key on-delete="noaction">
+                <column name="idmunicipio" not-null="true"/>
+            </key>
+            <one-to-many class="objectos.Estacion" embed-xml="true" not-found="exception"/>
+        </set>
+        <set embed-xml="true" fetch="select" inverse="true" lazy="true" mutable="true" name="espaciosNaturaleses" optimistic-lock="true" sort="unsorted" table="espacios_naturales">
+            <key on-delete="noaction">
+                <column name="idmunicipio" not-null="true"/>
+            </key>
+            <one-to-many class="objectos.EspaciosNaturales" embed-xml="true" not-found="exception"/>
+        </set>
+    </class>
+</hibernate-mapping>
