@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!-- Generated 13 ene 2022 17:50:37 by Hibernate Tools 5.5.7.Final --><!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 14 ene 2022 15:45:44 by Hibernate Tools 5.5.7.Final --><!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping auto-import="true" default-access="property" default-cascade="none" default-lazy="true">
     <class catalog="euskalmet" dynamic-insert="false" dynamic-update="false" mutable="true" name="objetos.CalidadAireIndice" optimistic-lock="none" polymorphism="implicit" select-before-update="false" table="calidad_aire_indice">
         <id name="id" type="java.lang.Integer">
@@ -16,19 +16,19 @@
             <column length="100" name="hora"/>
         </property>
         <property generated="never" lazy="false" name="no2ica" optimistic-lock="true" type="string" unique="false">
-            <column length="10" name="NO2ICA"/>
+            <column length="50" name="NO2ICA"/>
         </property>
         <property generated="never" lazy="false" name="noxgm3" optimistic-lock="true" type="string" unique="false">
-            <column length="10" name="NOXgm3"/>
+            <column length="50" name="NOXgm3"/>
         </property>
         <property generated="never" lazy="false" name="pm10ica" optimistic-lock="true" type="string" unique="false">
-            <column length="10" name="PM10ICA"/>
+            <column length="50" name="PM10ICA"/>
         </property>
         <property generated="never" lazy="false" name="pm25ica" optimistic-lock="true" type="string" unique="false">
-            <column length="10" name="PM25ICA"/>
+            <column length="50" name="PM25ICA"/>
         </property>
         <property generated="never" lazy="false" name="so2ica" optimistic-lock="true" type="string" unique="false">
-            <column length="10" name="SO2ICA"/>
+            <column length="50" name="SO2ICA"/>
         </property>
         <property generated="never" lazy="false" name="icaestacion" optimistic-lock="true" type="string" unique="false">
             <column length="100" name="ICAEstacion"/>

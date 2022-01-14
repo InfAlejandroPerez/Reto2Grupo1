@@ -1,5 +1,5 @@
 package objetos;
-// Generated 13 ene 2022 17:50:37 by Hibernate Tools 5.5.7.Final
+// Generated 14 ene 2022 15:45:44 by Hibernate Tools 5.5.7.Final
 
 import java.util.Date;
 
@@ -25,8 +25,8 @@ public class CalidadAireDiario implements java.io.Serializable {
 		this.fecha = fecha;
 	}
 
-	public CalidadAireDiario(Estacion estacion, Date fecha, String nogm3, String no2gm3, String noxgm3,
-			String pm10gm3, String pm25gm3) {
+	public CalidadAireDiario(Estacion estacion, Date fecha, String nogm3, String no2gm3, String noxgm3, String pm10gm3,
+			String pm25gm3) {
 		this.estacion = estacion;
 		this.fecha = fecha;
 		this.nogm3 = nogm3;

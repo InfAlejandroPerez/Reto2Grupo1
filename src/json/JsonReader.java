@@ -23,6 +23,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import hibernateUtil.HibernateUtil;
 import objetos.CalidadAireDiario;
 import objetos.CalidadAireHorario;
 import objetos.CalidadAireIndice;
@@ -32,19 +33,29 @@ import objetos.Municipio;
 
 public class JsonReader {
 	private static final String url = "https://opendata.euskadi.eus/contenidos/ds_informes_estudios/calidad_aire_2021/es_def/adjuntos/index.json";
-
+	private static Session s;
+	
 	public static void main(String args[]) {
 		HttpCert.validCert();
+		
+		setHibernateUtils();
+		
 		// municipio
-		//uploadMunicipio();
+		uploadMunicipio();
 		// espacios naturales
-		//uploadEspaciosNaturales();
+		uploadEspaciosNaturales();
 		// estaciones
-		//uploadEstaciones();
+		uploadEstaciones();
 
 		refreshHorarios();
 	}
-
+	
+	private static void setHibernateUtils() {
+		SessionFactory sesion = HibernateUtil.getSessionFactory();
+		s = sesion.openSession();
+		
+	}
+	
 	public static void uploadMunicipio() {
 		String urlMunicipio = "https://drive.google.com/uc?id=1syFXxNOiNZQ-Zf_BNk0uTDgeZxV4CaB0&export=download";
 
@@ -54,7 +65,6 @@ public class JsonReader {
 		Iterator<JsonElement> iter = array.iterator();
 
 		Municipio municipio = new Municipio();
-		System.out.println("Municipio");
 		while (iter.hasNext()) {
 			JsonElement entrada = iter.next();
 			JsonObject objeto = entrada.getAsJsonObject();
@@ -90,11 +100,7 @@ public class JsonReader {
 				}
 
 				if (!iter2.hasNext()) {
-					Transaction tx;
-					SessionFactory sesion = HibernateUtil.getSessionFactory();
-					Session s = sesion.openSession();
-					tx = s.beginTransaction();
-
+					Transaction tx = s.beginTransaction();
 					// Guardar objeto en la base de datos
 					s.save(municipio);
 					// Actualizar información en la base de datos
@@ -154,10 +160,7 @@ public class JsonReader {
 				}
 
 				if (!iter2.hasNext()) {
-					Transaction tx;
-					SessionFactory sesion = HibernateUtil.getSessionFactory();
-					Session s = sesion.openSession();
-					tx = s.beginTransaction();
+					Transaction tx = s.beginTransaction();
 
 					String operator = "/";
 					if (idMunicipio.contains("*")) {
@@ -237,10 +240,7 @@ public class JsonReader {
 				}
 
 				if (!iter2.hasNext()) {
-					Transaction tx;
-					SessionFactory sesion = HibernateUtil.getSessionFactory();
-					Session s = sesion.openSession();
-					tx = s.beginTransaction();
+					Transaction tx = s.beginTransaction();
 
 					String operator = "/";
 					if (idMunicipio.contains("*")) {
@@ -302,7 +302,7 @@ public class JsonReader {
 			case 0:
 				// horarios
 
-				//datosHorariosGenerator(nameEstacion, jsonStringUrl);
+				datosHorariosGenerator(nameEstacion, jsonStringUrl);
 
 				count++;
 				break;
@@ -316,7 +316,7 @@ public class JsonReader {
 			case 2:
 				// indice
 
-				//datosIndiceGenerator(nameEstacion, jsonStringUrl);
+				datosIndiceGenerator(nameEstacion, jsonStringUrl);
 
 				count = 0;
 				break;
@@ -374,10 +374,7 @@ public class JsonReader {
 				}
 				
 				if(!iter2.hasNext()) {
-					Transaction tx;
-					SessionFactory sesion = HibernateUtil.getSessionFactory();
-					Session s = sesion.openSession();
-					tx = s.beginTransaction();
+					Transaction tx = s.beginTransaction();
 					
 					String response = name;
 					if (name.contains("_")) {
@@ -460,10 +457,7 @@ public class JsonReader {
 				}
 
 				if (!iter2.hasNext()) {
-					Transaction tx;
-					SessionFactory sesion = HibernateUtil.getSessionFactory();
-					Session s = sesion.openSession();
-					tx = s.beginTransaction();
+					Transaction tx = s.beginTransaction();
 
 					String response = name;
 					if (name.contains("_")) {
@@ -547,10 +541,7 @@ public class JsonReader {
 
 				if (!iter2.hasNext()) {
 
-					Transaction tx;
-					SessionFactory sesion = HibernateUtil.getSessionFactory();
-					Session s = sesion.openSession();
-					tx = s.beginTransaction();
+					Transaction tx = s.beginTransaction();
 
 					String response = name;
 					if (name.contains("_")) {

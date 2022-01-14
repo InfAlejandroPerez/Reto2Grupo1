@@ -1,5 +1,5 @@
 package objetos;
-// Generated 13 ene 2022 17:50:37 by Hibernate Tools 5.5.7.Final
+// Generated 14 ene 2022 15:45:44 by Hibernate Tools 5.5.7.Final
 
 import java.util.HashSet;
 import java.util.Set;

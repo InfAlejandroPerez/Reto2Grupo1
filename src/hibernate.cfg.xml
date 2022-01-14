@@ -10,11 +10,12 @@
         <property name="hibernate.hbm2ddl.auto">none</property>
         <property name="hibernate.search.autoregister_listeners">true</property>
         <property name="hibernate.validator.apply_to_ddl">false</property>
-        <mapping resource="objectos/Estacion.hbm.xml"/>
-        <mapping resource="objectos/EspaciosNaturales.hbm.xml"/>
-        <mapping resource="objectos/CalidadAireDiario.hbm.xml"/>
-        <mapping resource="objectos/CalidadAireIndice.hbm.xml"/>
-        <mapping resource="objectos/Municipio.hbm.xml"/>
-        <mapping resource="objectos/CalidadAireHorario.hbm.xml"/>
+        <mapping resource="objetos/Municipio.hbm.xml"/>
+        <mapping resource="objetos/CalidadAireHorario.hbm.xml"/>
+        <mapping resource="objetos/Users.hbm.xml"/>
+        <mapping resource="objetos/CalidadAireDiario.hbm.xml"/>
+        <mapping resource="objetos/CalidadAireIndice.hbm.xml"/>
+        <mapping resource="objetos/EspaciosNaturales.hbm.xml"/>
+        <mapping resource="objetos/Estacion.hbm.xml"/>
     </session-factory>
 </hibernate-configuration>

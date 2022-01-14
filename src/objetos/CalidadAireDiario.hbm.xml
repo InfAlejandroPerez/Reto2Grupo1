@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!-- Generated 13 ene 2022 17:50:37 by Hibernate Tools 5.5.7.Final --><!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 14 ene 2022 15:45:44 by Hibernate Tools 5.5.7.Final --><!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping auto-import="true" default-access="property" default-cascade="none" default-lazy="true">
     <class catalog="euskalmet" dynamic-insert="false" dynamic-update="false" mutable="true" name="objetos.CalidadAireDiario" optimistic-lock="none" polymorphism="implicit" select-before-update="false" table="calidad_aire_diario">
         <id name="id" type="java.lang.Integer">
@@ -13,16 +13,16 @@
             <column length="10" name="fecha" not-null="true"/>
         </property>
         <property generated="never" lazy="false" name="nogm3" optimistic-lock="true" type="string" unique="false">
-            <column length="10" name="NOgm3"/>
+            <column length="50" name="NOgm3"/>
         </property>
         <property generated="never" lazy="false" name="no2gm3" optimistic-lock="true" type="string" unique="false">
-            <column length="10" name="NO2gm3"/>
+            <column length="50" name="NO2gm3"/>
         </property>
         <property generated="never" lazy="false" name="noxgm3" optimistic-lock="true" type="string" unique="false">
-            <column length="10" name="NOXgm3"/>
+            <column length="50" name="NOXgm3"/>
         </property>
         <property generated="never" lazy="false" name="pm10gm3" optimistic-lock="true" type="string" unique="false">
-            <column length="10" name="PM10gm3"/>
+            <column length="50" name="PM10gm3"/>
         </property>
         <property generated="never" lazy="false" name="pm25gm3" optimistic-lock="true" type="string" unique="false">
             <column length="100" name="PM25gm3"/>
