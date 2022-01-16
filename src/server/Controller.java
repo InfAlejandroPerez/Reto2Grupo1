@@ -9,19 +9,46 @@ import org.hibernate.Query;
 import hibernateUtil.HibernateUtil;
 import objetos.Users;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
-public class Login {
+public class Controller {
 
 	public static void main(String[] args) {
 			
 		 validarLogin();
 	}
 	
+	public void controlador(/* JsonObject raw*/) {
+			
+		
+		String operacion = null /*json.operacion*/;
+		
+		switch (operacion /*json.operacion*/) {
+			case "login": {
+				validarLogin(/* Json raw*/);
+				
+			}
+			case "lista_municipio": {
+				validarLogin(/* Json raw*/);
+				
+			}
+		
+		
+		default:
+			throw new IllegalArgumentException("Unexpected value: " + operacion);
+		}
+
+	}
 	
-	public static boolean validarLogin(/*User user*/) {
+
+	public static boolean validarLogin(/*Json user*/) {
 		boolean ret = false;
 		String userName = "admin";
-		String password = "admin";
+		String password = "admina";
 		try {
 			SessionFactory sessionFac = HibernateUtil.getSessionFactory();
 			Session session = sessionFac.openSession();
