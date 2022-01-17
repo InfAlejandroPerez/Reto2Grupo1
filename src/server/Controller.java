@@ -3,10 +3,14 @@ package server;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+
+import java.util.ArrayList;
+
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 
 import hibernateUtil.HibernateUtil;
+import objetos.Municipio;
 import objetos.Users;
 
 import com.google.gson.Gson;
@@ -15,25 +19,24 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import dto.DTO;
+
 public class Controller {
 
-	public static void main(String[] args) {
-			
-		 validarLogin();
-	}
 	
-	public void controlador(/* JsonObject raw*/) {
-			
+	private String datosRecebidos;
+	
+	public Object controlador(DTO dto) {
 		
-		String operacion = null /*json.operacion*/;
+		String operacion = dto.getOperacion();
 		
-		switch (operacion /*json.operacion*/) {
+		switch (operacion) {
 			case "login": {
-				validarLogin(/* Json raw*/);
+				return validarLogin(dto);
 				
 			}
 			case "lista_municipio": {
-				validarLogin(/* Json raw*/);
+				return listaMunucipios(dto);
 				
 			}
 		
@@ -45,10 +48,11 @@ public class Controller {
 	}
 	
 
-	public static boolean validarLogin(/*Json user*/) {
+	public static boolean validarLogin(DTO dto) {
 		boolean ret = false;
-		String userName = "admin";
-		String password = "admina";
+		
+		String userName = dto.getUserName();
+		String password = dto.getPassword();
 		try {
 			SessionFactory sessionFac = HibernateUtil.getSessionFactory();
 			Session session = sessionFac.openSession();
@@ -76,6 +80,38 @@ public class Controller {
 		
 		return ret;
 	}
+	
+	public static ArrayList<Municipio> listaMunucipios(DTO dto) {
+		ArrayList municipios = new ArrayList<Municipio>();
+		
+		try {
+			SessionFactory sessionFac = HibernateUtil.getSessionFactory();
+			Session session = sessionFac.openSession();
+			
+			String hql = " from Municipio Where territorio= :territorio ";
+			
+			Query q = session.createQuery(hql);
+			q.setString("territorio", "bizkaia");
+
+			
+			Users users = (Users) q.uniqueResult();
+			
+			if(null!=users) {
+				System.out.println("true");
+				
+			}else {
+				System.out.println("false");
+				
+			}
+			
+		} catch (HibernateException  e) {
+			System.out.println("Problem creating session factory");
+		     e.printStackTrace();
+		}
+		
+		return municipios;
+	}
+	
 	
 	
 

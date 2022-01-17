@@ -24,51 +24,47 @@ public class Cliente {
 	
 	private final int PUERTO = 5005;
 	private final String IP = "127.0.0.1";
-
+	
+	EnviarThread enviarCliente = null;
+	RecibirThread recibirCliente = null;
+	
 	public void iniciar() {
+		
 		Socket cliente = null;
 		ObjectInputStream entrada = null;
 		ObjectOutputStream salida = null;
-
+		Gson gson = new Gson();	
 		try {
+			
 			cliente = new Socket(IP, PUERTO);
 			
-			while(true) {
+//		while(true) {
 				
 				System.out.println("Conexión realizada con servidor");
 				salida = new ObjectOutputStream(cliente.getOutputStream());
 				entrada = new ObjectInputStream(cliente.getInputStream());
+								
+				String json = "{ 'operacion' : 'login',"
+						+ " 'userName' : 'admin',"
+						+ " 'password' : 'admin',"
+						+ " 'campoBusqueda' : 'Bilbao'}".replace('"', '"' );
 				
-				Gson gson = new Gson();
-				
-				String json = "{\"operacion\":\"login\",\"userName\":\"admin\",\"password\":\"admin\",\"campoBusqueda\":\"Bilbao\"}";
-				
-				//DTO objCliente = gson.fromJson(json, DTO.class);
-				
-				
-//			String json1 = "[{\"dorsal\":6," + "\"name\":\"Iniesta\","
-//                    + "\"demarcation\":[\"Right winger\",\"Midfielder\"],"
-//                    + "\"team\":\"FC Barcelona\"}]";
-//			
-				
-				
-//            JsonParser parser = new JsonParser();
-//
-//            JsonArray gsonArr = parser.parse(json1).getAsJsonArray();
-				
-				/* JsonObject postData = new JsonObject();
-            postData.addProperty("usuario", "hola");*/
-			
 				salida.writeObject(json);
-				String linea = (String) entrada.readObject();
-				System.out.println("Recibido: " + linea);
 				
-			}
+				String usuarioJson = (String) entrada.readObject();
+				
+				DTO datosCliente = gson.fromJson(usuarioJson, DTO.class);
+				
+			//	String loginValidado2 = (String) entrada.readObject();
+				
+				System.out.println("Recibido: " + datosCliente.isLoginValidador());
+				
+//			}
+			
+
 		
 		} catch (IOException e) {
-			System.out.println("Error: " + e.getMessage());
-		} catch (ClassNotFoundException e) {
-			System.out.println("Error: " + e.getMessage());
+			System.out.println("Error ioe : " + e.getMessage());
 		} catch (Exception e) {
 			System.out.println("Error: " + e.getMessage());
 		}

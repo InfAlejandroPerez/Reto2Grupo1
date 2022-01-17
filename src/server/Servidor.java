@@ -11,12 +11,14 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
+
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import dto.DTO;
+import javassist.expr.Instanceof;
 import objetos.Users;
 
 class Servidor {
@@ -31,15 +33,16 @@ class Servidor {
 		Socket cliente = null;
 		
 		try {
+			
 			Gson gson = new Gson();	
 			servidor = new ServerSocket(PUERTO);
+			
+			
 			while (true) { 
-				
+								
 				System.out.println("Esperando conexiones del cliente...");
-				
 				cliente = servidor.accept();
 				System.out.println("Cliente conectado.");
-				
 				salida = new ObjectOutputStream(cliente.getOutputStream());
 				entrada = new ObjectInputStream(cliente.getInputStream());
 				
@@ -50,7 +53,19 @@ class Servidor {
 				System.out.println("Recibido: " + datosCliente.getPassword());
 				System.out.println("operacion: " + datosCliente.getOperacion());
 				System.out.println("campobusqueda: " + datosCliente.getCampoBusqueda());
-				salida.writeObject("Hola cliente, soy el servidor");
+				
+				Controller controlador = new Controller();
+				
+				boolean loginValidador = Boolean.valueOf((boolean) controlador.controlador(datosCliente));
+				System.out.println("desde el servidor:"+loginValidador);
+				
+				
+				String json = "{ 'operacion' : " + String.valueOf(loginValidador)
+						+ ", 'userName' : 'admin',"
+						+ " 'password' : 'admin',"
+						+ " 'campoBusqueda' : 'Bilbao'}".replace('"', '"' );
+				
+				salida.writeObject(json);
 			}
 
 		} catch (IOException e) {
