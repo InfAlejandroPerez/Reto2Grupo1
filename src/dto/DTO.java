@@ -1,6 +1,9 @@
 package dto;
 
 import java.io.Serializable;
+import java.util.List;
+
+import objetos.Municipio;
 
 public class DTO implements Serializable{
 	
@@ -16,7 +19,7 @@ public class DTO implements Serializable{
 	private String campoBusqueda;
 	private boolean loginValidador;
 	private boolean usuarioRegistrado;
-
+	private List<Municipio[]> listaMunicipios;
 		
 	public String getIdUsuario() {
 		return idUsuario;
@@ -59,6 +62,12 @@ public class DTO implements Serializable{
 	}
 	public void setUsuarioRegistrado(boolean usuarioRegistrado) {
 		this.usuarioRegistrado = usuarioRegistrado;
+	}
+	public List<Municipio[]> getListaMunicipios() {
+		return listaMunicipios;
+	}
+	public void setListaMunicipios(List<Municipio[]> listaMunicipios) {
+		this.listaMunicipios = listaMunicipios;
 	}
 	
 	

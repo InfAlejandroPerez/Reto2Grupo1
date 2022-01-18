@@ -5,6 +5,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -40,6 +41,15 @@ public class Controller {
 			return listaMunucipios(dto);
 
 		}
+		case "estaciones": {
+			return listaMunucipios(dto);
+
+		}
+
+		case "espacios": {
+			return listaMunucipios(dto);
+
+		}
 
 		default:
 			throw new IllegalArgumentException("Unexpected value: " + operacion);
@@ -53,27 +63,26 @@ public class Controller {
 
 		try {
 
-				SessionFactory sessionFac = HibernateUtil.getSessionFactory();
-				Session session = sessionFac.openSession();
-				Transaction tx = session.beginTransaction();
-	
-				Users user = new Users();
-				user.setUserName(dto.getUserName());
-				user.setPassword(dto.getPassword());
-	
-				int usuarioInsertado = (int) session.save(user);
-			
-				tx.commit();
-				
-				if (usuarioInsertado > 0) {
-	
-					respuesta.setUsuarioRegistrado(true);
-					return validarLogin(respuesta);
-				} else {
-					respuesta.setUsuarioRegistrado(false);
-					return respuesta;
-				}
-			
+			SessionFactory sessionFac = HibernateUtil.getSessionFactory();
+			Session session = sessionFac.openSession();
+			Transaction tx = session.beginTransaction();
+
+			Users user = new Users();
+			user.setUserName(dto.getUserName());
+			user.setPassword(dto.getPassword());
+
+			int usuarioInsertado = (int) session.save(user);
+
+			tx.commit();
+
+			if (usuarioInsertado > 0) {
+
+				respuesta.setUsuarioRegistrado(true);
+				return validarLogin(respuesta);
+			} else {
+				respuesta.setUsuarioRegistrado(false);
+				return respuesta;
+			}
 
 		} catch (HibernateException e) {
 			System.out.println("Problem creating session factory");
@@ -123,34 +132,34 @@ public class Controller {
 
 	}
 
-	private ArrayList<Municipio> listaMunucipios(DTO dto) {
-		ArrayList municipios = new ArrayList<Municipio>();
+	private DTO listaMunucipios(DTO dto) {
+		
+		DTO respuesta = dto;
 
 		try {
-			SessionFactory sessionFac = HibernateUtil.getSessionFactory();
-			Session session = sessionFac.openSession();
+				SessionFactory sessionFac = HibernateUtil.getSessionFactory();
+				Session session = sessionFac.openSession();
+	
+				String hql = " select nombre from Municipio";
+	
+				Query q = session.createQuery(hql);
+	
+				List<Municipio> municipios = (List<Municipio>) q.list();
+				
+				for (int i = 0; i < municipios.size(); i++) {
+					
+					dto.setListaMunicipios(municipios.get(i));
+					
+					//System.out.println(municipios.get(i));
+					
+				}
 
-			String hql = " from Municipio Where territorio= :territorio ";
-
-			Query q = session.createQuery(hql);
-			q.setString("territorio", "bizkaia");
-
-			Users users = (Users) q.uniqueResult();
-
-			if (null != users) {
-				System.out.println("true");
-
-			} else {
-				System.out.println("false");
-
+			} catch (HibernateException e) {
+				System.out.println("Problem creating session factory");
+				e.printStackTrace();
 			}
 
-		} catch (HibernateException e) {
-			System.out.println("Problem creating session factory");
-			e.printStackTrace();
-		}
-
-		return municipios;
+		return respuesta;
 	}
 
 }

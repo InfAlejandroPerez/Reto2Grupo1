@@ -62,7 +62,6 @@ class Servidor {
 				
 				String respuestaServer = gson.toJson(dtoRespuestaControler, DTO.class);
 				
-				
 				salida.writeObject(respuestaServer);
 				
 				
