@@ -17,10 +17,10 @@ public class Teste {
 		DTO datosCliente = (DTO) cliente.iniciar(json);
 			
 		
-		for(int i=0; i < datosCliente.getListaMunicipios().size(); i++) {
+		/*for(int i=0; i < datosCliente.getListaMunicipios().size(); i++) {
 			
 			System.out.println("Respuesta: " + datosCliente.getListaMunicipios().get(i).toString());
-		}
+		}*/
 		
 	}
 	

@@ -19,7 +19,7 @@ public class DTO implements Serializable{
 	private String campoBusqueda;
 	private boolean loginValidador;
 	private boolean usuarioRegistrado;
-	private List<Municipio[]> listaMunicipios;
+	private List<String> listaMunicipios;
 		
 	public String getIdUsuario() {
 		return idUsuario;
@@ -63,10 +63,10 @@ public class DTO implements Serializable{
 	public void setUsuarioRegistrado(boolean usuarioRegistrado) {
 		this.usuarioRegistrado = usuarioRegistrado;
 	}
-	public List<Municipio[]> getListaMunicipios() {
+	public List<String> getListaMunicipios() {
 		return listaMunicipios;
 	}
-	public void setListaMunicipios(List<Municipio[]> listaMunicipios) {
+	public void setListaMunicipios(List<String> listaMunicipios) {
 		this.listaMunicipios = listaMunicipios;
 	}
 	

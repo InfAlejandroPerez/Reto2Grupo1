@@ -144,15 +144,18 @@ public class Controller {
 	
 				Query q = session.createQuery(hql);
 	
-				List<Municipio> municipios = (List<Municipio>) q.list();
+				
+				dto.setListaMunicipios(q.list());
+				
+				/*List<String> municipios = (List<String>) q.list();
 				
 				for (int i = 0; i < municipios.size(); i++) {
 					
-					dto.setListaMunicipios(municipios.get(i));
+					dto.setListaMunicipios(municipios.get(i).toString());
 					
 					//System.out.println(municipios.get(i));
 					
-				}
+				}*/
 
 			} catch (HibernateException e) {
 				System.out.println("Problem creating session factory");
