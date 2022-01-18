@@ -42,19 +42,82 @@ public class Controller {
 
 		}
 		case "estaciones": {
-			return listaMunucipios(dto);
+			return listaEstaciones(dto);
 
 		}
-
 		case "espacios": {
-			return listaMunucipios(dto);
+			return listaEspaciosNaturales(dto);
 
 		}
-
 		default:
 			throw new IllegalArgumentException("Unexpected value: " + operacion);
 		}
 
+	}
+
+	private Object listaEspaciosNaturales(DTO dto) {
+		DTO respuesta = dto;
+
+		try {
+				SessionFactory sessionFac = HibernateUtil.getSessionFactory();
+				Session session = sessionFac.openSession();
+	
+				String hql = "select nombre from espacios_naturales";
+	
+				Query q = session.createQuery(hql);
+	
+				
+				dto.setListaEspaciosNaturales(q.list());
+				
+				/*List<String> municipios = (List<String>) q.list();
+				
+				for (int i = 0; i < municipios.size(); i++) {
+					
+					dto.setListaMunicipios(municipios.get(i).toString());
+					
+					//System.out.println(municipios.get(i));
+					
+				}*/
+
+			} catch (HibernateException e) {
+				System.out.println("Problem creating session factory");
+				e.printStackTrace();
+			}
+
+		return respuesta;
+	}
+
+	private Object listaEstaciones(DTO dto) {
+		
+		DTO respuesta = dto;
+
+		try {
+				SessionFactory sessionFac = HibernateUtil.getSessionFactory();
+				Session session = sessionFac.openSession();
+	
+				String hql = "select nombre from estacion";
+	
+				Query q = session.createQuery(hql);
+	
+				
+				dto.setListaEstaciones(q.list());
+				
+				/*List<String> municipios = (List<String>) q.list();
+				
+				for (int i = 0; i < municipios.size(); i++) {
+					
+					dto.setListaMunicipios(municipios.get(i).toString());
+					
+					//System.out.println(municipios.get(i));
+					
+				}*/
+
+			} catch (HibernateException e) {
+				System.out.println("Problem creating session factory");
+				e.printStackTrace();
+			}
+
+		return respuesta;
 	}
 
 	private Object registrar(DTO dto) {
