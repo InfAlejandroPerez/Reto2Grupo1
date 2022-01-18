@@ -1,6 +1,5 @@
 package cliente;
 
-import com.google.gson.Gson;
 
 import dto.DTO;
 
@@ -8,9 +7,9 @@ public class Teste {
 
 	public static void main(String[] args) {
 		
-		String json = "{ 'operacion' : 'login',"
-				+ " 'userName' : 'admin',"
-				+ " 'password' : 'admin',"
+		String json = "{ 'operacion' : 'registrar',"
+				+ " 'userName' : 'admin2',"
+				+ " 'password' : 'admin2s',"
 				+ " 'campoBusqueda' : 'Bilbao'}".replace('"', '"' );
 		
 		Cliente cliente = new Cliente();
@@ -19,7 +18,7 @@ public class Teste {
 		DTO datosCliente = (DTO) cliente.iniciar(json);
 		
 		
-		System.out.println("Respuesta:" + datosCliente.isLoginValidador());
+		System.out.println("Respuesta: " + datosCliente.isLoginValidador());
 		
 	
 	}

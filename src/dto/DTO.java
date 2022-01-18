@@ -15,6 +15,8 @@ public class DTO implements Serializable{
 	private String password;
 	private String campoBusqueda;
 	private boolean loginValidador;
+	private boolean usuarioRegistrado;
+
 		
 	public String getIdUsuario() {
 		return idUsuario;
@@ -51,6 +53,12 @@ public class DTO implements Serializable{
 	}
 	public void setLoginValidador(boolean loginValidador) {
 		this.loginValidador = loginValidador;
+	}
+	public boolean isUsuarioRegistrado() {
+		return usuarioRegistrado;
+	}
+	public void setUsuarioRegistrado(boolean usuarioRegistrado) {
+		this.usuarioRegistrado = usuarioRegistrado;
 	}
 	
 	

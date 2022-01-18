@@ -65,16 +65,6 @@ class Servidor {
 				
 				salida.writeObject(respuestaServer);
 				
-				/*boolean loginValidador = Boolean.valueOf((boolean) controlador.controlador(datosCliente));
-				System.out.println("desde el servidor: "+loginValidador);
-				
-				
-				String json = "{ 'loginValidador' : " + String.valueOf(loginValidador)
-						+ ", 'userName' : 'admin',"
-						+ " 'password' : 'admin',"
-						+ " 'campoBusqueda' : 'Bilbao'}".replace('"', '"' );*/
-				
-				
 				
 			}
 

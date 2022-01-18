@@ -35,16 +35,13 @@ public class Cliente {
 				System.out.println("Conexión realizada con servidor");
 				salida = new ObjectOutputStream(cliente.getOutputStream());
 				entrada = new ObjectInputStream(cliente.getInputStream());
-								
 				
 				salida.writeObject(json);
 				
 				String usuarioJson = (String) entrada.readObject();
 				
 				DTO datosCliente = gson.fromJson(usuarioJson, DTO.class);
-				
-			//	String loginValidado2 = (String) entrada.readObject();
-				
+								
 				System.out.println("Recibido cliente: " + datosCliente.isLoginValidador());
 				
 				return datosCliente;
