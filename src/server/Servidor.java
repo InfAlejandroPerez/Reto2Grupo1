@@ -41,8 +41,10 @@ class Servidor {
 			while (true) { 
 								
 				System.out.println("Esperando conexiones del cliente...");
+				
 				cliente = servidor.accept();
 				System.out.println("Cliente conectado.");
+				
 				salida = new ObjectOutputStream(cliente.getOutputStream());
 				entrada = new ObjectInputStream(cliente.getInputStream());
 				
@@ -50,22 +52,30 @@ class Servidor {
 				
 				DTO datosCliente = gson.fromJson(usuarioJson, DTO.class);
 		
-				System.out.println("Recibido: " + datosCliente.getPassword());
+				System.out.println("pssw: " + datosCliente.getPassword());
 				System.out.println("operacion: " + datosCliente.getOperacion());
 				System.out.println("campobusqueda: " + datosCliente.getCampoBusqueda());
 				
 				Controller controlador = new Controller();
 				
-				boolean loginValidador = Boolean.valueOf((boolean) controlador.controlador(datosCliente));
-				System.out.println("desde el servidor:"+loginValidador);
+				DTO dtoRespuestaControler = (DTO) controlador.controlador(datosCliente);
+				
+				String respuestaServer = gson.toJson(dtoRespuestaControler, DTO.class);
 				
 				
-				String json = "{ 'operacion' : " + String.valueOf(loginValidador)
+				salida.writeObject(respuestaServer);
+				
+				/*boolean loginValidador = Boolean.valueOf((boolean) controlador.controlador(datosCliente));
+				System.out.println("desde el servidor: "+loginValidador);
+				
+				
+				String json = "{ 'loginValidador' : " + String.valueOf(loginValidador)
 						+ ", 'userName' : 'admin',"
 						+ " 'password' : 'admin',"
-						+ " 'campoBusqueda' : 'Bilbao'}".replace('"', '"' );
+						+ " 'campoBusqueda' : 'Bilbao'}".replace('"', '"' );*/
 				
-				salida.writeObject(json);
+				
+				
 			}
 
 		} catch (IOException e) {

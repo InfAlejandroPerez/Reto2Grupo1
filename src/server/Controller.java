@@ -48,12 +48,16 @@ public class Controller {
 	}
 	
 
-	public static boolean validarLogin(DTO dto) {
+	public static DTO validarLogin(DTO dto) {
+		
 		boolean ret = false;
+		DTO respuesta = dto;
 		
 		String userName = dto.getUserName();
 		String password = dto.getPassword();
+	
 		try {
+			
 			SessionFactory sessionFac = HibernateUtil.getSessionFactory();
 			Session session = sessionFac.openSession();
 			
@@ -67,18 +71,21 @@ public class Controller {
 			
 			if(null!=users) {
 				System.out.println("true");
-				ret = true;
+				respuesta.setLoginValidador(true);
+				return respuesta;
 			}else {
 				System.out.println("false");
-				ret = false;
+				respuesta.setLoginValidador(false);
+				return respuesta;
 			}
 			
 		} catch (HibernateException  e) {
 			System.out.println("Problem creating session factory");
 		     e.printStackTrace();
 		}
+		return null;
 		
-		return ret;
+	
 	}
 	
 	public static ArrayList<Municipio> listaMunucipios(DTO dto) {

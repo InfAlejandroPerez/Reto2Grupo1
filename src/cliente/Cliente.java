@@ -17,12 +17,15 @@ public class Cliente {
 	EnviarThread enviarCliente = null;
 	RecibirThread recibirCliente = null;
 	
-	public void iniciar() {
+	
+	public Object iniciar(String json) {
 		
 		Socket cliente = null;
 		ObjectInputStream entrada = null;
 		ObjectOutputStream salida = null;
+		
 		Gson gson = new Gson();	
+		
 		try {
 			
 			cliente = new Socket(IP, PUERTO);
@@ -33,10 +36,6 @@ public class Cliente {
 				salida = new ObjectOutputStream(cliente.getOutputStream());
 				entrada = new ObjectInputStream(cliente.getInputStream());
 								
-				String json = "{ 'operacion' : 'login',"
-						+ " 'userName' : 'admin',"
-						+ " 'password' : 'admin',"
-						+ " 'campoBusqueda' : 'Bilbao'}".replace('"', '"' );
 				
 				salida.writeObject(json);
 				
@@ -46,8 +45,9 @@ public class Cliente {
 				
 			//	String loginValidado2 = (String) entrada.readObject();
 				
-				System.out.println("Recibido: " + datosCliente.isLoginValidador());
+				System.out.println("Recibido cliente: " + datosCliente.isLoginValidador());
 				
+				return datosCliente;
 //			}
 			
 
@@ -58,13 +58,14 @@ public class Cliente {
 			System.out.println("Error: " + e.getMessage());
 		}
 		
+		return null;
+		
 	} 
 
-	public static void main(String[] args) {
+	/*public static void main(String[] args) {
 		Cliente c = new Cliente();
 		c.iniciar();
-	}
+	}*/
 	
-	
-	
+
 }
