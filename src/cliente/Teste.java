@@ -2,25 +2,23 @@ package cliente;
 
 
 import dto.DTO;
+import objetos.Estacion;
 
 public class Teste {
 
 	public static void main(String[] args) {
 		
-		String json = "{ 'operacion' : 'estaciones',"
+		String json = "{ 'operacion' : 'estacion',"
 				+ " 'userName' : 'admin2',"
 				+ " 'password' : 'admin2s',"
 				+ " 'campoBusqueda' : 'Bilbao'}".replace('"', '"' );
 		
 		Cliente cliente = new Cliente();
 
-		DTO datosCliente = (DTO) cliente.iniciar(json);
+		Estacion datosCliente = (Estacion) cliente.iniciar(json);
 			
 		
-		for(int i=0; i < datosCliente.getListaEstaciones().size(); i++) {
-			
-			System.out.println("Respuesta: " + datosCliente.getListaEstaciones().get(i).toString());
-		}
+		System.out.println(datosCliente.getLatitud());
 		
 	}
 	

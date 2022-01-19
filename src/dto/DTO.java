@@ -1,6 +1,7 @@
 package dto;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import objetos.Municipio;
@@ -19,9 +20,8 @@ public class DTO implements Serializable{
 	private String campoBusqueda;
 	private boolean loginValidador;
 	private boolean usuarioRegistrado;
-	private List<String> listaMunicipios;
-	private List<String> listaEspaciosNaturales;
-	private List<String> listaEstaciones;
+	private ArrayList<String> listaLugares;
+
 	
 	public String getIdUsuario() {
 		return idUsuario;
@@ -65,23 +65,12 @@ public class DTO implements Serializable{
 	public void setUsuarioRegistrado(boolean usuarioRegistrado) {
 		this.usuarioRegistrado = usuarioRegistrado;
 	}
-	public List<String> getListaMunicipios() {
-		return listaMunicipios;
+
+	public ArrayList<String> getListaLugares() {
+		return listaLugares;
 	}
-	public void setListaMunicipios(List<String> listaMunicipios) {
-		this.listaMunicipios = listaMunicipios;
-	}
-	public List<String> getListaEstaciones() {
-		return listaEstaciones;
-	}
-	public void setListaEstaciones(List<String> listaEstaciones) {
-		this.listaEstaciones = listaEstaciones;
-	}
-	public List<String> getListaEspaciosNaturales() {
-		return listaEspaciosNaturales;
-	}
-	public void setListaEspaciosNaturales(List<String> listaEspaciosNaturales) {
-		this.listaEspaciosNaturales = listaEspaciosNaturales;
+	public void setListaLugares(ArrayList<String> listaLugares) {
+		this.listaLugares = listaLugares;
 	}
 	
 	

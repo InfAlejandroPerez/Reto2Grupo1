@@ -3,6 +3,9 @@ package server;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+
+import java.util.ArrayList;
+
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 
@@ -32,6 +35,9 @@ public class Controller {
 		case "estaciones": {
 			return listaEstaciones(dto);
 
+		}case "estaciones_filtradas": {
+			return estaciones_filtradas(dto);
+
 		}
 		case "espacios": {
 			return listaEspaciosNaturales(dto);
@@ -41,6 +47,29 @@ public class Controller {
 			throw new IllegalArgumentException("Unexpected value: " + operacion);
 		}
 
+	}
+
+	private Object estaciones_filtradas(DTO dto) {
+		DTO respuesta = dto;
+		
+		try {
+			SessionFactory sessionFac = HibernateUtil.getSessionFactory();
+			Session session = sessionFac.openSession();
+
+			String hql = "select * from estacion WHERE municipio=:municipio";
+
+			Query q = session.createQuery(hql);
+			//TODO poner IDMunicipio q.setString("municipio", dto.toString());
+			q.setString("municipio", "1");
+			dto.setListaLugares((ArrayList<String>) q.list());
+
+		} catch (HibernateException e) {
+			System.out.println("Problem creating session factory");
+			e.printStackTrace();
+		}
+		
+		
+		return respuesta;
 	}
 
 	private Object listaEspaciosNaturales(DTO dto) {
@@ -53,9 +82,8 @@ public class Controller {
 				String hql = "select nombre from espacios_naturales";
 	
 				Query q = session.createQuery(hql);
-	
-				
-				dto.setListaEspaciosNaturales(q.list());
+					
+				dto.setListaLugares( (ArrayList) q.list());
 
 			} catch (HibernateException e) {
 				System.out.println("Problem creating session factory");
@@ -77,7 +105,7 @@ public class Controller {
 	
 				Query q = session.createQuery(hql);
 				
-				dto.setListaEstaciones(q.list());
+				dto.setListaLugares((ArrayList) q.list());
 
 			} catch (HibernateException e) {
 				System.out.println("Problem creating session factory");
@@ -174,7 +202,7 @@ public class Controller {
 	
 				Query q = session.createQuery(hql);
 				
-				dto.setListaMunicipios(q.list());
+				dto.setListaLugares( (ArrayList) q.list());
 
 			} catch (HibernateException e) {
 				System.out.println("Problem creating session factory");
