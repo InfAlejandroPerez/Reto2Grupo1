@@ -79,7 +79,7 @@ public class Controller {
 				SessionFactory sessionFac = HibernateUtil.getSessionFactory();
 				Session session = sessionFac.openSession();
 	
-				String hql = "select nombre from espacios_naturales";
+				String hql = "select nombre from EspaciosNaturales";
 	
 				Query q = session.createQuery(hql);
 					
@@ -101,7 +101,7 @@ public class Controller {
 				SessionFactory sessionFac = HibernateUtil.getSessionFactory();
 				Session session = sessionFac.openSession();
 	
-				String hql = "select nombre from estacion";
+				String hql = "select nombre from Estacion";
 	
 				Query q = session.createQuery(hql);
 				
