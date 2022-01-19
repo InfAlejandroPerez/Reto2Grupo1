@@ -2,9 +2,6 @@ package dto;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.List;
-
-import objetos.Municipio;
 
 public class DTO implements Serializable{
 	
@@ -22,7 +19,6 @@ public class DTO implements Serializable{
 	private boolean usuarioRegistrado;
 	private ArrayList<String> listaLugares;
 
-	
 	public String getIdUsuario() {
 		return idUsuario;
 	}

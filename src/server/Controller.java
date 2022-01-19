@@ -10,6 +10,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Query;
 
 import hibernateUtil.HibernateUtil;
+import objetos.Estacion;
 import objetos.Users;
 import dto.DTO;
 
@@ -35,8 +36,8 @@ public class Controller {
 		case "estaciones": {
 			return listaEstaciones(dto);
 
-		}case "estaciones_filtradas": {
-			return estaciones_filtradas(dto);
+		}case "estacionesPorMunicipio": {
+			return estacionesPorMunicipio(dto);
 
 		}
 		case "espacios": {
@@ -49,27 +50,28 @@ public class Controller {
 
 	}
 
-	private Object estaciones_filtradas(DTO dto) {
+	private ArrayList<Estacion> estacionesPorMunicipio(DTO dto) {
 		DTO respuesta = dto;
-		
+		ArrayList<Estacion> estaciones = new ArrayList<Estacion>();
 		try {
 			SessionFactory sessionFac = HibernateUtil.getSessionFactory();
 			Session session = sessionFac.openSession();
 
-			String hql = "select * from estacion WHERE municipio=:municipio";
+			String hql = "from Estacion WHERE municipio=:municipio";
 
 			Query q = session.createQuery(hql);
 			//TODO poner IDMunicipio q.setString("municipio", dto.toString());
 			q.setString("municipio", "1");
-			dto.setListaLugares((ArrayList<String>) q.list());
-
+			
+			 estaciones.addAll(q.list());			
+			
 		} catch (HibernateException e) {
 			System.out.println("Problem creating session factory");
 			e.printStackTrace();
 		}
 		
 		
-		return respuesta;
+		return estaciones;
 	}
 
 	private Object listaEspaciosNaturales(DTO dto) {
@@ -101,7 +103,7 @@ public class Controller {
 				SessionFactory sessionFac = HibernateUtil.getSessionFactory();
 				Session session = sessionFac.openSession();
 	
-				String hql = "select nombre from estacion";
+				String hql = "select nombre from Estacion";
 	
 				Query q = session.createQuery(hql);
 				
