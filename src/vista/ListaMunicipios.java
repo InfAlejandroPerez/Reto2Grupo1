@@ -93,13 +93,13 @@ public class ListaMunicipios extends JFrame {
 		DefaultListModel<String> modelListaMun = new DefaultListModel<String>();
         ListMunicipios = new JList<String>(modelListaMun);
         
-        JScrollPane scrollPane = new JScrollPane();
+        JScrollPane ScrollMunicipios = new JScrollPane();
         ListMunicipios.setBounds(54, 42, 180, 274);
-        scrollPane.setSize(200, 250);
-        scrollPane.setLocation(50, 50);
-        scrollPane.setViewportView(ListMunicipios);
+        ScrollMunicipios.setSize(200, 250);
+        ScrollMunicipios.setLocation(50, 50);
+        ScrollMunicipios.setViewportView(ListMunicipios);
         ListMunicipios.setLayoutOrientation(JList.VERTICAL);
-        contentPane.add(scrollPane);
+        contentPane.add(ScrollMunicipios);
         
         ArrayList<String> list = new ArrayList<String>();
         list.add("Inida");
@@ -167,5 +167,16 @@ public class ListaMunicipios extends JFrame {
 		JLabel lblNewLabel_1 = new JLabel("Buscar por provincias");
 		lblNewLabel_1.setBounds(274, 52, 143, 14);
 		contentPane.add(lblNewLabel_1);
+		
+		JButton BtnSalir = new JButton("Salir");
+		BtnSalir.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				VentanaLogin login= new VentanaLogin();// obj created for class Second()
+				login.setVisible(true); // Open the Second.java window
+				dispose(); // Close the First.java window
+			}
+		});
+		BtnSalir.setBounds(328, 327, 89, 23);
+		contentPane.add(BtnSalir);
 	}
 }

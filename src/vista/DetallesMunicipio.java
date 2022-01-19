@@ -8,6 +8,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 
+import objetos.EspaciosNaturales;
 import objetos.Municipio;
 
 import javax.swing.DefaultListModel;
@@ -25,7 +26,9 @@ public class DetallesMunicipio extends JFrame {
 	JLabel LblMunicipio = new JLabel("");
 	
 	private JList <String> ListEstaciones;
+	private JList <String> ListPlayas;
 	ArrayList<Municipio> Listaestaciones = new ArrayList<Municipio>();
+	ArrayList<EspaciosNaturales> Listaplayas = new ArrayList<EspaciosNaturales>();
 
 	/**
 	 * Launch the application.
@@ -52,6 +55,7 @@ public class DetallesMunicipio extends JFrame {
 	}
 	
 	public DetallesMunicipio() {
+		setTitle("Detalles municipio");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 400);
 		contentPane = new JPanel();
@@ -61,14 +65,22 @@ public class DetallesMunicipio extends JFrame {
 		
 		DefaultListModel<String> modelListaEst = new DefaultListModel<String>();
 		ListEstaciones = new JList<String>(modelListaEst);
+		DefaultListModel<String> modelListaPla = new DefaultListModel<String>();
+		ListPlayas = new JList<String>(modelListaPla);
         
-        JScrollPane scrollPane = new JScrollPane();
+        JScrollPane ScrollEstaciones = new JScrollPane();
         ListEstaciones.setBounds(54, 42, 180, 274);
-        scrollPane.setSize(150, 150);
-        scrollPane.setLocation(50, 100);
-        scrollPane.setViewportView(ListEstaciones);
+        ScrollEstaciones.setSize(150, 150);
+        ScrollEstaciones.setLocation(50, 60);
+        ScrollEstaciones.setViewportView(ListEstaciones);
         ListEstaciones.setLayoutOrientation(JList.VERTICAL);
-        contentPane.add(scrollPane);
+        contentPane.add(ScrollEstaciones);
+        
+        JScrollPane ScrollPlayas = new JScrollPane();
+		ScrollPlayas.setBounds(237, 60, 150, 150);
+		ScrollPlayas.setViewportView(ListPlayas);
+		ListPlayas.setLayoutOrientation(JList.VERTICAL);
+		contentPane.add(ScrollPlayas);
         
         ArrayList<String> list = new ArrayList<String>();
         list.add("Inida");
@@ -100,6 +112,7 @@ public class DetallesMunicipio extends JFrame {
         int i = 0;
         for (String st : list) {
         	modelListaEst.add(i, st);
+        	modelListaPla.add(i, st);
             i++;
         }
 		
@@ -129,11 +142,17 @@ public class DetallesMunicipio extends JFrame {
 		lblNewLabel.setBounds(10, 11, 69, 14);
 		contentPane.add(lblNewLabel);
 		
-		LblMunicipio.setBounds(89, 11, 46, 14);
+		LblMunicipio.setBounds(89, 11, 298, 14);
 		contentPane.add(LblMunicipio);
 		
 		JLabel lblNewLabel_1 = new JLabel("Lista de estaciones");
-		lblNewLabel_1.setBounds(50, 75, 150, 14);
+		lblNewLabel_1.setBounds(50, 36, 150, 14);
 		contentPane.add(lblNewLabel_1);
+		
+		JLabel lblNewLabel_2 = new JLabel("Lista de playas");
+		lblNewLabel_2.setBounds(237, 36, 150, 14);
+		contentPane.add(lblNewLabel_2);
+		
+		
 	}
 }
