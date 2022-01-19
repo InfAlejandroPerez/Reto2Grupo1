@@ -8,6 +8,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 
+import cliente.Cliente;
 import objetos.Municipio;
 
 import java.awt.List;
@@ -28,11 +29,11 @@ public class ListaMunicipios extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField TxtFiltroMunicipios;
-	private JList <String> ListMunicipios;
+	private JList<String> ListMunicipios;
 	ArrayList<Municipio> Listamunicipios = new ArrayList<Municipio>();
 	private JLabel lblNewLabel;
 	private JButton BtnBuscar;
-	
+
 	/**
 	 * Launch the application.
 	 */
@@ -60,86 +61,61 @@ public class ListaMunicipios extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		
+
 		TxtFiltroMunicipios = new JTextField();
 		TxtFiltroMunicipios.setBounds(164, 11, 100, 20);
 		contentPane.add(TxtFiltroMunicipios);
 		TxtFiltroMunicipios.setColumns(10);
-		
+
 		JRadioButton RadioBizkaia = new JRadioButton("Bizkaia");
 		RadioBizkaia.setBounds(274, 99, 109, 23);
 		contentPane.add(RadioBizkaia);
-		
+
 		JRadioButton RadioGipuzkoa = new JRadioButton("Gipuzkoa");
 		RadioGipuzkoa.setBounds(274, 125, 109, 23);
 		contentPane.add(RadioGipuzkoa);
-		
+
 		JRadioButton RadioAraba = new JRadioButton("Araba");
 		RadioAraba.setBounds(274, 151, 109, 23);
 		contentPane.add(RadioAraba);
-		
+
 		JRadioButton RadioTodo = new JRadioButton("Mostrar todo");
 		RadioTodo.setBounds(274, 73, 109, 23);
 		contentPane.add(RadioTodo);
-		
+
 		ButtonGroup G = new ButtonGroup();
 		G.add(RadioBizkaia);
 		G.add(RadioGipuzkoa);
 		G.add(RadioAraba);
 		G.add(RadioTodo);
-		
-		RadioTodo.setSelected(true);
-		
-		DefaultListModel<String> modelListaMun = new DefaultListModel<String>();
-        ListMunicipios = new JList<String>(modelListaMun);
-        
-        JScrollPane ScrollMunicipios = new JScrollPane();
-        ListMunicipios.setBounds(54, 42, 180, 274);
-        ScrollMunicipios.setSize(200, 250);
-        ScrollMunicipios.setLocation(50, 50);
-        ScrollMunicipios.setViewportView(ListMunicipios);
-        ListMunicipios.setLayoutOrientation(JList.VERTICAL);
-        contentPane.add(ScrollMunicipios);
-        
-        ArrayList<String> list = new ArrayList<String>();
-        list.add("Inida");
-        list.add("China");
-        list.add("Aus");
-        list.add("Japan");
-        list.add("patata");
-        list.add("zanahoria");
-        list.add("tomate");
-        list.add("Bilbao");
-        list.add("Zaragoza");
-        list.add("Luxemburgo");
-        list.add("Rusia");
-        list.add("La calle de al lado");
-        list.add("Areilza");
-        list.add("Madrid");
-        list.add("Londres");
-        list.add("Prusia");
-        list.add("Persia");
-        list.add("Barcelona");
-        list.add("Barakaldo");
-        list.add("Laredo");
-        list.add("Santander");
-        list.add("Granada");
-        list.add("Avila");
-        list.add("Biarritz");
-        list.add("Paris");
 
-        int i = 0;
-        for (String st : list) {
-        	modelListaMun.add(i, st);
-            i++;
-        }
-        
+		RadioTodo.setSelected(true);
+
+		DefaultListModel<String> modelListaMun = new DefaultListModel<String>();
+		ListMunicipios = new JList<String>(modelListaMun);
+
+		JScrollPane ScrollMunicipios = new JScrollPane();
+		ListMunicipios.setBounds(54, 42, 180, 274);
+		ScrollMunicipios.setSize(200, 250);
+		ScrollMunicipios.setLocation(50, 50);
+		ScrollMunicipios.setViewportView(ListMunicipios);
+		ListMunicipios.setLayoutOrientation(JList.VERTICAL);
+		contentPane.add(ScrollMunicipios);
+
+		ArrayList<String> item = Cliente.getArrayNamesData(Cliente.MUNICIPIO);
+
+		int i = 0;
+		for (String st : item) {
+			modelListaMun.add(i, st);
+			i++;
+		}
+
 		JButton BtnDetallesMunicipio = new JButton("Mas informacion");
 		BtnDetallesMunicipio.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(ListMunicipios.getSelectedValue() != null) {
+				if (ListMunicipios.getSelectedValue() != null) {
 					String str = ListMunicipios.getSelectedValue().toString();
-					DetallesMunicipio detallesMun= new DetallesMunicipio();// obj created for class Second()
+					DetallesMunicipio detallesMun = new DetallesMunicipio();// obj created for class Second()
 					detallesMun.NombreMun(str); // Execute the method my_update to pass str
 					detallesMun.setVisible(true); // Open the Second.java window
 					dispose(); // Close the First.java window
@@ -148,30 +124,28 @@ public class ListaMunicipios extends JFrame {
 		});
 		BtnDetallesMunicipio.setBounds(50, 311, 200, 23);
 		contentPane.add(BtnDetallesMunicipio);
-		
+
 		lblNewLabel = new JLabel("Filtrar por nombre");
 		lblNewLabel.setBounds(50, 14, 110, 14);
 		contentPane.add(lblNewLabel);
-		
+
 		BtnBuscar = new JButton("Buscar");
 		BtnBuscar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+
 			}
 		});
 		BtnBuscar.setBounds(274, 10, 89, 23);
 		contentPane.add(BtnBuscar);
-		
-		
-		
+
 		JLabel lblNewLabel_1 = new JLabel("Buscar por provincias");
 		lblNewLabel_1.setBounds(274, 52, 143, 14);
 		contentPane.add(lblNewLabel_1);
-		
+
 		JButton BtnSalir = new JButton("Salir");
 		BtnSalir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				VentanaLogin login= new VentanaLogin();// obj created for class Second()
+				VentanaLogin login = new VentanaLogin();// obj created for class Second()
 				login.setVisible(true); // Open the Second.java window
 				dispose(); // Close the First.java window
 			}

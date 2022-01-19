@@ -6,6 +6,9 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import cliente.Cliente;
+
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JSpinner;
@@ -50,48 +53,47 @@ public class VentanaLogin extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		
+
 		JLabel lblNewLabel = new JLabel("Inicio de sesi\u00F3n");
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel.setBounds(10, 11, 214, 14);
 		contentPane.add(lblNewLabel);
-		
+
 		JLabel lblNewLabel_1 = new JLabel("Usuario");
 		lblNewLabel_1.setBounds(10, 36, 86, 14);
 		contentPane.add(lblNewLabel_1);
-		
+
 		TxtUsuario = new JTextField();
 		TxtUsuario.setBounds(10, 61, 214, 20);
 		contentPane.add(TxtUsuario);
 		TxtUsuario.setColumns(10);
-		
+
 		JLabel lblNewLabel_2 = new JLabel("Contrase\u00F1a");
 		lblNewLabel_2.setBounds(10, 92, 86, 14);
 		contentPane.add(lblNewLabel_2);
-		
+
 		passwordField = new JPasswordField();
 		passwordField.setBounds(10, 117, 214, 20);
 		contentPane.add(passwordField);
-		
+
 		JCheckBox ChechRecordar = new JCheckBox("Recordarme");
 		ChechRecordar.setBounds(10, 144, 97, 23);
 		contentPane.add(ChechRecordar);
-		
+
 		JButton BtnIniciarSesion = new JButton("Iniciar sesion");
 		BtnIniciarSesion.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ListaMunicipios listaMun= new ListaMunicipios();
-				listaMun.setVisible(true);
+				Cliente.login(TxtUsuario.getText().toString(), passwordField.getText().toString());
 				dispose();
 			}
 		});
 		BtnIniciarSesion.setBounds(60, 174, 110, 23);
 		contentPane.add(BtnIniciarSesion);
-		
+
 		JButton BtnRegistro = new JButton("Registrarse");
 		BtnRegistro.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				VentanaRegistro registro= new VentanaRegistro();
+				VentanaRegistro registro = new VentanaRegistro();
 				registro.setVisible(true);
 				dispose();
 			}

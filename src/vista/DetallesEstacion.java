@@ -40,11 +40,11 @@ public class DetallesEstacion extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		
+
 		JButton BtnAtrasToDetalles = new JButton("Atras");
 		BtnAtrasToDetalles.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				DetallesMunicipio detallesMun= new DetallesMunicipio();// obj created for class Second()
+				DetallesMunicipio detallesMun = new DetallesMunicipio();// obj created for class Second()
 				detallesMun.setVisible(true); // Open the Second.java window
 				dispose(); // Close the First.java window
 			}
