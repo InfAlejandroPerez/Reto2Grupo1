@@ -3,23 +3,11 @@ package server;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 
 import hibernateUtil.HibernateUtil;
-import objetos.Municipio;
 import objetos.Users;
-
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-
 import dto.DTO;
 
 public class Controller {
@@ -68,16 +56,6 @@ public class Controller {
 	
 				
 				dto.setListaEspaciosNaturales(q.list());
-				
-				/*List<String> municipios = (List<String>) q.list();
-				
-				for (int i = 0; i < municipios.size(); i++) {
-					
-					dto.setListaMunicipios(municipios.get(i).toString());
-					
-					//System.out.println(municipios.get(i));
-					
-				}*/
 
 			} catch (HibernateException e) {
 				System.out.println("Problem creating session factory");
@@ -98,19 +76,8 @@ public class Controller {
 				String hql = "select nombre from estacion";
 	
 				Query q = session.createQuery(hql);
-	
 				
 				dto.setListaEstaciones(q.list());
-				
-				/*List<String> municipios = (List<String>) q.list();
-				
-				for (int i = 0; i < municipios.size(); i++) {
-					
-					dto.setListaMunicipios(municipios.get(i).toString());
-					
-					//System.out.println(municipios.get(i));
-					
-				}*/
 
 			} catch (HibernateException e) {
 				System.out.println("Problem creating session factory");
@@ -206,19 +173,8 @@ public class Controller {
 				String hql = " select nombre from Municipio";
 	
 				Query q = session.createQuery(hql);
-	
 				
 				dto.setListaMunicipios(q.list());
-				
-				/*List<String> municipios = (List<String>) q.list();
-				
-				for (int i = 0; i < municipios.size(); i++) {
-					
-					dto.setListaMunicipios(municipios.get(i).toString());
-					
-					//System.out.println(municipios.get(i));
-					
-				}*/
 
 			} catch (HibernateException e) {
 				System.out.println("Problem creating session factory");
