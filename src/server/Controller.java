@@ -36,18 +36,62 @@ public class Controller {
 		case "estaciones": {
 			return listaEstaciones(dto);
 
-		}case "estacionesPorMunicipio": {
+		}case "espacios": {
+			return listaEspaciosNaturales(dto);
+
+		}
+		case "estacionesPorMunicipio": {
 			return estacionesPorMunicipio(dto);
 
 		}
-		case "espacios": {
-			return listaEspaciosNaturales(dto);
+		case "detallesEstacion": {
+			return detallesEstacion(dto);
+		}
+		case "detallesMunicipio": {
+			return detallesMunicipio(dto);
+		}
+		case "favoritos": {
+			return favoritos(dto);
 
 		}
 		default:
 			throw new IllegalArgumentException("Unexpected value: " + operacion);
 		}
 
+	}
+
+	private Object favoritos(DTO dto) {
+		
+		DTO respuesta = dto;
+
+		try {
+			SessionFactory sessionFac = HibernateUtil.getSessionFactory();
+			Session session = sessionFac.openSession();
+
+			String hql = "select nombre from favoritos Where idUser=:idUser";
+
+			Query q = session.createQuery(hql);
+			q.setString("idUser", dto.getIdUsuario());
+			
+			dto.setListaLugares((ArrayList) q.list());
+
+		} catch (HibernateException e) {
+			System.out.println("Problem creating session factory");
+			e.printStackTrace();
+		}
+
+		return respuesta;
+	}
+	
+
+	private Object detallesEstacion(DTO dto) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	private Object detallesMunicipio(DTO dto) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	private ArrayList<Estacion> estacionesPorMunicipio(DTO dto) {
@@ -60,17 +104,16 @@ public class Controller {
 			String hql = "from Estacion WHERE municipio=:municipio";
 
 			Query q = session.createQuery(hql);
-			//TODO poner IDMunicipio q.setString("municipio", dto.toString());
-			q.setString("municipio", "1");
-			
-			 estaciones.addAll(q.list());			
-			
+			// TODO poner IDMunicipio q.setString("municipio", dto.toString());
+			q.setString("municipio", dto.getCampoBusqueda());
+
+			estaciones.addAll(q.list());
+
 		} catch (HibernateException e) {
 			System.out.println("Problem creating session factory");
 			e.printStackTrace();
 		}
-		
-		
+
 		return estaciones;
 	}
 
@@ -78,41 +121,41 @@ public class Controller {
 		DTO respuesta = dto;
 
 		try {
-				SessionFactory sessionFac = HibernateUtil.getSessionFactory();
-				Session session = sessionFac.openSession();
-	
-				String hql = "select nombre from EspaciosNaturales";
-	
-				Query q = session.createQuery(hql);
-					
-				dto.setListaLugares( (ArrayList) q.list());
+			SessionFactory sessionFac = HibernateUtil.getSessionFactory();
+			Session session = sessionFac.openSession();
 
-			} catch (HibernateException e) {
-				System.out.println("Problem creating session factory");
-				e.printStackTrace();
-			}
+			String hql = "select nombre from EspaciosNaturales";
+
+			Query q = session.createQuery(hql);
+
+			dto.setListaLugares((ArrayList) q.list());
+
+		} catch (HibernateException e) {
+			System.out.println("Problem creating session factory");
+			e.printStackTrace();
+		}
 
 		return respuesta;
 	}
 
 	private Object listaEstaciones(DTO dto) {
-		
+
 		DTO respuesta = dto;
 
 		try {
-				SessionFactory sessionFac = HibernateUtil.getSessionFactory();
-				Session session = sessionFac.openSession();
-	
-				String hql = "select nombre from Estacion";
-	
-				Query q = session.createQuery(hql);
-				
-				dto.setListaLugares((ArrayList) q.list());
+			SessionFactory sessionFac = HibernateUtil.getSessionFactory();
+			Session session = sessionFac.openSession();
 
-			} catch (HibernateException e) {
-				System.out.println("Problem creating session factory");
-				e.printStackTrace();
-			}
+			String hql = "select nombre from Estacion";
+
+			Query q = session.createQuery(hql);
+
+			dto.setListaLugares((ArrayList) q.list());
+
+		} catch (HibernateException e) {
+			System.out.println("Problem creating session factory");
+			e.printStackTrace();
+		}
 
 		return respuesta;
 	}
@@ -193,24 +236,24 @@ public class Controller {
 	}
 
 	private DTO listaMunucipios(DTO dto) {
-		
+
 		DTO respuesta = dto;
 
 		try {
-				SessionFactory sessionFac = HibernateUtil.getSessionFactory();
-				Session session = sessionFac.openSession();
-	
-				String hql = " select nombre from Municipio";
-	
-				Query q = session.createQuery(hql);
-				
-				dto.setListaLugares( (ArrayList) q.list());
+			SessionFactory sessionFac = HibernateUtil.getSessionFactory();
+			Session session = sessionFac.openSession();
 
-			} catch (HibernateException e) {
-				System.out.println("Problem creating session factory");
-				e.printStackTrace();
-			}
+			String hql = " select nombre from Municipio";
 
+			Query q = session.createQuery(hql);
+
+			dto.setListaLugares((ArrayList) q.list());
+
+		} catch (HibernateException e) {
+			System.out.println("Problem creating session factory");
+			e.printStackTrace();
+		}
+		
 		return respuesta;
 	}
 

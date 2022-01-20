@@ -13,7 +13,7 @@ public class Teste {
 		String json = "{ 'operacion' : 'estacionesPorMunicipio',"
 				+ " 'userName' : 'admin2',"
 				+ " 'password' : 'admin2s',"
-				+ " 'municipio' : 'Bilbao'}".replace('"', '"' );
+				+ " 'campoBusqueda' : 'Bilbao'}".replace('"', '"' );
 		
 		Cliente cliente = new Cliente();
 
