@@ -6,9 +6,8 @@ import java.util.List;
 
 import objetos.Municipio;
 
-public class DTO implements Serializable{
-	
-	
+public class DTO implements Serializable {
+
 	/**
 	 * 
 	 */
@@ -22,46 +21,58 @@ public class DTO implements Serializable{
 	private boolean usuarioRegistrado;
 	private ArrayList<String> listaLugares;
 
-	
 	public String getIdUsuario() {
 		return idUsuario;
 	}
+
 	public void setIdUsuario(String idUsuario) {
 		this.idUsuario = idUsuario;
 	}
+
 	public String getOperacion() {
 		return operacion;
 	}
+
 	public void setOperacion(String operacion) {
 		this.operacion = operacion;
 	}
+
 	public String getUserName() {
 		return userName;
 	}
+
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
+
 	public String getPassword() {
 		return password;
 	}
+
 	public void setPassword(String password) {
 		this.password = password;
 	}
+
 	public String getCampoBusqueda() {
 		return campoBusqueda;
 	}
+
 	public void setCampoBusqueda(String campoBusqueda) {
 		this.campoBusqueda = campoBusqueda;
 	}
+
 	public boolean isLoginValidador() {
 		return loginValidador;
 	}
+
 	public void setLoginValidador(boolean loginValidador) {
 		this.loginValidador = loginValidador;
 	}
+
 	public boolean isUsuarioRegistrado() {
 		return usuarioRegistrado;
 	}
+
 	public void setUsuarioRegistrado(boolean usuarioRegistrado) {
 		this.usuarioRegistrado = usuarioRegistrado;
 	}
@@ -69,12 +80,9 @@ public class DTO implements Serializable{
 	public ArrayList<String> getListaLugares() {
 		return listaLugares;
 	}
+
 	public void setListaLugares(ArrayList<String> listaLugares) {
 		this.listaLugares = listaLugares;
 	}
-	
-	
-	
-	
 
 }
