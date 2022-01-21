@@ -8,12 +8,12 @@ import java.net.Socket;
 
 import com.google.gson.Gson;
 import dto.DTO;
-
+import objetos.Estacion;
 
 class Servidor {
 
 	private final int PUERTO = 5005;
-	
+
 	public void iniciar() {
 		
 		ObjectInputStream entrada= null;
@@ -43,18 +43,18 @@ class Servidor {
 				
 				Controller controlador = new Controller();
 				
-				DTO dtoRespuestaControler = (DTO) controlador.controlador(datosCliente);
+				String dtoRespuestaControler = (String) controlador.controlador(datosCliente);
+			
+				//String respuestaServer = gson.toJson(dtoRespuestaControler, Estacion.class);
 				
-				String respuestaServer = gson.toJson(dtoRespuestaControler, DTO.class);
-				
-				salida.writeObject(respuestaServer);
+				salida.writeObject(dtoRespuestaControler);
 							
 			}
 
 		} catch (IOException e) {
 			System.out.println("Error ioe: " + e.getMessage());
 		} catch (Exception e) {
-			System.out.println("Error: " + e.getMessage());
+			System.out.println("Error en el server: " + e.getMessage());
 			
 		} 
 	}

@@ -5,6 +5,13 @@ import java.util.ArrayList;
 
 public class DTO implements Serializable {
 
+	@Override
+	public String toString() {
+		return "{ \"operacion\" : \"" + operacion + "\", \"idUsuario\": \"" + idUsuario + "\", \"userName\": \"" + userName + "\", \"password\" : \""
+				+ password + "\", \"campoBusqueda\": \"" + campoBusqueda + "\", \"loginValidador\" : " + loginValidador
+				+ ", \"usuarioRegistrado\": " + usuarioRegistrado +  "\" }";
+	}
+
 	/**
 	 * 
 	 */
