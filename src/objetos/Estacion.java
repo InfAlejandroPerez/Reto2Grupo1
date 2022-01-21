@@ -9,6 +9,11 @@ import java.util.Set;
  */
 public class Estacion implements java.io.Serializable {
 
+	@Override
+	public String toString() {
+		return "{ \"id\": " + id + ", \"municipio\": \"" + municipio.getNombre().toString() + "\", \"nombre\" : \"" + nombre.toString() + "\", \"provincia\" : \"" + provincia + "\" , \"direccion\" : \"" + direccion.toString() + "\", \"latitud\": \"" + latitud.toString() + "\", \"longitud\": \"" + longitud.toString() + "\"}";
+	}
+
 	private Integer id;
 	private Municipio municipio;
 	private String nombre;

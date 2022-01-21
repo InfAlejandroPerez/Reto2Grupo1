@@ -11,6 +11,7 @@ import javax.swing.JOptionPane;
 import com.google.gson.Gson;
 
 import dto.DTO;
+import objetos.Estacion;
 import vista.ListaMunicipios;
 import vista.VentanaLogin;
 
@@ -25,7 +26,7 @@ public class Cliente {
 	EnviarThread enviarCliente = null;
 	RecibirThread recibirCliente = null;
 
-	public Object iniciar(String json) {
+	public String iniciar(String json) {
 
 		Socket cliente = null;
 		ObjectInputStream entrada = null;
@@ -45,19 +46,20 @@ public class Cliente {
 
 			salida.writeObject(json);
 
-			String usuarioJson = (String) entrada.readObject();
+				String usuarioJson = (String) entrada.readObject();
+				System.out.println(usuarioJson);
+			
+		//	Estacion datosCliente = gson.fromJson(usuarioJson, Estacion.class);
 
-			DTO datosCliente = gson.fromJson(usuarioJson, DTO.class);
+			//System.out.println("Recibido cliente: " + datosCliente.isLoginValidador());
 
-			System.out.println("Recibido cliente: " + datosCliente.isLoginValidador());
-
-			return datosCliente;
+			return usuarioJson;
 //			}
 
 		} catch (IOException e) {
 			System.out.println("Error ioe : " + e.getMessage());
 		} catch (Exception e) {
-			System.out.println("Error: " + e.getMessage());
+			System.out.println("Error cliente: " + e.getMessage());
 		}
 
 		return null;
@@ -68,7 +70,7 @@ public class Cliente {
 		try {
 
 			Socket client = new Socket(IP, 5005); // connect to server
-
+			System.out.println("Conectado con el servidor");
 			ObjectInputStream entrada = new ObjectInputStream(client.getInputStream());
 			ObjectOutputStream salida = new ObjectOutputStream(client.getOutputStream());
 
@@ -159,8 +161,12 @@ public class Cliente {
     }
 	
 	private static ArrayList<String> getInfo(String json){
-        try {
-            Socket client = new Socket(IP, 5005);
+        
+		
+		ArrayList<String> listaInfos = new ArrayList<String>();
+		
+		try {
+        	Socket client = new Socket(IP, 5005);
 
             ObjectInputStream entrada = new ObjectInputStream(client.getInputStream());
             ObjectOutputStream salida = new ObjectOutputStream(client.getOutputStream());
@@ -170,11 +176,23 @@ public class Cliente {
             salida.flush();
 
             try {
+            	
                 String reciveJson = (String) entrada.readObject();
 
-                DTO datosCliente = (new Gson()).fromJson(reciveJson, DTO.class);
-
-                return datosCliente.getListaLugares();
+               
+                String[] arrayString = reciveJson.split("/");
+                
+                System.out.println("Get info:" +reciveJson);   
+                
+                for(int i = 0; i< arrayString.length; i++ ) {
+                	
+                	System.out.println(arrayString[i].toString());    
+                	
+                	listaInfos.add(arrayString[i].toString());
+                
+                }
+                
+                	return listaInfos;
 
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
@@ -186,9 +204,5 @@ public class Cliente {
         return null;
     }
 
-	/*
-	 * public static void main(String[] args) { Cliente c = new Cliente();
-	 * c.iniciar(); }
-	 */
 
 }

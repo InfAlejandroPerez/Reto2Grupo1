@@ -2,11 +2,15 @@ package dto;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.List;
-
-import objetos.Municipio;
 
 public class DTO implements Serializable {
+
+	@Override
+	public String toString() {
+		return "{ \"operacion\" : \"" + operacion + "\", \"idUsuario\": \"" + idUsuario + "\", \"userName\": \"" + userName + "\", \"password\" : \""
+				+ password + "\", \"campoBusqueda\": \"" + campoBusqueda + "\", \"loginValidador\" : " + loginValidador
+				+ ", \"usuarioRegistrado\": " + usuarioRegistrado +  "\" }";
+	}
 
 	/**
 	 * 
