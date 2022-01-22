@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!-- Generated 20 ene 2022 18:01:55 by Hibernate Tools 5.5.7.Final --><!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 22 ene 2022 19:27:38 by Hibernate Tools 5.5.7.Final --><!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping auto-import="true" default-access="property" default-cascade="none" default-lazy="true">
     <class catalog="euskalmet" dynamic-insert="false" dynamic-update="false" mutable="true" name="objetos.Gallery" optimistic-lock="none" polymorphism="implicit" select-before-update="false" table="gallery">
         <id name="id" type="java.lang.Integer">
             <column name="id"/>
             <generator class="identity"/>
         </id>
-        <many-to-one class="objetos.Users" embed-xml="true" fetch="select" insert="true" name="users" not-found="exception" optimistic-lock="true" unique="false" update="true">
-            <column name="idUser" not-null="true"/>
+        <many-to-one class="objetos.EspaciosNaturales" embed-xml="true" fetch="select" insert="true" name="espaciosNaturales" not-found="exception" optimistic-lock="true" unique="false" update="true">
+            <column name="idEspacio" not-null="true"/>
         </many-to-one>
         <property generated="never" lazy="false" name="image" optimistic-lock="true" type="binary" unique="false">
             <column name="image" not-null="true"/>

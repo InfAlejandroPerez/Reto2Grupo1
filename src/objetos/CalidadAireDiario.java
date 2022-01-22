@@ -1,5 +1,5 @@
 package objetos;
-// Generated 20 ene 2022 18:01:55 by Hibernate Tools 5.5.7.Final
+// Generated 22 ene 2022 19:27:38 by Hibernate Tools 5.5.7.Final
 
 import java.util.Date;
 

@@ -1,5 +1,5 @@
 package objetos;
-// Generated 20 ene 2022 18:01:55 by Hibernate Tools 5.5.7.Final
+// Generated 22 ene 2022 19:27:38 by Hibernate Tools 5.5.7.Final
 
 import java.util.HashSet;
 import java.util.Set;
@@ -13,10 +13,7 @@ public class Municipio implements java.io.Serializable {
 	private String nombre;
 	private String descripcion;
 	private String localidad;
-	private String marca;
 	private String territorio;
-	private String tipo;
-	private String territoryCode;
 	private Set estacions = new HashSet(0);
 	private Set espaciosNaturaleses = new HashSet(0);
 
@@ -27,15 +24,12 @@ public class Municipio implements java.io.Serializable {
 		this.nombre = nombre;
 	}
 
-	public Municipio(String nombre, String descripcion, String localidad, String marca, String territorio, String tipo,
-			String territoryCode, Set estacions, Set espaciosNaturaleses) {
+	public Municipio(String nombre, String descripcion, String localidad, String territorio, Set estacions,
+			Set espaciosNaturaleses) {
 		this.nombre = nombre;
 		this.descripcion = descripcion;
 		this.localidad = localidad;
-		this.marca = marca;
 		this.territorio = territorio;
-		this.tipo = tipo;
-		this.territoryCode = territoryCode;
 		this.estacions = estacions;
 		this.espaciosNaturaleses = espaciosNaturaleses;
 	}
@@ -72,36 +66,12 @@ public class Municipio implements java.io.Serializable {
 		this.localidad = localidad;
 	}
 
-	public String getMarca() {
-		return this.marca;
-	}
-
-	public void setMarca(String marca) {
-		this.marca = marca;
-	}
-
 	public String getTerritorio() {
 		return this.territorio;
 	}
 
 	public void setTerritorio(String territorio) {
 		this.territorio = territorio;
-	}
-
-	public String getTipo() {
-		return this.tipo;
-	}
-
-	public void setTipo(String tipo) {
-		this.tipo = tipo;
-	}
-
-	public String getTerritoryCode() {
-		return this.territoryCode;
-	}
-
-	public void setTerritoryCode(String territoryCode) {
-		this.territoryCode = territoryCode;
 	}
 
 	public Set getEstacions() {

@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.text.Normalizer;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Iterator;
@@ -51,9 +52,8 @@ public class JsonReader {
 	}
 	
 	private static void setHibernateUtils() {
-		SessionFactory sesion = HibernateUtil.getSessionFactory();
-		s = sesion.openSession();
-		
+		SessionFactory sessionFac = HibernateUtil.getSessionFactory();
+		s = sessionFac.openSession();
 	}
 	
 	public static void uploadMunicipio() {
@@ -77,25 +77,31 @@ public class JsonReader {
 
 				switch (key) {
 				case "documentName":
-					municipio.setNombre(value);
+					String normalized = Normalizer.normalize(value, Normalizer.Form.NFD);
+					String accentRemoved = normalized.replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
+					municipio.setNombre(accentRemoved);
 					break;
 				case "turismDescription":
-					municipio.setDescripcion(value);
+					String des = value.replace("<p>", "");
+					des = des.replace("</strong>", "");
+					des = des.replace("<strong>", "");
+					des = des.replace("</p>", "");
+					municipio.setDescripcion(des);
 					break;
 				case "locality":
-					municipio.setLocalidad(value);
-					break;
-				case "marks":
-					municipio.setMarca(value);
+					String loc[] = value.split("\\s+");
+					String locB = "";
+					
+					if(loc[0].toLowerCase().equals("la") || loc[0].toLowerCase().equals("san") || loc[0].toLowerCase().equals("el")) {
+						locB = loc[0] + " " + loc[1];
+					} else {
+						locB = loc[0];
+					}
+					
+					municipio.setLocalidad(locB);
 					break;
 				case "territory":
 					municipio.setTerritorio(value);
-					break;
-				case "templateType":
-					municipio.setTipo(value);
-					break;
-				case "territorycode":
-					municipio.setTerritoryCode(value);
 					break;
 				}
 
@@ -134,10 +140,16 @@ public class JsonReader {
 
 				switch (key) {
 				case "documentName":
-					espacio.setNombre(value);
+					String normalized = Normalizer.normalize(value, Normalizer.Form.NFD);
+					String accentRemoved = normalized.replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
+					espacio.setNombre(accentRemoved);
 					break;
 				case "turismDescription":
-					espacio.setDescripcion(value);
+					String des = value.replace("<p>", "");
+					des = des.replace("</strong>", "");
+					des = des.replace("<strong>", "");
+					des = des.replace("</p>", "");
+					espacio.setDescripcion(des);
 					break;
 				case "locality":
 					espacio.setLocalidad(value);
@@ -150,9 +162,6 @@ public class JsonReader {
 					break;
 				case "marks":
 					espacio.setMarca(value);
-					break;
-				case "templateType":
-					espacio.setTipo(value);
 					break;
 				case "natureType":
 					espacio.setNaturaleza(value);
@@ -220,7 +229,9 @@ public class JsonReader {
 
 				switch (key) {
 				case "Name":
-					estacion.setNombre(value);
+					String normalized = Normalizer.normalize(value, Normalizer.Form.NFD);
+					String accentRemoved = normalized.replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
+					estacion.setNombre(accentRemoved);
 					break;
 				case "Province":
 					estacion.setProvincia(value);
@@ -321,8 +332,12 @@ public class JsonReader {
 				count = 0;
 				break;
 			}
-
+			
+			if(!iter.hasNext())
+				break;
 		}
+		
+		System.out.println("OK");
 	}
 
 	private static void datosDiarioGenerator(String name, String urlEstacion) {

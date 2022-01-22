@@ -1,6 +1,7 @@
 package json;
 
 import java.io.ObjectOutputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -15,7 +16,8 @@ public class ServerJsonRead {
 	public static void jsonMethodRead(String jsonRecive, ObjectOutputStream salidaRecive) {
 		//Desciframos el String que hemos recibido
 		String jsonString = cipher.Cifrado.decode(jsonRecive);
-		
+	    System.out.println(jsonString);
+
 		System.out.println(jsonRecive);
 		
 		JsonObject json = (JsonObject) (new JsonParser()).parse(jsonString);
@@ -53,6 +55,15 @@ public class ServerJsonRead {
 				break;
 			case "gallery":
 				ControllerV2.gallery(iterKey, salidaRecive);
+				break;
+			case "detalles_municipio":
+				ControllerV2.detalles(iterKey, salidaRecive, 0);
+				break;
+			case "detalles_espacios":
+				ControllerV2.detalles(iterKey, salidaRecive, 1);
+				break;
+			case "detalles_estaciones":
+				ControllerV2.detalles(iterKey, salidaRecive, 2);
 				break;
 			}
 			

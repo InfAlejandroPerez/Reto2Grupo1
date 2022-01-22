@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 
 import org.hibernate.HibernateException;
@@ -15,7 +16,11 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
 import com.google.gson.JsonElement;
+
+import cipher.Cifrado;
 import hibernateUtil.HibernateUtil;
+import objetos.EspaciosNaturales;
+import objetos.Estacion;
 import objetos.Municipio;
 import objetos.Users;
 
@@ -155,7 +160,6 @@ public class ControllerV2 {
 			System.out.println("Problem creating session factory");
 			e.printStackTrace();
 		}
-
 	}
 
 	private static void sender(String msg, ObjectOutputStream salida) {
@@ -189,7 +193,7 @@ public class ControllerV2 {
 					names = names + "," + items.get(i);
 				}
 			}
-			
+
 			sender(names, salidaRecive);
 
 		} catch (HibernateException e) {
@@ -210,22 +214,112 @@ public class ControllerV2 {
 			q.setString("iduser", userName);
 
 			List<byte[]> items = q.list();
-			
+
 			String imageString = "";
-			
+
 			for (int i = 0; i < items.size(); i++) {
-				if(i == 0) {
+				if (i == 0) {
 					imageString = (Base64.getEncoder().encodeToString(items.get(i)));
 				} else {
 					imageString = imageString + "holaimagen" + (Base64.getEncoder().encodeToString(items.get(i)));
 				}
 			}
-			
+
 			sender(imageString, salidaRecive);
-			
+
 		} catch (HibernateException e) {
 			System.out.println("Problem creating session factory");
 			e.printStackTrace();
 		}
+	}
+
+	public static void detalles(Iterator<Entry<String, JsonElement>> iter, ObjectOutputStream salidaRecive, int type) {
+
+		String nameDetail = iter.next().getValue().getAsString();
+
+		String hql = "";
+
+		switch (type) {
+		case 0:
+			hql = "FROM Municipio WHERE nombre = :nombres";
+			break;
+		case 1:
+			hql = "FROM EspaciosNaturales WHERE nombre = :nombres";
+			break;
+		case 2:
+			hql = "FROM Estacion WHERE nombre = :nombres";
+			break;
+		}
+
+		SessionFactory sessionFac = HibernateUtil.getSessionFactory();
+		Session session = sessionFac.openSession();
+
+		Query q = session.createQuery(hql);
+		q.setString("nombres", nameDetail);
+
+		switch (type) {
+		case 0:
+			Municipio municipio = (Municipio) q.uniqueResult();
+
+			String estacionesM = "null";
+
+			Iterator<Map.Entry<String, JsonElement>> itermunicipio = municipio.getEstacions().iterator();
+
+			int count = 0;
+			while (itermunicipio.hasNext()) {
+				if (count == 0) {
+					Estacion es = (Estacion) itermunicipio.next();
+					estacionesM = es.getNombre();
+				} else {
+					Estacion es = (Estacion) itermunicipio.next();
+					estacionesM = estacionesM + ",hola" + es.getNombre();
+				}
+				count++;
+			}
+
+			String espaciosM = "null";
+
+			Iterator<Map.Entry<String, JsonElement>> iters = municipio.getEspaciosNaturaleses().iterator();
+
+			count = 0;
+			while (iters.hasNext()) {
+				if (count == 0) {
+					EspaciosNaturales ess = (EspaciosNaturales) iters.next();
+					espaciosM = ess.getNombre();
+				} else {
+					EspaciosNaturales ess = (EspaciosNaturales) iters.next();
+					espaciosM = espaciosM + ",hola" + ess.getNombre();
+				}
+				count++;
+			}
+
+			String jsonMunicipio = "{ 'jsonData': [{ " + "'name': '" + municipio.getNombre() + "'," + "'descripcion': '"
+					+ municipio.getDescripcion() + "'," + "'localidad': '" + municipio.getLocalidad() + "',"
+					+ "'territorio': '" + municipio.getTerritorio() + "'," + "'estaciones': '" + estacionesM + "',"
+					+ "'espaciosNaturaleses': '" + espaciosM + "'}]}";
+
+			sender(jsonMunicipio, salidaRecive);
+			break;
+		case 1:
+			EspaciosNaturales espacios = (EspaciosNaturales) q.uniqueResult();
+			String jsonEspacios = "{ 'jsonData': [{ " + "'name': '" + espacios.getNombre() + "'," + "'descripcion': '"
+					+ espacios.getDescripcion() + "'," + "'localidad': '" + espacios.getLocalidad() + "',"
+					+ "'territorio': '" + espacios.getTerritorio() + "'," + "'marca': '" + espacios.getMarca() + "',"
+					+ "'naturaleza': '" + espacios.getNaturaleza() + "'," + "'municipio': '"
+					+ espacios.getMunicipio().getNombre() + "'}]}";
+
+			sender(jsonEspacios, salidaRecive);
+
+			break;
+		case 2:
+			Estacion estacion = (Estacion) q.uniqueResult();
+			String jsonEstacion = "{ 'jsonData': [{ " + "'name': '" + estacion.getNombre() + "'," + "'provincia': '"
+					+ estacion.getProvincia() + "'," + "'direccion': '" + estacion.getDireccion() + "',"
+					+ "'latitud': '" + estacion.getLatitud() + "'," + "'longitud': '" + estacion.getLongitud() + "'}]}";
+
+			sender(jsonEstacion, salidaRecive);
+			break;
+		}
+
 	}
 }
