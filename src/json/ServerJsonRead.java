@@ -71,7 +71,9 @@ public class ServerJsonRead {
 			case "detalles_estaciones":
 				ControllerV2.detalles(iterKey, salidaRecive, 2);
 				break;
-		
+			case "savephoto":
+				ControllerV2.savePhoto(iterKey, iterValue,salidaRecive);
+				break;
 			}
 			
 		}

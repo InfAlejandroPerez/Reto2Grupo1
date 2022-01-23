@@ -22,7 +22,8 @@ public class cliente {
 			entrada = new ObjectInputStream(cliente.getInputStream());
 			
 
-			salida.writeObject(cipher.Cifrado.encode("{ \"jsonData\": [ { \"operacion\" : \"hola\" } ]}"));
+			salida.writeObject(cipher.Cifrado.encode("{ \"jsonData\": [ { \"operacion\" : \"detalles_municipio\", 'name': 'Aia' } ]}"));
+			
 			
 		} catch (IOException e) {
 			e.printStackTrace();

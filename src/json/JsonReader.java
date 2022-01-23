@@ -49,6 +49,8 @@ public class JsonReader {
 		uploadEstaciones();
 
 		refreshHorarios();
+		System.out.println("Fizalizamos");
+		System.exit(0);
 	}
 	
 	private static void setHibernateUtils() {
@@ -79,6 +81,7 @@ public class JsonReader {
 				case "documentName":
 					String normalized = Normalizer.normalize(value, Normalizer.Form.NFD);
 					String accentRemoved = normalized.replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
+					
 					municipio.setNombre(accentRemoved);
 					break;
 				case "turismDescription":
@@ -179,7 +182,7 @@ public class JsonReader {
 					String result = "";
 
 					if (idMunicipio.contains("San Sebastián")) {
-						result = "San Sebastián";
+						result = "San Sebastian";
 					} else {
 						result = (idMunicipio.split(operator))[0];
 					}
@@ -231,6 +234,11 @@ public class JsonReader {
 				case "Name":
 					String normalized = Normalizer.normalize(value, Normalizer.Form.NFD);
 					String accentRemoved = normalized.replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
+					
+					if(accentRemoved.equals("Mª DIAZ HARO")) {
+						accentRemoved = "Maria Diaz de Haro";
+					}
+					
 					estacion.setNombre(accentRemoved);
 					break;
 				case "Province":

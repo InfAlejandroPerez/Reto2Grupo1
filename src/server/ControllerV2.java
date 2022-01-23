@@ -21,6 +21,7 @@ import cipher.Cifrado;
 import hibernateUtil.HibernateUtil;
 import objetos.EspaciosNaturales;
 import objetos.Estacion;
+import objetos.Gallery;
 import objetos.Municipio;
 import objetos.Users;
 
@@ -284,9 +285,9 @@ public class ControllerV2 {
 			SessionFactory sessionFac = HibernateUtil.getSessionFactory();
 			Session session = sessionFac.openSession();
 
-			String hql = "SELECT image FROM Gallery WHERE users = (SELECT idUser FROM Users WHERE userName = :iduser)";
+			String hql = "SELECT image FROM Gallery WHERE espaciosNaturales = (SELECT id FROM EspaciosNaturales WHERE nombre = :nombres)";
 			Query q = session.createQuery(hql);
-			q.setString("iduser", userName);
+			q.setString("nombres", userName);
 
 			List<byte[]> items = q.list();
 
@@ -388,13 +389,66 @@ public class ControllerV2 {
 			break;
 		case 2:
 			Estacion estacion = (Estacion) q.uniqueResult();
+			
 			String jsonEstacion = "{ 'jsonData': [{ " + "'name': '" + estacion.getNombre() + "'," + "'provincia': '"
 					+ estacion.getProvincia() + "'," + "'direccion': '" + estacion.getDireccion() + "',"
-					+ "'latitud': '" + estacion.getLatitud() + "'," + "'longitud': '" + estacion.getLongitud() + "'}]}";
+					+ "'latitud': '" + estacion.getLatitud() + "'," + "'municipio': '" + estacion.getMunicipio().getNombre() + "',"   + "'longitud': '" + estacion.getLongitud() + "'}]}";
 
 			sender(jsonEstacion, salidaRecive);
 			break;
-		}
+		} 
 
+	}
+
+	public static void savePhoto(Iterator<Entry<String, JsonElement>> iterKey,
+			Iterator<Entry<String, JsonElement>> iterValue, ObjectOutputStream salidaRecive) {
+		
+		try {
+			
+			byte[] image = null;
+			String espacio = "";
+			
+			while(iterKey.hasNext()) {
+				String key = iterKey.next().getKey().toString();
+				String value = iterValue.next().getValue().getAsString();
+				
+				switch(key) {
+				case "image":
+					image = Base64.getDecoder().decode(value);
+					break;
+				case "espacio":
+					espacio = value;
+					break;
+				}
+			}
+			
+			SessionFactory sessionFac = HibernateUtil.getSessionFactory();
+			Session session = sessionFac.openSession();
+			Transaction tx = session.beginTransaction();
+			
+			String hql = "FROM EspaciosNaturales WHERE nombre = :nombres";
+			Query q = session.createQuery(hql);
+			q.setString("nombres", espacio);
+			EspaciosNaturales espacios = (EspaciosNaturales) q.uniqueResult();
+			
+			Gallery gallery = new Gallery();
+			gallery.setImage(image);
+			gallery.setEspaciosNaturales(espacios);
+			
+			int foto = (int) session.save(gallery);
+			
+			tx.commit();
+			
+			if (foto > 0) {
+				loginSend(true, salidaRecive);
+			} else {
+				loginSend(false, salidaRecive);
+			}
+			
+			
+		} catch (HibernateException e) {
+			System.out.println("Problem creating session factory");
+			e.printStackTrace();
+		}
 	}
 }
