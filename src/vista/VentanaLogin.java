@@ -83,7 +83,7 @@ public class VentanaLogin extends JFrame {
 		JButton BtnIniciarSesion = new JButton("Iniciar sesion");
 		BtnIniciarSesion.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Cliente.login(TxtUsuario.getText().toString(), passwordField.getText().toString());
+				Cliente.login2(TxtUsuario.getText().toString(), passwordField.getText().toString());
 				dispose();
 			}
 		});

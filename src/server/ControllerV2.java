@@ -161,6 +161,81 @@ public class ControllerV2 {
 			e.printStackTrace();
 		}
 	}
+	
+	
+	public static void listadosPorProvincia(Iterator<Entry<String, JsonElement>> iterKey, ObjectOutputStream salidaRecive) {
+		String whereFilter = iterKey.next().getValue().getAsString();
+		try {
+			SessionFactory sessionFac = HibernateUtil.getSessionFactory();
+			Session session = sessionFac.openSession();
+
+			String hql = "SELECT nombre FROM Municipio WHERE territorio=:pronvicia";
+
+
+			Query q = session.createQuery(hql);
+			q.setString("pronvicia", whereFilter );
+
+			List<String> items = q.list();
+			String json = "";
+
+			for (int i = 0; i < items.size(); i++) {
+				if (i == 0) {
+					json = items.get(i);
+				} else {
+					json = json + "," + items.get(i);
+				}
+			}
+
+			sender(json, salidaRecive);
+
+		} catch (HibernateException e) {
+			System.out.println("Problem creating session factory");
+			e.printStackTrace();
+		}
+	}
+	
+	
+	public static void listadosPorMunicipio(Iterator<Entry<String, JsonElement>> iterKey, ObjectOutputStream salidaRecive) {
+	
+		String whereFilter = iterKey.next().getValue().getAsString();
+		int opcion = iterKey.next().getValue().getAsInt();
+		
+		try {
+			SessionFactory sessionFac = HibernateUtil.getSessionFactory();
+			Session session = sessionFac.openSession();
+			String hql="";
+			if(opcion == 1 ) {
+				 hql = "SELECT nombre FROM Estacion WHERE idmunicipio = (SELECT id FROM Municipio WHERE nombre=:municipio )";		
+			}else {
+				 hql = "SELECT nombre FROM EspaciosNaturales WHERE idmunicipio = (SELECT id FROM Municipio WHERE nombre=:municipio )";
+			}
+			
+
+
+			Query q = session.createQuery(hql);
+			q.setString("municipio", whereFilter );
+
+			List<String> items = q.list();
+			String json = "";
+
+			for (int i = 0; i < items.size(); i++) {
+				if (i == 0) {
+					json = items.get(i);
+				} else {
+					json = json + "," + items.get(i);
+				}
+			}
+
+			sender(json, salidaRecive);
+
+		} catch (HibernateException e) {
+			System.out.println("Problem creating session factory");
+			e.printStackTrace();
+		}
+		
+	}
+	
+	
 
 	private static void sender(String msg, ObjectOutputStream salida) {
 		try {

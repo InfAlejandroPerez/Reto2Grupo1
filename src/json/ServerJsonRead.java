@@ -50,6 +50,12 @@ public class ServerJsonRead {
 			case "lista_espacios":
 				ControllerV2.listados(salidaRecive, 2);
 				break;
+			case "lista_municipio_por_provincia":
+				ControllerV2.listadosPorProvincia(iterKey, salidaRecive);
+				break;
+			case "lista_lugares_por_municipio":
+				ControllerV2.listadosPorMunicipio(iterKey, salidaRecive);
+				break;
 			case "estaciones_filtro":
 				ControllerV2.estacionesFiltro(iterKey, salidaRecive);
 				break;
@@ -65,6 +71,7 @@ public class ServerJsonRead {
 			case "detalles_estaciones":
 				ControllerV2.detalles(iterKey, salidaRecive, 2);
 				break;
+		
 			}
 			
 		}
