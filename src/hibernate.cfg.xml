@@ -17,5 +17,6 @@
         <mapping resource="objetos/CalidadAireIndice.hbm.xml"/>
         <mapping resource="objetos/EspaciosNaturales.hbm.xml"/>
         <mapping resource="objetos/Estacion.hbm.xml"/>
+        <mapping resource="objetos/Gallery.hbm.xml"/>
     </session-factory>
 </hibernate-configuration>
