@@ -6,6 +6,7 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 
 import com.google.gson.JsonArray;
@@ -25,6 +26,8 @@ import java.util.Iterator;
 import java.util.Map;
 import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
+import javax.swing.JList;
+
 import java.awt.Font;
 import javax.swing.SwingConstants;
 import java.awt.Component;
@@ -33,20 +36,21 @@ import java.awt.Desktop;
 import javax.swing.Box;
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
+import javax.swing.JTextPane;
 
-public class DetallesEstacion extends JFrame {
+public class DetallesEspacioNatural extends JFrame {
 
 	private JPanel contentPane;
 
 	private String latitud = "";
 	private String longitud = "";
-	private JLabel lblInfoProvincia;
-	private JLabel lblInfoDireccion;
+	private JLabel lblInfoDescripcion;
+	private JLabel lblInfoMarca;
 	private JLabel lblInfoNombre;
 	private String lugarSelecionado;
 	private String opcion;
-
-	
+	private JLabel lblInfoNaturaleza;
+	JTextPane textPane;
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -73,7 +77,7 @@ public class DetallesEstacion extends JFrame {
 //		frame.setVisible(true);
 //	}
 
-	public DetallesEstacion(String lugarSelecionado, String opcion, String  municipio)  {
+	public DetallesEspacioNatural(String lugarSelecionado, String opcion, String municipio)  {
 
 		setTitle("Detalles estacion");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -84,7 +88,7 @@ public class DetallesEstacion extends JFrame {
 		contentPane.setLayout(null);
 		getContentPane().setLayout(null);
 
-		JLabel lblTitulo = new JLabel("Estacion");
+		JLabel lblTitulo = new JLabel("Espacio Natural");
 		lblTitulo.setHorizontalAlignment(SwingConstants.CENTER);
 		lblTitulo.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lblTitulo.setBounds(176, 23, 136, 40);
@@ -93,44 +97,44 @@ public class DetallesEstacion extends JFrame {
 		JLabel lblNombre = new JLabel("Nombre");
 		lblNombre.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNombre.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblNombre.setBounds(39, 102, 136, 40);
+		lblNombre.setBounds(39, 87, 136, 40);
 		getContentPane().add(lblNombre);
 
 		JSeparator separator = new JSeparator();
-		separator.setBounds(49, 153, 469, 7);
+		separator.setBounds(49, 138, 469, 7);
 		getContentPane().add(separator);
 
-		JLabel lblProvincia = new JLabel("Provincia");
+		JLabel lblProvincia = new JLabel("Descripción");
 		lblProvincia.setHorizontalAlignment(SwingConstants.CENTER);
 		lblProvincia.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblProvincia.setBounds(39, 169, 136, 40);
+		lblProvincia.setBounds(39, 171, 136, 40);
 		getContentPane().add(lblProvincia);
 
 		JSeparator separator_1 = new JSeparator();
-		separator_1.setBounds(49, 216, 469, 11);
+		separator_1.setBounds(49, 268, 469, 11);
 		getContentPane().add(separator_1);
 
-		JLabel lblDireccion = new JLabel("Dirección");
+		JLabel lblDireccion = new JLabel("Marca");
 		lblDireccion.setHorizontalAlignment(SwingConstants.CENTER);
 		lblDireccion.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblDireccion.setBounds(39, 238, 136, 40);
+		lblDireccion.setBounds(39, 278, 136, 29);
 		getContentPane().add(lblDireccion);
 
 		JSeparator separator_1_1 = new JSeparator();
-		separator_1_1.setBounds(59, 288, 459, 7);
+		separator_1_1.setBounds(39, 318, 459, 7);
 		getContentPane().add(separator_1_1);
 
-		JLabel lblMaps = new JLabel("GoogleMaps");
+		JLabel lblMaps = new JLabel("Naturaleza");
 		lblMaps.setHorizontalAlignment(SwingConstants.CENTER);
 		lblMaps.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblMaps.setBounds(49, 306, 136, 40);
+		lblMaps.setBounds(39, 336, 136, 23);
 		getContentPane().add(lblMaps);
 
 		
 
-		lblInfoProvincia = new JLabel();
-		lblInfoProvincia.setBounds(211, 171, 294, 38);
-		getContentPane().add(lblInfoProvincia);
+		lblInfoDescripcion = new JLabel();
+		lblInfoDescripcion.setBounds(241, 394, 159, 29);
+		getContentPane().add(lblInfoDescripcion);
 
 		JButton BtnAtrasToDetalles = new JButton("Atras");
 		BtnAtrasToDetalles.setBounds(429, 383, 89, 23);
@@ -143,17 +147,31 @@ public class DetallesEstacion extends JFrame {
 		});
 		contentPane.add(BtnAtrasToDetalles);
 
-		lblInfoDireccion = new JLabel();
-		lblInfoDireccion.setBounds(211, 238, 294, 38);
-		contentPane.add(lblInfoDireccion);
+		lblInfoMarca = new JLabel();
+		lblInfoMarca.setBounds(185, 269, 294, 38);
+		contentPane.add(lblInfoMarca);
 
 		lblInfoNombre = new JLabel();
-		lblInfoNombre.setBounds(211, 105, 294, 38);
+		lblInfoNombre.setBounds(200, 87, 294, 38);
 		contentPane.add(lblInfoNombre);
 		
+		lblInfoNaturaleza = new JLabel();
+		lblInfoNaturaleza.setBounds(185, 337, 213, 46);
+		contentPane.add(lblInfoNaturaleza);
 		
-	 
-	
+		textPane = new JTextPane();
+//		contentPane.add(textPane);
+		textPane.setEditable(false);
+		textPane.setBounds(176, 152, 331, 105);
+		
+		JScrollPane ScrollEstaciones = new JScrollPane();
+		ScrollEstaciones.setSize(333, 107);
+		ScrollEstaciones.setLocation(185, 138);
+		ScrollEstaciones.setViewportView(textPane);
+		contentPane.add(ScrollEstaciones);
+		
+		
+
 		try {
 			String json = Cliente.getDetalles(lugarSelecionado, opcion);
 
@@ -176,17 +194,14 @@ public class DetallesEstacion extends JFrame {
 					case "name":
 						lblInfoNombre.setText(value);
 						break;
-					case "direccion":
-						lblInfoDireccion.setText(value);
+					case "marca":
+						lblInfoMarca.setText(value);
 						break;
-					case "provincia":
-						lblInfoProvincia.setText(value);
+					case "descripcion":
+						textPane.setText(value);
 						break;
-					case "latitud":
-						latitud = value.replace(',', '.');
-						break;
-					case "longitud":
-						longitud = value.replace(',', '.');;
+					case "naturaleza":
+						lblInfoNaturaleza.setText(value);
 						break;
 
 					}
@@ -198,24 +213,6 @@ public class DetallesEstacion extends JFrame {
 
 			e.printStackTrace();
 		}
-		
-		JButton btnNewButton = new JButton("Abrir mapa");
-		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-				String enlaceGoogleMaps = "https://google.com/maps?q=" + latitud + "," + longitud;
-				System.out.println(enlaceGoogleMaps);
-				try {
-					Desktop.getDesktop().browse(new URL(enlaceGoogleMaps).toURI());
-					
-				} catch (Exception e2) {
-					// TODO: handle exception
-				}
-			}
-		});
-		btnNewButton.setFont(new Font("Tahoma", Font.BOLD, 14));
-		btnNewButton.setBounds(231, 306, 136, 34);
-		contentPane.add(btnNewButton);
 		
 		
 

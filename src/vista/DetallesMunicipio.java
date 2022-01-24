@@ -6,7 +6,10 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import cliente.Cliente;
 import objetos.EspaciosNaturales;
@@ -19,27 +22,28 @@ import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 
-public class DetallesMunicipio extends JFrame {
+public class DetallesMunicipio extends JFrame implements ActionListener {
 
 	private JPanel contentPane;
 
 	JLabel LblMunicipio = new JLabel("");
-
-	private JList<String> ListEstaciones;
-	private JList<String> ListPlayas;
-	ArrayList<Municipio> Listaestaciones = new ArrayList<Municipio>();
-	ArrayList<EspaciosNaturales> Listaplayas = new ArrayList<EspaciosNaturales>();
-
-	/**
-	 * Launch the application.
-	 */
+	public String lugarSeleccionado;
+	
+	private JList<String> jListEstaciones;
+	private JList<String> jListEspaciosNaturales;
+	ArrayList<Municipio> listaEstaciones = new ArrayList<Municipio>();
+	ArrayList<EspaciosNaturales> listaEspacios = new ArrayList<EspaciosNaturales>();
+	
+//	String municipio = "";
+	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					DetallesMunicipio frame = new DetallesMunicipio();
-					frame.setVisible(true);
+					//DetallesMunicipio frame = new DetallesMunicipio();
+					//frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -47,15 +51,11 @@ public class DetallesMunicipio extends JFrame {
 		});
 	}
 
-	/**
-	 * Create the frame.
-	 */
-
-	public void NombreMun(String str) {
-		LblMunicipio.setText(str);
-	}
-
-	public DetallesMunicipio() {
+	public DetallesMunicipio(String municipio) {
+		
+		 
+		LblMunicipio.setText(municipio);
+		
 		setTitle("Detalles municipio");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 400);
@@ -65,45 +65,91 @@ public class DetallesMunicipio extends JFrame {
 		contentPane.setLayout(null);
 
 		DefaultListModel<String> modelListaEst = new DefaultListModel<String>();
-		ListEstaciones = new JList<String>(modelListaEst);
+		jListEstaciones = new JList<String>(modelListaEst);
+		
 		DefaultListModel<String> modelListaPla = new DefaultListModel<String>();
-		ListPlayas = new JList<String>(modelListaPla);
+		jListEspaciosNaturales = new JList<String>(modelListaPla);
 
 		JScrollPane ScrollEstaciones = new JScrollPane();
-		ListEstaciones.setBounds(54, 42, 180, 274);
+		jListEstaciones.setBounds(54, 42, 180, 274);
 		ScrollEstaciones.setSize(150, 150);
 		ScrollEstaciones.setLocation(50, 60);
-		ScrollEstaciones.setViewportView(ListEstaciones);
-		ListEstaciones.setLayoutOrientation(JList.VERTICAL);
+		ScrollEstaciones.setViewportView(jListEstaciones);
+		jListEstaciones.setLayoutOrientation(JList.VERTICAL);
+		jListEstaciones.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		jListEstaciones.addListSelectionListener(new ListSelectionListener() {
+		    @Override
+		    public void valueChanged(ListSelectionEvent e) {
+		      if (jListEstaciones.getSelectedValue() != null) {
+		    	  jListEspaciosNaturales.clearSelection();
+		    	  
+		      }
+		    }
+
+		  });
 		contentPane.add(ScrollEstaciones);
 
 		JScrollPane ScrollPlayas = new JScrollPane();
 		ScrollPlayas.setBounds(237, 60, 150, 150);
-		ScrollPlayas.setViewportView(ListPlayas);
-		ListPlayas.setLayoutOrientation(JList.VERTICAL);
+		ScrollPlayas.setViewportView(jListEspaciosNaturales);
+		jListEspaciosNaturales.setLayoutOrientation(JList.VERTICAL);
+		jListEspaciosNaturales.addListSelectionListener(new ListSelectionListener() {
+		    @Override
+		    public void valueChanged(ListSelectionEvent e) {
+		      if (jListEspaciosNaturales.getSelectedValue() != null) {
+		    	  jListEstaciones.clearSelection();
+		    	  
+		      }
+		    }
+
+		  });
 		contentPane.add(ScrollPlayas);
 
-		ArrayList<String> item = Cliente.getArrayNamesData(Cliente.ESTACION);
+		try {
 
-		int i = 0;
-		for (String st : item) {
-			modelListaEst.add(i, st);
-			i++;
+			String[] item = Cliente.getArrayListasLugaresPorMunicipio(municipio, 1);
+
+			int i = 0;
+			for (String st : item) {
+				modelListaEst.add(i, st);
+				i++;
+			}
+			
+			String[] item2 = Cliente.getArrayListasLugaresPorMunicipio(municipio, 2);
+			
+			int j = 0;
+			for (String st : item2) {
+				modelListaPla.add(j, st);
+				j++;
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		
-		ArrayList<String> item2 = Cliente.getArrayNamesData(Cliente.ESPACIOS);
-		
-		int j = 0;
-		for (String st : item2) {
-			modelListaPla.add(j, st);
-			j++;
-		}
+	
 
 		JButton BtnDetallesEstacion = new JButton("Mas informacion");
 		BtnDetallesEstacion.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				DetallesEstacion detallesEst = new DetallesEstacion();// obj created for class Second()
-				detallesEst.setVisible(true); // Open the Second.java window
+				String operacion = "";
+				
+				if(jListEstaciones.getSelectedValue() != null) {
+					lugarSeleccionado =	jListEstaciones.getSelectedValue().toString(); 
+					operacion = "detalles_estaciones";
+					DetallesEstacion detallesEst = new DetallesEstacion(lugarSeleccionado, operacion, municipio);// obj created for class Second()
+					detallesEst.setVisible(true);
+				}else if(jListEspaciosNaturales.getSelectedValue() != null) {
+					lugarSeleccionado =	jListEspaciosNaturales.getSelectedValue().toString();
+					operacion = "detalles_espacios";
+					DetallesEspacioNatural detallesEpacioNatural = new DetallesEspacioNatural(lugarSeleccionado, operacion, municipio);// obj created for class Second()
+					detallesEpacioNatural.setVisible(true);
+				}else {
+					JOptionPane.showMessageDialog(null, "Seleccione un lugar");
+					return;
+				}
+				
+				 // Open the Second.java window
 				dispose(); // Close the First.java window
 			}
 		});
@@ -136,5 +182,11 @@ public class DetallesMunicipio extends JFrame {
 		lblNewLabel_2.setBounds(237, 36, 150, 14);
 		contentPane.add(lblNewLabel_2);
 
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 }

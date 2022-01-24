@@ -10,6 +10,7 @@ import javax.swing.JOptionPane;
 
 import com.google.gson.Gson;
 
+import cipher.Cifrado;
 import dto.DTO;
 import objetos.Estacion;
 import vista.ListaMunicipios;
@@ -21,6 +22,8 @@ public class Cliente {
 	public static final int MUNICIPIO = 2020;
 	public static final int ESPACIOS = 2021;
 	public static final int ESTACION = 2022;
+	public static final int ESTACION_POR_MUNICPIO = 2023;
+	public static final int MUNICIPIO_POR_PROVINCIA = 2024;
 	private static final String IP = "localhost";
 
 	EnviarThread enviarCliente = null;
@@ -40,7 +43,7 @@ public class Cliente {
 
 //		while(true) {
 
-			System.out.println("Conexión realizada con servidor");
+			System.out.println("Conexiï¿½n realizada con servidor");
 			salida = new ObjectOutputStream(cliente.getOutputStream());
 			entrada = new ObjectInputStream(cliente.getInputStream());
 
@@ -88,7 +91,7 @@ public class Cliente {
 					ListaMunicipios listaMun = new ListaMunicipios();
 					listaMun.setVisible(true);
 				} else if (!datosCliente.isLoginValidador()) {
-					JOptionPane.showMessageDialog(null, "Nombre de usuario o contraseña incorrectos");
+					JOptionPane.showMessageDialog(null, "Nombre de usuario o contraseï¿½a incorrectos");
 				} else {
 					JOptionPane.showMessageDialog(null, "Server error");
 				}
@@ -101,6 +104,47 @@ public class Cliente {
 			e.printStackTrace();
 		}
 	}
+	
+	public static void login2(String user, String password) {
+		try {
+
+			Socket client = new Socket(IP, 5005); // connect to server
+			System.out.println("Conectado con el servidor");
+			ObjectInputStream entrada = new ObjectInputStream(client.getInputStream());
+			ObjectOutputStream salida = new ObjectOutputStream(client.getOutputStream());
+
+		
+			
+			String json = Cifrado.encode("{ \"jsonData\": [ { \"operacion\" : \"login\",  \"user\" : \"" + user + "\", " +
+                    "\"password\" : \"" + password + "\"} ]}");
+			
+			
+			salida.writeObject(json);
+			salida.flush();
+
+			try {
+				String response = Cifrado.decode((String) entrada.readObject());
+				//DTO datosCliente = (new Gson()).fromJson(usuarioJson, DTO.class);
+
+				if (response.equals("true")) {
+					System.out.println(" ha entrado" +response.equals("true"));
+					ListaMunicipios listaMun = new ListaMunicipios();
+					listaMun.setVisible(true);
+				} else if (response.equals("false")) {
+					JOptionPane.showMessageDialog(null, "Nombre de usuario o contraseï¿½a incorrectos");
+				} else {
+					JOptionPane.showMessageDialog(null, "Server error");
+				}
+
+			} catch (ClassNotFoundException e) {
+
+			}
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
 
 	public static void register(String user, String password) {
 		try {
@@ -137,6 +181,45 @@ public class Cliente {
 			e.printStackTrace();
 		}
 	}
+	
+	public static void register2(String user, String password) {
+		
+		try {
+			Socket client = new Socket(IP, 5005); // connect to server
+
+			ObjectInputStream entrada = new ObjectInputStream(client.getInputStream());
+			ObjectOutputStream salida = new ObjectOutputStream(client.getOutputStream());
+
+			String json = Cifrado.encode("{ 'jsonData': [{ " +
+                    "'operacion' : 'registrar'," +
+                    "'user': '" + user + "'," +
+                    "'password': '" + password + "'}]}"); 
+
+			salida.writeObject(json);
+
+			salida.flush();
+
+			try {
+				String response = Cifrado.decode((String)  entrada.readObject());
+				
+				if (response.equals("true")) {
+					VentanaLogin VentLog = new VentanaLogin();
+					VentLog.setVisible(true);
+				} else if (response.equals("false")) {
+					JOptionPane.showMessageDialog(null, "Usuario no registrado");
+				} else {
+					JOptionPane.showMessageDialog(null, "Server error");
+				}
+
+			} catch (ClassNotFoundException e) {
+					e.printStackTrace();
+			}
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	
 	public static ArrayList<String> getArrayNamesData(int type){
         ArrayList<String> response = new ArrayList<>();
@@ -204,5 +287,111 @@ public class Cliente {
         return null;
     }
 
+	
+	public static String[] getArrayListas(int type){
+        String typeJson = "";
+
+        switch (type){
+            case MUNICIPIO:
+                typeJson = "lista_municipio";
+                break;
+            case ESPACIOS:
+                typeJson = "lista_espacios";
+                break;
+            case ESTACION:
+                typeJson = "lista_estaciones";
+                break;
+
+        }
+
+        String json = Cifrado.encode("{ 'jsonData': [{ " +
+                "'operacion' : '" + typeJson + "'}]}");
+
+        return getIfoV2(json);
+    }
+	
+	
+	public static String[] getArrayListasMunicipiosPorProvincia(String lugar){
+       
+		String typeJson = "lista_municipio_por_provincia";
+
+
+        String json = Cifrado.encode("{ 'jsonData': [{ " +
+                "'operacion' : '" + typeJson + "'," +
+                "'name': '" + lugar + "'}]}");
+
+        return getIfoV2(json);
+    }
+	
+	public static String[] getArrayListasLugaresPorMunicipio(String lugar, int opcion){
+	       
+		String typeJson = "lista_lugares_por_municipio";
+				
+        String json = Cifrado.encode("{ 'jsonData': [{ " +
+                "'operacion' : '" + typeJson + "'," +
+                "'name': '" + lugar + "', 'opcion': '"+ opcion + "' }]}");
+        	
+        return getIfoV2(json);
+    }
+	
+	
+	 private static String[] getIfoV2(String json){
+	        try {
+	            Socket client = new Socket(IP, 5005);
+
+	            ObjectInputStream entrada = new ObjectInputStream(client.getInputStream());
+	            ObjectOutputStream salida = new ObjectOutputStream(client.getOutputStream());
+
+	            salida.writeObject(json);
+
+	            salida.flush();
+
+	            try {
+	                return Cifrado.decode((String) entrada.readObject()).split(",");
+	            } catch (ClassNotFoundException e) {
+	                e.printStackTrace();
+	            }
+
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        }
+	        return null;
+	    }
+	 
+	 
+	 public static String getDetalles(String lugar, String operacion){
+	        try {
+	            Socket client = new Socket(IP, 5005);
+
+	            ObjectInputStream entrada = new ObjectInputStream(client.getInputStream());
+	            ObjectOutputStream salida = new ObjectOutputStream(client.getOutputStream());
+	            
+	            
+	           String json = Cifrado.encode("{ 'jsonData': [{ " +
+	                    "'operacion' : '"+ operacion + "'," +
+	                    "'name': '" + lugar + "'}]}"); 
+	            
+	            salida.writeObject(json);
+
+	            salida.flush();
+
+	            try {
+	                 
+	                		
+	                			return Cifrado.decode((String) entrada.readObject());
+	                		
+//	                				JsonObject jsonObject = (JsonObject) (new JsonParser()).parse(recive);
+	                		
+	            } catch (ClassNotFoundException e) {
+	                e.printStackTrace();
+	            }
+
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        }
+	        return null;
+	    }
+	
+	
 
 }
