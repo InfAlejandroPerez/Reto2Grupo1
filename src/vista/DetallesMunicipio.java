@@ -1,15 +1,20 @@
 package vista;
 
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import cliente.Cliente;
 import objetos.EspaciosNaturales;
@@ -19,12 +24,19 @@ import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Map;
 import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 
-public class DetallesMunicipio extends JFrame implements ActionListener {
+public class DetallesMunicipio extends JFrame {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	private JPanel contentPane;
 
@@ -35,8 +47,7 @@ public class DetallesMunicipio extends JFrame implements ActionListener {
 	private JList<String> jListEspaciosNaturales;
 	ArrayList<Municipio> listaEstaciones = new ArrayList<Municipio>();
 	ArrayList<EspaciosNaturales> listaEspacios = new ArrayList<EspaciosNaturales>();
-
-//	String municipio = "";
+	JTextPane textPane;
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -52,6 +63,9 @@ public class DetallesMunicipio extends JFrame implements ActionListener {
 	}
 
 	public DetallesMunicipio(String municipio) {
+		setTitle("Detalles Municipio");
+		setResizable(false);
+		LblMunicipio.setBounds(89, 11, 298, 14);
 
 		LblMunicipio.setText(municipio);
 
@@ -61,7 +75,17 @@ public class DetallesMunicipio extends JFrame implements ActionListener {
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
-		contentPane.setLayout(null);
+
+		textPane = new JTextPane();
+//		contentPane.add(textPane);
+		textPane.setEditable(false);
+		textPane.setBounds(176, 152, 331, 105);
+
+		JScrollPane ScrollDescripcion = new JScrollPane();
+		ScrollDescripcion.setSize(257, 52);
+		ScrollDescripcion.setLocation(130, 36);
+		ScrollDescripcion.setViewportView(textPane);
+		contentPane.add(ScrollDescripcion);
 
 		DefaultListModel<String> modelListaEst = new DefaultListModel<String>();
 		jListEstaciones = new JList<String>(modelListaEst);
@@ -70,9 +94,8 @@ public class DetallesMunicipio extends JFrame implements ActionListener {
 		jListEspaciosNaturales = new JList<String>(modelListaNat);
 
 		JScrollPane ScrollEstaciones = new JScrollPane();
+		ScrollEstaciones.setBounds(50, 149, 150, 150);
 		jListEstaciones.setBounds(54, 42, 180, 274);
-		ScrollEstaciones.setSize(150, 150);
-		ScrollEstaciones.setLocation(50, 60);
 		ScrollEstaciones.setViewportView(jListEstaciones);
 		jListEstaciones.setLayoutOrientation(JList.VERTICAL);
 		jListEstaciones.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -86,10 +109,11 @@ public class DetallesMunicipio extends JFrame implements ActionListener {
 			}
 
 		});
+		contentPane.setLayout(null);
 		contentPane.add(ScrollEstaciones);
 
 		JScrollPane ScrollNaturales = new JScrollPane();
-		ScrollNaturales.setBounds(237, 60, 150, 150);
+		ScrollNaturales.setBounds(237, 149, 150, 150);
 		ScrollNaturales.setViewportView(jListEspaciosNaturales);
 		jListEspaciosNaturales.setLayoutOrientation(JList.VERTICAL);
 		jListEspaciosNaturales.addListSelectionListener(new ListSelectionListener() {
@@ -127,6 +151,7 @@ public class DetallesMunicipio extends JFrame implements ActionListener {
 		}
 
 		JButton BtnDetallesEstacion = new JButton("Mas informacion");
+		BtnDetallesEstacion.setBounds(10, 327, 140, 23);
 		BtnDetallesEstacion.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String operacion = "";
@@ -135,10 +160,7 @@ public class DetallesMunicipio extends JFrame implements ActionListener {
 					lugarSeleccionado = jListEstaciones.getSelectedValue().toString();
 					operacion = "detalles_estaciones";
 					DetallesEstacion detallesEst = new DetallesEstacion(lugarSeleccionado, operacion, municipio);// obj
-																													// created
-																													// for
-																													// class
-																													// Second()
+																								// Second()
 					detallesEst.setVisible(true);
 				} else if (jListEspaciosNaturales.getSelectedValue() != null) {
 					lugarSeleccionado = jListEspaciosNaturales.getSelectedValue().toString();
@@ -155,10 +177,10 @@ public class DetallesMunicipio extends JFrame implements ActionListener {
 				dispose(); // Close the First.java window
 			}
 		});
-		BtnDetallesEstacion.setBounds(10, 327, 140, 23);
 		contentPane.add(BtnDetallesEstacion);
 
 		JButton BtnAtrasToLista = new JButton("Atras");
+		BtnAtrasToLista.setBounds(335, 327, 89, 23);
 		BtnAtrasToLista.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ListaMunicipios lista = new ListaMunicipios();// obj created for class Second()
@@ -166,29 +188,70 @@ public class DetallesMunicipio extends JFrame implements ActionListener {
 				dispose(); // Close the First.java window
 			}
 		});
-		BtnAtrasToLista.setBounds(335, 327, 89, 23);
 		contentPane.add(BtnAtrasToLista);
 
-		JLabel lblNewLabel = new JLabel("Detalles de:");
-		lblNewLabel.setBounds(10, 11, 69, 14);
-		contentPane.add(lblNewLabel);
-
-		LblMunicipio.setBounds(89, 11, 298, 14);
+		JLabel lblDetallesDe = new JLabel("Detalles de:");
+		lblDetallesDe.setBounds(10, 11, 69, 14);
+		contentPane.add(lblDetallesDe);
 		contentPane.add(LblMunicipio);
 
 		JLabel lblNewLabel_1 = new JLabel("Lista de estaciones");
-		lblNewLabel_1.setBounds(50, 36, 150, 14);
+		lblNewLabel_1.setBounds(50, 124, 150, 14);
 		contentPane.add(lblNewLabel_1);
 
 		JLabel lblNewLabel_2 = new JLabel("Lista de Zonas naturales");
-		lblNewLabel_2.setBounds(237, 36, 150, 14);
+		lblNewLabel_2.setBounds(237, 124, 150, 14);
 		contentPane.add(lblNewLabel_2);
 
+		JLabel lblNewLabel_3 = new JLabel("Descripción");
+		lblNewLabel_3.setBounds(51, 45, 69, 23);
+		contentPane.add(lblNewLabel_3);
+
+		JLabel lblLocalidad = new JLabel("Localidad:");
+		lblLocalidad.setBounds(50, 99, 70, 14);
+		contentPane.add(lblLocalidad);
+
+		JLabel lblLocalidInfo = new JLabel("\"\"");
+		lblLocalidInfo.setBounds(130, 99, 128, 14);
+		contentPane.add(lblLocalidInfo);
+		
+		try {
+			String json = Cliente.getDetalles(municipio, "detalles_municipio");
+
+			JsonObject jsonObject = (JsonObject) (new JsonParser()).parse(json);
+
+			JsonArray array = (JsonArray) jsonObject.get("jsonData");
+			Iterator<JsonElement> iter = array.iterator();
+
+			while (iter.hasNext()) {
+				JsonElement entradaJson = iter.next();
+				JsonObject objeto = entradaJson.getAsJsonObject();
+				Iterator<Map.Entry<String, JsonElement>> iterKey = objeto.entrySet().iterator();
+				Iterator<Map.Entry<String, JsonElement>> iterValue = objeto.entrySet().iterator();
+
+				while (iterKey.hasNext()) {
+					String key = iterKey.next().getKey().toString();
+					String value = iterValue.next().getValue().getAsString();
+
+					switch (key) {
+					case "descripcion":
+						textPane.setText(value);
+						break;
+					case "localidad":
+						lblLocalidInfo.setText(value);
+						break;
+
+					}
+				}
+
+			}
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+		}
+		
+
 	}
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-
-	}
 }

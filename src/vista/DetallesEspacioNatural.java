@@ -1,7 +1,5 @@
 package vista;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -18,45 +16,31 @@ import cliente.Cliente;
 
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.Iterator;
 import java.util.Map;
 import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
-import javax.swing.JList;
-
 import java.awt.Font;
 import javax.swing.SwingConstants;
-import java.awt.Component;
-import java.awt.Desktop;
-
-import javax.swing.Box;
 import javax.swing.JSeparator;
-import javax.swing.JTextField;
 import javax.swing.JTextPane;
 
 public class DetallesEspacioNatural extends JFrame {
 
 	private JPanel contentPane;
 
-	private String latitud = "";
-	private String longitud = "";
 	private JLabel lblInfoDescripcion;
 	private JLabel lblInfoMarca;
 	private JLabel lblInfoNombre;
-	private String lugarSelecionado;
-	private String opcion;
 	private JLabel lblInfoNaturaleza;
 	JTextPane textPane;
+
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					//DetallesEstacion frame = new DetallesEstacion();
-					//frame.setVisible(true);
+					// DetallesEstacion frame = new DetallesEstacion();
+					// frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -64,20 +48,8 @@ public class DetallesEspacioNatural extends JFrame {
 		});
 	}
 
-	/**
-	 * Create the frame.
-	 * @throws URISyntaxException 
-	 */
-
-//	public DetallesEstacion(String lugarSelecionado, String opcion) {
-//		this.lugarSelecionado = lugarSelecionado;
-//		this.opcion = opcion;
-//		
-//		DetallesEstacion frame = new DetallesEstacion();
-//		frame.setVisible(true);
-//	}
-
-	public DetallesEspacioNatural(String lugarSelecionado, String opcion, String municipio)  {
+	public DetallesEspacioNatural(String lugarSelecionado, String opcion, String municipio) {
+		setResizable(false);
 
 		setTitle("Detalles estacion");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -130,8 +102,6 @@ public class DetallesEspacioNatural extends JFrame {
 		lblMaps.setBounds(39, 336, 136, 23);
 		getContentPane().add(lblMaps);
 
-		
-
 		lblInfoDescripcion = new JLabel();
 		lblInfoDescripcion.setBounds(241, 394, 159, 29);
 		getContentPane().add(lblInfoDescripcion);
@@ -154,23 +124,20 @@ public class DetallesEspacioNatural extends JFrame {
 		lblInfoNombre = new JLabel();
 		lblInfoNombre.setBounds(200, 87, 294, 38);
 		contentPane.add(lblInfoNombre);
-		
+
 		lblInfoNaturaleza = new JLabel();
 		lblInfoNaturaleza.setBounds(185, 337, 213, 46);
 		contentPane.add(lblInfoNaturaleza);
-		
+
 		textPane = new JTextPane();
-//		contentPane.add(textPane);
 		textPane.setEditable(false);
 		textPane.setBounds(176, 152, 331, 105);
-		
+
 		JScrollPane ScrollEstaciones = new JScrollPane();
 		ScrollEstaciones.setSize(333, 107);
 		ScrollEstaciones.setLocation(185, 138);
 		ScrollEstaciones.setViewportView(textPane);
 		contentPane.add(ScrollEstaciones);
-		
-		
 
 		try {
 			String json = Cliente.getDetalles(lugarSelecionado, opcion);
@@ -213,8 +180,6 @@ public class DetallesEspacioNatural extends JFrame {
 
 			e.printStackTrace();
 		}
-		
-		
 
 	}
 }

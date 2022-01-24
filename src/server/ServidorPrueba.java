@@ -7,6 +7,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 public class ServidorPrueba {
+	
 	private final int PORT = 5005;
 	private ServerSocket servidor;
 	
@@ -30,8 +31,7 @@ public class ServidorPrueba {
 		} catch (IOException e) {
 			System.out.println("Error ioe: " + e.getMessage());
 		} catch (Exception e) {
-			System.out.println("Error: " + e.getMessage());
-			
+			System.out.println("Error: " + e.getMessage());	
 		}
 		
 		

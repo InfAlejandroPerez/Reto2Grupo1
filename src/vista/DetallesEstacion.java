@@ -1,7 +1,5 @@
 package vista;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -17,9 +15,6 @@ import cliente.Cliente;
 
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Iterator;
 import java.util.Map;
@@ -27,12 +22,9 @@ import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.SwingConstants;
-import java.awt.Component;
 import java.awt.Desktop;
 
-import javax.swing.Box;
 import javax.swing.JSeparator;
-import javax.swing.JTextField;
 
 public class DetallesEstacion extends JFrame {
 
@@ -43,8 +35,6 @@ public class DetallesEstacion extends JFrame {
 	private JLabel lblInfoProvincia;
 	private JLabel lblInfoDireccion;
 	private JLabel lblInfoNombre;
-	private String lugarSelecionado;
-	private String opcion;
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -59,21 +49,8 @@ public class DetallesEstacion extends JFrame {
 		});
 	}
 
-	/**
-	 * Create the frame.
-	 * 
-	 * @throws URISyntaxException
-	 */
-
-//	public DetallesEstacion(String lugarSelecionado, String opcion) {
-//		this.lugarSelecionado = lugarSelecionado;
-//		this.opcion = opcion;
-//		
-//		DetallesEstacion frame = new DetallesEstacion();
-//		frame.setVisible(true);
-//	}
-
 	public DetallesEstacion(String lugarSelecionado, String opcion, String municipio) {
+		setResizable(false);
 
 		setTitle("Detalles estacion");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -205,7 +182,7 @@ public class DetallesEstacion extends JFrame {
 					Desktop.getDesktop().browse(new URL(enlaceGoogleMaps).toURI());
 
 				} catch (Exception e2) {
-					// TODO: handle exception
+					e2.printStackTrace();
 				}
 			}
 		});

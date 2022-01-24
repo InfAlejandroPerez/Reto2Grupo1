@@ -1,6 +1,5 @@
 package vista;
 
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -11,9 +10,7 @@ import cliente.Cliente;
 
 import javax.swing.JLabel;
 import javax.swing.JTextField;
-import javax.swing.JSpinner;
 import javax.swing.JPasswordField;
-import javax.swing.JToggleButton;
 import javax.swing.JCheckBox;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -23,7 +20,6 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.awt.event.ActionEvent;
-import javax.swing.SwingConstants;
 
 public class VentanaLogin extends JFrame {
 
@@ -51,6 +47,7 @@ public class VentanaLogin extends JFrame {
 	 * Create the frame.
 	 */
 	public VentanaLogin() {
+		setResizable(false);
 		setTitle("Login");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 310, 359);
