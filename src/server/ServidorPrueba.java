@@ -8,27 +8,23 @@ import java.net.Socket;
 
 public class ServidorPrueba {
 	private final int PORT = 5005;
+	private ServerSocket servidor;
 	
 	public void init() {
-		ServerSocket servidor = null;
-		Socket cliente = null;
 		
 		try {
 			servidor = new ServerSocket(PORT);
-			
+			Socket client = null;
+
 			while(!servidor.isClosed()) {
-				System.out.println("Esperando peticiones.");
+				try {
+					System.out.println("Esperando peticiones.");
+					client = servidor.accept();
+				} catch (IOException e) {
+	                System.out.println("I/O error: " + e);
+	            }
 				
-				cliente = servidor.accept();
-				
-				System.out.println("Peticion realizada.");
-				
-				ObjectOutputStream salida = new ObjectOutputStream(cliente.getOutputStream());
-				ObjectInputStream entrada = new ObjectInputStream(cliente.getInputStream());
-				
-				String jsonRecive = (String) entrada.readObject();
-				
-				json.ServerJsonRead.jsonMethodRead(jsonRecive, salida);
+				new ThreadServer(client).start();
 			}
 			
 		} catch (IOException e) {
@@ -44,5 +40,31 @@ public class ServidorPrueba {
 	public static void main(String args[]) {
 		ServidorPrueba server = new ServidorPrueba();
 		server.init();
+	}
+	
+	private class ThreadServer extends Thread {
+		private Socket cliente;
+		
+		public ThreadServer(Socket client) {
+			this.cliente = client;
+		}
+		
+		public void run() {
+			System.out.println("Peticion realizada.");
+			try {
+				ObjectOutputStream salida = new ObjectOutputStream(cliente.getOutputStream());
+				ObjectInputStream entrada = new ObjectInputStream(cliente.getInputStream());
+				
+				String jsonRecive = (String) entrada.readObject();
+				
+				json.ServerJsonRead.jsonMethodRead(jsonRecive, salida);
+				this.stop();
+			} catch (IOException e) {
+				System.out.println("Error ioe: " + e.getMessage());
+			} catch (Exception e) {
+				System.out.println("Error: " + e.getMessage());
+				
+			}
+		}
 	}
 }

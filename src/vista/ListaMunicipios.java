@@ -182,12 +182,12 @@ public class ListaMunicipios extends JFrame implements ActionListener {
 		String[] item = null;
 		try {
 
-			if(provincia.equals("Mostrar todo")) {
+			if (provincia.equals("Mostrar todo")) {
 				item = Cliente.getArrayListas(Cliente.MUNICIPIO);
-			}else {
+			} else {
 				item = Cliente.getArrayListasMunicipiosPorProvincia(provincia);
 			}
-			
+
 			modelListaMun.clear();
 			int i = 0;
 			for (String st : item) {

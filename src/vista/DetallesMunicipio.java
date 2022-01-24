@@ -30,20 +30,20 @@ public class DetallesMunicipio extends JFrame implements ActionListener {
 
 	JLabel LblMunicipio = new JLabel("");
 	public String lugarSeleccionado;
-	
+
 	private JList<String> jListEstaciones;
 	private JList<String> jListEspaciosNaturales;
 	ArrayList<Municipio> listaEstaciones = new ArrayList<Municipio>();
 	ArrayList<EspaciosNaturales> listaEspacios = new ArrayList<EspaciosNaturales>();
-	
+
 //	String municipio = "";
-	
+
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					//DetallesMunicipio frame = new DetallesMunicipio();
-					//frame.setVisible(true);
+					// DetallesMunicipio frame = new DetallesMunicipio();
+					// frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -52,10 +52,9 @@ public class DetallesMunicipio extends JFrame implements ActionListener {
 	}
 
 	public DetallesMunicipio(String municipio) {
-		
-		 
+
 		LblMunicipio.setText(municipio);
-		
+
 		setTitle("Detalles municipio");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 400);
@@ -66,9 +65,9 @@ public class DetallesMunicipio extends JFrame implements ActionListener {
 
 		DefaultListModel<String> modelListaEst = new DefaultListModel<String>();
 		jListEstaciones = new JList<String>(modelListaEst);
-		
-		DefaultListModel<String> modelListaPla = new DefaultListModel<String>();
-		jListEspaciosNaturales = new JList<String>(modelListaPla);
+
+		DefaultListModel<String> modelListaNat = new DefaultListModel<String>();
+		jListEspaciosNaturales = new JList<String>(modelListaNat);
 
 		JScrollPane ScrollEstaciones = new JScrollPane();
 		jListEstaciones.setBounds(54, 42, 180, 274);
@@ -78,32 +77,32 @@ public class DetallesMunicipio extends JFrame implements ActionListener {
 		jListEstaciones.setLayoutOrientation(JList.VERTICAL);
 		jListEstaciones.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		jListEstaciones.addListSelectionListener(new ListSelectionListener() {
-		    @Override
-		    public void valueChanged(ListSelectionEvent e) {
-		      if (jListEstaciones.getSelectedValue() != null) {
-		    	  jListEspaciosNaturales.clearSelection();
-		    	  
-		      }
-		    }
+			@Override
+			public void valueChanged(ListSelectionEvent e) {
+				if (jListEstaciones.getSelectedValue() != null) {
+					jListEspaciosNaturales.clearSelection();
 
-		  });
+				}
+			}
+
+		});
 		contentPane.add(ScrollEstaciones);
 
-		JScrollPane ScrollPlayas = new JScrollPane();
-		ScrollPlayas.setBounds(237, 60, 150, 150);
-		ScrollPlayas.setViewportView(jListEspaciosNaturales);
+		JScrollPane ScrollNaturales = new JScrollPane();
+		ScrollNaturales.setBounds(237, 60, 150, 150);
+		ScrollNaturales.setViewportView(jListEspaciosNaturales);
 		jListEspaciosNaturales.setLayoutOrientation(JList.VERTICAL);
 		jListEspaciosNaturales.addListSelectionListener(new ListSelectionListener() {
-		    @Override
-		    public void valueChanged(ListSelectionEvent e) {
-		      if (jListEspaciosNaturales.getSelectedValue() != null) {
-		    	  jListEstaciones.clearSelection();
-		    	  
-		      }
-		    }
+			@Override
+			public void valueChanged(ListSelectionEvent e) {
+				if (jListEspaciosNaturales.getSelectedValue() != null) {
+					jListEstaciones.clearSelection();
 
-		  });
-		contentPane.add(ScrollPlayas);
+				}
+			}
+
+		});
+		contentPane.add(ScrollNaturales);
 
 		try {
 
@@ -114,42 +113,45 @@ public class DetallesMunicipio extends JFrame implements ActionListener {
 				modelListaEst.add(i, st);
 				i++;
 			}
-			
+
 			String[] item2 = Cliente.getArrayListasLugaresPorMunicipio(municipio, 2);
-			
+
 			int j = 0;
 			for (String st : item2) {
-				modelListaPla.add(j, st);
+				modelListaNat.add(j, st);
 				j++;
 			}
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
-	
 
 		JButton BtnDetallesEstacion = new JButton("Mas informacion");
 		BtnDetallesEstacion.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String operacion = "";
-				
-				if(jListEstaciones.getSelectedValue() != null) {
-					lugarSeleccionado =	jListEstaciones.getSelectedValue().toString(); 
+
+				if (jListEstaciones.getSelectedValue() != null) {
+					lugarSeleccionado = jListEstaciones.getSelectedValue().toString();
 					operacion = "detalles_estaciones";
-					DetallesEstacion detallesEst = new DetallesEstacion(lugarSeleccionado, operacion, municipio);// obj created for class Second()
+					DetallesEstacion detallesEst = new DetallesEstacion(lugarSeleccionado, operacion, municipio);// obj
+																													// created
+																													// for
+																													// class
+																													// Second()
 					detallesEst.setVisible(true);
-				}else if(jListEspaciosNaturales.getSelectedValue() != null) {
-					lugarSeleccionado =	jListEspaciosNaturales.getSelectedValue().toString();
+				} else if (jListEspaciosNaturales.getSelectedValue() != null) {
+					lugarSeleccionado = jListEspaciosNaturales.getSelectedValue().toString();
 					operacion = "detalles_espacios";
-					DetallesEspacioNatural detallesEpacioNatural = new DetallesEspacioNatural(lugarSeleccionado, operacion, municipio);// obj created for class Second()
+					DetallesEspacioNatural detallesEpacioNatural = new DetallesEspacioNatural(lugarSeleccionado,
+							operacion, municipio);// obj created for class Second()
 					detallesEpacioNatural.setVisible(true);
-				}else {
+				} else {
 					JOptionPane.showMessageDialog(null, "Seleccione un lugar");
 					return;
 				}
-				
-				 // Open the Second.java window
+
+				// Open the Second.java window
 				dispose(); // Close the First.java window
 			}
 		});
@@ -178,7 +180,7 @@ public class DetallesMunicipio extends JFrame implements ActionListener {
 		lblNewLabel_1.setBounds(50, 36, 150, 14);
 		contentPane.add(lblNewLabel_1);
 
-		JLabel lblNewLabel_2 = new JLabel("Lista de playas");
+		JLabel lblNewLabel_2 = new JLabel("Lista de Zonas naturales");
 		lblNewLabel_2.setBounds(237, 36, 150, 14);
 		contentPane.add(lblNewLabel_2);
 
@@ -187,6 +189,6 @@ public class DetallesMunicipio extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 }
