@@ -46,13 +46,12 @@ public class DetallesEstacion extends JFrame {
 	private String lugarSelecionado;
 	private String opcion;
 
-	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					//DetallesEstacion frame = new DetallesEstacion();
-					//frame.setVisible(true);
+					// DetallesEstacion frame = new DetallesEstacion();
+					// frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -62,7 +61,8 @@ public class DetallesEstacion extends JFrame {
 
 	/**
 	 * Create the frame.
-	 * @throws URISyntaxException 
+	 * 
+	 * @throws URISyntaxException
 	 */
 
 //	public DetallesEstacion(String lugarSelecionado, String opcion) {
@@ -73,7 +73,7 @@ public class DetallesEstacion extends JFrame {
 //		frame.setVisible(true);
 //	}
 
-	public DetallesEstacion(String lugarSelecionado, String opcion, String  municipio)  {
+	public DetallesEstacion(String lugarSelecionado, String opcion, String municipio) {
 
 		setTitle("Detalles estacion");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -126,8 +126,6 @@ public class DetallesEstacion extends JFrame {
 		lblMaps.setBounds(49, 306, 136, 40);
 		getContentPane().add(lblMaps);
 
-		
-
 		lblInfoProvincia = new JLabel();
 		lblInfoProvincia.setBounds(211, 171, 294, 38);
 		getContentPane().add(lblInfoProvincia);
@@ -150,10 +148,7 @@ public class DetallesEstacion extends JFrame {
 		lblInfoNombre = new JLabel();
 		lblInfoNombre.setBounds(211, 105, 294, 38);
 		contentPane.add(lblInfoNombre);
-		
-		
-	 
-	
+
 		try {
 			String json = Cliente.getDetalles(lugarSelecionado, opcion);
 
@@ -186,7 +181,8 @@ public class DetallesEstacion extends JFrame {
 						latitud = value.replace(',', '.');
 						break;
 					case "longitud":
-						longitud = value.replace(',', '.');;
+						longitud = value.replace(',', '.');
+						;
 						break;
 
 					}
@@ -198,16 +194,16 @@ public class DetallesEstacion extends JFrame {
 
 			e.printStackTrace();
 		}
-		
+
 		JButton btnNewButton = new JButton("Abrir mapa");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+
 				String enlaceGoogleMaps = "https://google.com/maps?q=" + latitud + "," + longitud;
 				System.out.println(enlaceGoogleMaps);
 				try {
 					Desktop.getDesktop().browse(new URL(enlaceGoogleMaps).toURI());
-					
+
 				} catch (Exception e2) {
 					// TODO: handle exception
 				}
@@ -216,8 +212,6 @@ public class DetallesEstacion extends JFrame {
 		btnNewButton.setFont(new Font("Tahoma", Font.BOLD, 14));
 		btnNewButton.setBounds(231, 306, 136, 34);
 		contentPane.add(btnNewButton);
-		
-		
 
 	}
 }

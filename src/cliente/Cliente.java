@@ -49,12 +49,12 @@ public class Cliente {
 
 			salida.writeObject(json);
 
-				String usuarioJson = (String) entrada.readObject();
-				System.out.println(usuarioJson);
-			
-		//	Estacion datosCliente = gson.fromJson(usuarioJson, Estacion.class);
+			String usuarioJson = (String) entrada.readObject();
+			System.out.println(usuarioJson);
 
-			//System.out.println("Recibido cliente: " + datosCliente.isLoginValidador());
+			// Estacion datosCliente = gson.fromJson(usuarioJson, Estacion.class);
+
+			// System.out.println("Recibido cliente: " + datosCliente.isLoginValidador());
 
 			return usuarioJson;
 //			}
@@ -104,7 +104,7 @@ public class Cliente {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public static void login2(String user, String password) {
 		try {
 
@@ -113,21 +113,18 @@ public class Cliente {
 			ObjectInputStream entrada = new ObjectInputStream(client.getInputStream());
 			ObjectOutputStream salida = new ObjectOutputStream(client.getOutputStream());
 
-		
-			
-			String json = Cifrado.encode("{ \"jsonData\": [ { \"operacion\" : \"login\",  \"user\" : \"" + user + "\", " +
-                    "\"password\" : \"" + password + "\"} ]}");
-			
-			
+			String json = Cifrado.encode("{ \"jsonData\": [ { \"operacion\" : \"login\",  \"user\" : \"" + user + "\", "
+					+ "\"password\" : \"" + password + "\"} ]}");
+
 			salida.writeObject(json);
 			salida.flush();
 
 			try {
 				String response = Cifrado.decode((String) entrada.readObject());
-				//DTO datosCliente = (new Gson()).fromJson(usuarioJson, DTO.class);
+				// DTO datosCliente = (new Gson()).fromJson(usuarioJson, DTO.class);
 
 				if (response.equals("true")) {
-					System.out.println(" ha entrado" +response.equals("true"));
+					System.out.println(" ha entrado" + response.equals("true"));
 					ListaMunicipios listaMun = new ListaMunicipios();
 					listaMun.setVisible(true);
 				} else if (response.equals("false")) {
@@ -144,7 +141,6 @@ public class Cliente {
 			e.printStackTrace();
 		}
 	}
-	
 
 	public static void register(String user, String password) {
 		try {
@@ -181,27 +177,25 @@ public class Cliente {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public static void register2(String user, String password) {
-		
+
 		try {
 			Socket client = new Socket(IP, 5005); // connect to server
 
 			ObjectInputStream entrada = new ObjectInputStream(client.getInputStream());
 			ObjectOutputStream salida = new ObjectOutputStream(client.getOutputStream());
 
-			String json = Cifrado.encode("{ 'jsonData': [{ " +
-                    "'operacion' : 'registrar'," +
-                    "'user': '" + user + "'," +
-                    "'password': '" + password + "'}]}"); 
+			String json = Cifrado.encode("{ 'jsonData': [{ " + "'operacion' : 'registrar'," + "'user': '" + user + "',"
+					+ "'password': '" + password + "'}]}");
 
 			salida.writeObject(json);
 
 			salida.flush();
 
 			try {
-				String response = Cifrado.decode((String)  entrada.readObject());
-				
+				String response = Cifrado.decode((String) entrada.readObject());
+
 				if (response.equals("true")) {
 					VentanaLogin VentLog = new VentanaLogin();
 					VentLog.setVisible(true);
@@ -212,186 +206,169 @@ public class Cliente {
 				}
 
 			} catch (ClassNotFoundException e) {
-					e.printStackTrace();
+				e.printStackTrace();
 			}
 
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
-	
-	
-	public static ArrayList<String> getArrayNamesData(int type){
-        ArrayList<String> response = new ArrayList<>();
 
-        String typeJson = "";
+	public static ArrayList<String> getArrayNamesData(int type) {
+		ArrayList<String> response = new ArrayList<>();
 
-        switch (type){
-            case MUNICIPIO:
-                typeJson = "lista_municipios";
-                break;
-            case ESPACIOS:
-                typeJson = "espacios";
-                break;
-            case ESTACION:
-                typeJson = "estaciones";
-                break;
-        }
+		String typeJson = "";
 
-        String json = "{ \"operacion\" : \"" + typeJson + "\"}";
+		switch (type) {
+		case MUNICIPIO:
+			typeJson = "lista_municipios";
+			break;
+		case ESPACIOS:
+			typeJson = "espacios";
+			break;
+		case ESTACION:
+			typeJson = "estaciones";
+			break;
+		}
 
-        return getInfo(json);
-    }
-	
-	private static ArrayList<String> getInfo(String json){
-        
-		
+		String json = "{ \"operacion\" : \"" + typeJson + "\"}";
+
+		return getInfo(json);
+	}
+
+	private static ArrayList<String> getInfo(String json) {
+
 		ArrayList<String> listaInfos = new ArrayList<String>();
-		
+
 		try {
-        	Socket client = new Socket(IP, 5005);
+			Socket client = new Socket(IP, 5005);
 
-            ObjectInputStream entrada = new ObjectInputStream(client.getInputStream());
-            ObjectOutputStream salida = new ObjectOutputStream(client.getOutputStream());
+			ObjectInputStream entrada = new ObjectInputStream(client.getInputStream());
+			ObjectOutputStream salida = new ObjectOutputStream(client.getOutputStream());
 
-            salida.writeObject(json);
+			salida.writeObject(json);
 
-            salida.flush();
+			salida.flush();
 
-            try {
-            	
-                String reciveJson = (String) entrada.readObject();
+			try {
 
-               
-                String[] arrayString = reciveJson.split("/");
-                
-                System.out.println("Get info:" +reciveJson);   
-                
-                for(int i = 0; i< arrayString.length; i++ ) {
-                	
-                	System.out.println(arrayString[i].toString());    
-                	
-                	listaInfos.add(arrayString[i].toString());
-                
-                }
-                
-                	return listaInfos;
+				String reciveJson = (String) entrada.readObject();
 
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            }
+				String[] arrayString = reciveJson.split("/");
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
+				System.out.println("Get info:" + reciveJson);
 
-	
-	public static String[] getArrayListas(int type){
-        String typeJson = "";
+				for (int i = 0; i < arrayString.length; i++) {
 
-        switch (type){
-            case MUNICIPIO:
-                typeJson = "lista_municipio";
-                break;
-            case ESPACIOS:
-                typeJson = "lista_espacios";
-                break;
-            case ESTACION:
-                typeJson = "lista_estaciones";
-                break;
+					System.out.println(arrayString[i].toString());
 
-        }
+					listaInfos.add(arrayString[i].toString());
 
-        String json = Cifrado.encode("{ 'jsonData': [{ " +
-                "'operacion' : '" + typeJson + "'}]}");
+				}
 
-        return getIfoV2(json);
-    }
-	
-	
-	public static String[] getArrayListasMunicipiosPorProvincia(String lugar){
-       
+				return listaInfos;
+
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			}
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public static String[] getArrayListas(int type) {
+		String typeJson = "";
+
+		switch (type) {
+		case MUNICIPIO:
+			typeJson = "lista_municipio";
+			break;
+		case ESPACIOS:
+			typeJson = "lista_espacios";
+			break;
+		case ESTACION:
+			typeJson = "lista_estaciones";
+			break;
+
+		}
+
+		String json = Cifrado.encode("{ 'jsonData': [{ " + "'operacion' : '" + typeJson + "'}]}");
+
+		return getIfoV2(json);
+	}
+
+	public static String[] getArrayListasMunicipiosPorProvincia(String lugar) {
+
 		String typeJson = "lista_municipio_por_provincia";
 
+		String json = Cifrado
+				.encode("{ 'jsonData': [{ " + "'operacion' : '" + typeJson + "'," + "'name': '" + lugar + "'}]}");
 
-        String json = Cifrado.encode("{ 'jsonData': [{ " +
-                "'operacion' : '" + typeJson + "'," +
-                "'name': '" + lugar + "'}]}");
+		return getIfoV2(json);
+	}
 
-        return getIfoV2(json);
-    }
-	
-	public static String[] getArrayListasLugaresPorMunicipio(String lugar, int opcion){
-	       
+	public static String[] getArrayListasLugaresPorMunicipio(String lugar, int opcion) {
+
 		String typeJson = "lista_lugares_por_municipio";
-				
-        String json = Cifrado.encode("{ 'jsonData': [{ " +
-                "'operacion' : '" + typeJson + "'," +
-                "'name': '" + lugar + "', 'opcion': '"+ opcion + "' }]}");
-        	
-        return getIfoV2(json);
-    }
-	
-	
-	 private static String[] getIfoV2(String json){
-	        try {
-	            Socket client = new Socket(IP, 5005);
 
-	            ObjectInputStream entrada = new ObjectInputStream(client.getInputStream());
-	            ObjectOutputStream salida = new ObjectOutputStream(client.getOutputStream());
+		String json = Cifrado.encode("{ 'jsonData': [{ " + "'operacion' : '" + typeJson + "'," + "'name': '" + lugar
+				+ "', 'opcion': '" + opcion + "' }]}");
 
-	            salida.writeObject(json);
+		return getIfoV2(json);
+	}
 
-	            salida.flush();
+	private static String[] getIfoV2(String json) {
+		try {
+			Socket client = new Socket(IP, 5005);
 
-	            try {
-	                return Cifrado.decode((String) entrada.readObject()).split(",");
-	            } catch (ClassNotFoundException e) {
-	                e.printStackTrace();
-	            }
+			ObjectInputStream entrada = new ObjectInputStream(client.getInputStream());
+			ObjectOutputStream salida = new ObjectOutputStream(client.getOutputStream());
 
-	        } catch (IOException e) {
-	            e.printStackTrace();
-	        }
-	        return null;
-	    }
-	 
-	 
-	 public static String getDetalles(String lugar, String operacion){
-	        try {
-	            Socket client = new Socket(IP, 5005);
+			salida.writeObject(json);
 
-	            ObjectInputStream entrada = new ObjectInputStream(client.getInputStream());
-	            ObjectOutputStream salida = new ObjectOutputStream(client.getOutputStream());
-	            
-	            
-	           String json = Cifrado.encode("{ 'jsonData': [{ " +
-	                    "'operacion' : '"+ operacion + "'," +
-	                    "'name': '" + lugar + "'}]}"); 
-	            
-	            salida.writeObject(json);
+			salida.flush();
 
-	            salida.flush();
+			try {
+				return Cifrado.decode((String) entrada.readObject()).split(",");
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			}
 
-	            try {
-	                 
-	                		
-	                			return Cifrado.decode((String) entrada.readObject());
-	                		
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public static String getDetalles(String lugar, String operacion) {
+		try {
+			Socket client = new Socket(IP, 5005);
+
+			ObjectInputStream entrada = new ObjectInputStream(client.getInputStream());
+			ObjectOutputStream salida = new ObjectOutputStream(client.getOutputStream());
+
+			String json = Cifrado
+					.encode("{ 'jsonData': [{ " + "'operacion' : '" + operacion + "'," + "'name': '" + lugar + "'}]}");
+
+			salida.writeObject(json);
+
+			salida.flush();
+
+			try {
+
+				return Cifrado.decode((String) entrada.readObject());
+
 //	                				JsonObject jsonObject = (JsonObject) (new JsonParser()).parse(recive);
-	                		
-	            } catch (ClassNotFoundException e) {
-	                e.printStackTrace();
-	            }
 
-	        } catch (IOException e) {
-	            e.printStackTrace();
-	        }
-	        return null;
-	    }
-	
-	
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			}
 
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 }
