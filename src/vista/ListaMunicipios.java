@@ -84,7 +84,7 @@ public class ListaMunicipios extends JFrame implements ActionListener {
 		RadioGipuzkoa.setBounds(274, 125, 109, 23);
 		contentPane.add(RadioGipuzkoa);
 
-		RadioAraba = new JRadioButton("Araba");
+		RadioAraba = new JRadioButton("Araba/Álava");
 		RadioAraba.setBounds(274, 151, 109, 23);
 		RadioAraba.addActionListener(this);
 		contentPane.add(RadioAraba);
