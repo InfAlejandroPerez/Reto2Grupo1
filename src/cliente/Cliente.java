@@ -371,4 +371,71 @@ public class Cliente {
 		}
 		return null;
 	}
+	
+	
+	public static String getFavorito(String idParqueNatural, String idUser) {
+		try {
+			Socket client = new Socket(IP, 5005);
+
+			ObjectInputStream entrada = new ObjectInputStream(client.getInputStream());
+			ObjectOutputStream salida = new ObjectOutputStream(client.getOutputStream());
+
+			String json = Cifrado
+					.encode("{ 'jsonData': [{ " + "'operacion' : 'es_favorito', 'idParqueNatural': '" + idParqueNatural +"', 'idUser': '"+ idUser + "'}]}");
+
+			salida.writeObject(json);
+
+			salida.flush();
+
+			try {
+
+				return Cifrado.decode((String) entrada.readObject());
+
+
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			}
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	
+	public static String setFavorito(String idParqueNatural, String idMunicipio , String idUser, int opcion) {
+		try {
+			Socket client = new Socket(IP, 5005);
+
+			ObjectInputStream entrada = new ObjectInputStream(client.getInputStream());
+			ObjectOutputStream salida = new ObjectOutputStream(client.getOutputStream());
+
+			String operacion = (opcion==1)?"addFavorito":"quitarFavorito";
+			
+			String json = Cifrado
+					.encode("{ 'jsonData': [{ " + "'operacion' : '"+ operacion +"', 'idParqueNatural': '" + idParqueNatural +
+							"', 'idUser': '"+ idUser + "', 'idMunicipio': '"+ idMunicipio + "'}]}");
+
+			salida.writeObject(json);
+
+			salida.flush();
+
+			try {
+
+				return Cifrado.decode((String) entrada.readObject());
+
+
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			}
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	
+	
+	
 }

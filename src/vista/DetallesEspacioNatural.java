@@ -24,8 +24,6 @@ import java.awt.Font;
 import javax.swing.SwingConstants;
 import javax.swing.JSeparator;
 import javax.swing.JTextPane;
-import javax.swing.JCheckBox;
-import java.awt.Canvas;
 
 public class DetallesEspacioNatural extends JFrame {
 
@@ -35,8 +33,12 @@ public class DetallesEspacioNatural extends JFrame {
 	private JLabel lblInfoMarca;
 	private JLabel lblInfoNombre;
 	private JLabel lblInfoNaturaleza;
-	JTextPane textPane;
-
+	private JTextPane textPane;
+	private String idMunicipio;
+	private String idEspacioNatural;
+	private String idUser;
+	private JButton btnFavorito;
+	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -140,22 +142,30 @@ public class DetallesEspacioNatural extends JFrame {
 		ScrollEstaciones.setLocation(152, 150);
 		ScrollEstaciones.setViewportView(textPane);
 		contentPane.add(ScrollEstaciones);
-		
-		JButton btnFavorito = new JButton();
+
+		btnFavorito = new JButton();
 		btnFavorito.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
-				if(btnFavorito.getText() == "Add Favorito") {
+
+				if (btnFavorito.getText() == "Add Favorito") {
+
+					setFavorito(1);
+
 					btnFavorito.setText("Quitar Favorito");
-				}else {
+				} else {
+					setFavorito(2);
 					btnFavorito.setText("Add Favorito");
 				}
-				
-				
+
 			}
+
 		});
 		btnFavorito.setBounds(394, 70, 124, 40);
 		contentPane.add(btnFavorito);
+
+		/**
+		 ** Cogemos los detalles del Espacio Natural
+		 */
 
 		try {
 			String json = Cliente.getDetalles(lugarSelecionado, opcion);
@@ -178,6 +188,7 @@ public class DetallesEspacioNatural extends JFrame {
 					switch (key) {
 					case "name":
 						lblInfoNombre.setText(value);
+						System.out.println(json);
 						break;
 					case "marca":
 						lblInfoMarca.setText(value);
@@ -187,6 +198,54 @@ public class DetallesEspacioNatural extends JFrame {
 						break;
 					case "naturaleza":
 						lblInfoNaturaleza.setText(value);
+						break;
+					case "idmunicipio":
+						idMunicipio = value;
+						break;
+					case "id":
+						idEspacioNatural = value;
+						break;
+
+					}
+				}
+
+			}
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+		}
+
+		/***
+		 * miramos si es Favoritos o no
+		 * 
+		 */
+
+		try {
+			String json = Cliente.getFavorito(idEspacioNatural, "1");
+
+			JsonObject jsonObject = (JsonObject) (new JsonParser()).parse(json);
+
+			JsonArray array = (JsonArray) jsonObject.get("jsonData");
+			Iterator<JsonElement> iter = array.iterator();
+
+			while (iter.hasNext()) {
+				JsonElement entradaJson = iter.next();
+				JsonObject objeto = entradaJson.getAsJsonObject();
+				Iterator<Map.Entry<String, JsonElement>> iterKey = objeto.entrySet().iterator();
+				Iterator<Map.Entry<String, JsonElement>> iterValue = objeto.entrySet().iterator();
+
+				while (iterKey.hasNext()) {
+					String key = iterKey.next().getKey().toString();
+					String value = iterValue.next().getValue().getAsString();
+					System.out.println(json);
+					switch (key) {
+					case "resultado":
+						if (Boolean.parseBoolean(value) == true) {
+							btnFavorito.setText("Quitar Favorito");
+						} else if (Boolean.parseBoolean(value) == false) {
+							btnFavorito.setText("Add Favorito");
+						}
 						break;
 
 					}
@@ -200,4 +259,48 @@ public class DetallesEspacioNatural extends JFrame {
 		}
 
 	}
+
+	private void setFavorito(int opcion) {
+
+		try {
+			
+			String json = Cliente.setFavorito(idEspacioNatural, idMunicipio, "1", opcion);
+			System.out.println(json);
+			JsonObject jsonObject = (JsonObject) (new JsonParser()).parse(json);
+
+			JsonArray array = (JsonArray) jsonObject.get("jsonData");
+			Iterator<JsonElement> iter = array.iterator();
+
+			while (iter.hasNext()) {
+				JsonElement entradaJson = iter.next();
+				JsonObject objeto = entradaJson.getAsJsonObject();
+				Iterator<Map.Entry<String, JsonElement>> iterKey = objeto.entrySet().iterator();
+				Iterator<Map.Entry<String, JsonElement>> iterValue = objeto.entrySet().iterator();
+
+				while (iterKey.hasNext()) {
+					String key = iterKey.next().getKey().toString();
+					String value = iterValue.next().getValue().getAsString();
+					System.out.println(json);
+					switch (key) {
+					case "resultado":
+						if (Boolean.parseBoolean(value) == true) {
+							btnFavorito.setText("Quitar Favorito");
+						} else if (Boolean.parseBoolean(value) == false) {
+							btnFavorito.setText("Add Favorito");
+						}
+						
+						break;
+					}
+				}
+
+			}
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+		}
+
+	}
+	
+
 }
