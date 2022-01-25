@@ -24,6 +24,8 @@ import java.awt.Font;
 import javax.swing.SwingConstants;
 import javax.swing.JSeparator;
 import javax.swing.JTextPane;
+import javax.swing.JCheckBox;
+import java.awt.Canvas;
 
 public class DetallesEspacioNatural extends JFrame {
 
@@ -69,7 +71,7 @@ public class DetallesEspacioNatural extends JFrame {
 		JLabel lblNombre = new JLabel("Nombre");
 		lblNombre.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNombre.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblNombre.setBounds(39, 87, 136, 40);
+		lblNombre.setBounds(39, 87, 103, 40);
 		getContentPane().add(lblNombre);
 
 		JSeparator separator = new JSeparator();
@@ -79,7 +81,7 @@ public class DetallesEspacioNatural extends JFrame {
 		JLabel lblProvincia = new JLabel("Descripción");
 		lblProvincia.setHorizontalAlignment(SwingConstants.CENTER);
 		lblProvincia.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblProvincia.setBounds(39, 171, 136, 40);
+		lblProvincia.setBounds(39, 171, 103, 40);
 		getContentPane().add(lblProvincia);
 
 		JSeparator separator_1 = new JSeparator();
@@ -89,17 +91,17 @@ public class DetallesEspacioNatural extends JFrame {
 		JLabel lblDireccion = new JLabel("Marca");
 		lblDireccion.setHorizontalAlignment(SwingConstants.CENTER);
 		lblDireccion.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblDireccion.setBounds(39, 278, 136, 29);
+		lblDireccion.setBounds(39, 278, 89, 29);
 		getContentPane().add(lblDireccion);
 
 		JSeparator separator_1_1 = new JSeparator();
-		separator_1_1.setBounds(39, 318, 459, 7);
+		separator_1_1.setBounds(59, 318, 459, 7);
 		getContentPane().add(separator_1_1);
 
 		JLabel lblMaps = new JLabel("Naturaleza");
 		lblMaps.setHorizontalAlignment(SwingConstants.CENTER);
 		lblMaps.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblMaps.setBounds(39, 336, 136, 23);
+		lblMaps.setBounds(39, 336, 114, 23);
 		getContentPane().add(lblMaps);
 
 		lblInfoDescripcion = new JLabel();
@@ -118,15 +120,15 @@ public class DetallesEspacioNatural extends JFrame {
 		contentPane.add(BtnAtrasToDetalles);
 
 		lblInfoMarca = new JLabel();
-		lblInfoMarca.setBounds(185, 269, 294, 38);
+		lblInfoMarca.setBounds(162, 278, 294, 29);
 		contentPane.add(lblInfoMarca);
 
 		lblInfoNombre = new JLabel();
-		lblInfoNombre.setBounds(200, 87, 294, 38);
+		lblInfoNombre.setBounds(152, 87, 294, 38);
 		contentPane.add(lblInfoNombre);
 
 		lblInfoNaturaleza = new JLabel();
-		lblInfoNaturaleza.setBounds(185, 337, 213, 46);
+		lblInfoNaturaleza.setBounds(174, 331, 213, 38);
 		contentPane.add(lblInfoNaturaleza);
 
 		textPane = new JTextPane();
@@ -134,10 +136,26 @@ public class DetallesEspacioNatural extends JFrame {
 		textPane.setBounds(176, 152, 331, 105);
 
 		JScrollPane ScrollEstaciones = new JScrollPane();
-		ScrollEstaciones.setSize(333, 107);
-		ScrollEstaciones.setLocation(185, 138);
+		ScrollEstaciones.setSize(366, 107);
+		ScrollEstaciones.setLocation(152, 150);
 		ScrollEstaciones.setViewportView(textPane);
 		contentPane.add(ScrollEstaciones);
+		
+		JButton btnFavorito = new JButton();
+		btnFavorito.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				if(btnFavorito.getText() == "Add Favorito") {
+					btnFavorito.setText("Quitar Favorito");
+				}else {
+					btnFavorito.setText("Add Favorito");
+				}
+				
+				
+			}
+		});
+		btnFavorito.setBounds(394, 70, 124, 40);
+		contentPane.add(btnFavorito);
 
 		try {
 			String json = Cliente.getDetalles(lugarSelecionado, opcion);
