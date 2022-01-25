@@ -486,9 +486,15 @@ public class ControllerV2 {
 		case 2: {
 
 			try {
-				Object persistentInstance = session.load(Favoritos.class, 2);
-				session.delete(favorito);
-
+				
+				String hql = "DELETE FROM Favoritos WHERE idUser= :idUser AND idEspacioNatural= :idEspacioNatural ";
+				Query query = session.createQuery(hql);
+				
+				query.setParameter("idUser", idUser);
+				query.setParameter("idEspacioNatural", idEspacio);
+				
+				int rowCount = query.executeUpdate();
+				
 				tx.commit();
 				session.close();
 
