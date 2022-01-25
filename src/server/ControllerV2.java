@@ -336,7 +336,7 @@ public class ControllerV2 {
 		switch (type) {
 		case 0:
 			Municipio municipio = (Municipio) q.uniqueResult();
-			
+
 			String estacionesM = "null";
 
 			Iterator<Map.Entry<String, JsonElement>> itermunicipio = municipio.getEstacions().iterator();
@@ -418,135 +418,98 @@ public class ControllerV2 {
 
 		Favoritos favorito = (Favoritos) q.uniqueResult();
 		session.close();
-		
+
 		boolean resultado;
-		
-		if(null!= favorito) {
+
+		if (null != favorito) {
 			resultado = true;
-		}else {
+		} else {
 			resultado = false;
 		}
-		
-		
-		
-		String jsonEsFvorito = "{ 'jsonData': [{ " + "'resultado': " + resultado + "}]}";
+
+		String jsonEsFvorito = "{ 'jsonData': [{ 'resultado': " + resultado + "}]}";
 
 		sender(jsonEsFvorito, salidaRecive);
 
 	}
-	
-	public static void setFavorito(Iterator<Entry<String, JsonElement>> iter, ObjectOutputStream salidaRecive, int opcion) {
 
-		
+	public static void setFavorito(Iterator<Entry<String, JsonElement>> iter, ObjectOutputStream salidaRecive,
+			int opcion) {
+
 		boolean resultado = false;
-		
-		String idEspacio = iter.next().getValue().getAsString();
-		String idUser = iter.next().getValue().getAsString();
-		String idMunicipio = iter.next().getValue().getAsString();
-		
+
+		int idEspacio = iter.next().getValue().getAsInt();
+		int idUser = iter.next().getValue().getAsInt();
+		int idMunicipio = iter.next().getValue().getAsInt();
+
 		SessionFactory sessionFac = HibernateUtil.getSessionFactory();
 		Session session = sessionFac.openSession();
-		//Transaction tx = session.beginTransaction();
-		
+		Transaction tx = session.beginTransaction();
+
+		Users user = new Users();
+		Favoritos favorito = new Favoritos();
+		EspaciosNaturales espacN = new EspaciosNaturales();
+		Municipio municipio = new Municipio();
+		user.setIdUser(idUser);
+		favorito.setUsers(user);
+
+		espacN.setId(idEspacio);
+		favorito.setEspaciosNaturales(espacN);
+
+		municipio.setId(idMunicipio);
+		favorito.setMunicipio(municipio);
+
 		switch (opcion) {
 		case 1: {
-//			try {
-				
-			
-//				while (iter.hasNext()) {
-//					String key = iter.next().getKey().toString();
-//					String value = iter.next().getValue().getAsString();
-//	
-//					switch (key) {
-//					case "idParqueNatural":
-//						idEspacio = value;
-//						break;
-//					case "idMunicipio":
-//						idMunicipio = value;
-//						break;
-//					case "idUser":
-//						idUser = value;
-//						break;
-//					default:
-//						throw new IllegalArgumentException("Unexpected value: " + opcion);
-//					}
-//					 
-//				}
-//			}catch(Exception ex) {
-//				ex.printStackTrace();
-//			}
 
 			try {
 
-				String hqlInsert = "insert into Favoritos VALUES( :idUser, :idEspacioNatural, :idMunicipio )";
-				
-				Query cons = session.createQuery(hqlInsert);
-				cons.setString("idUser", idUser);
-				cons.setString("idEspacioNatural", idEspacio);
-				cons.setString("idMunicipio", idMunicipio);
-				
-				int filascreadas = cons.executeUpdate();
-				
-				//tx.commit();
+				int favoritoInsertado = (int) session.save(favorito);
+
+				tx.commit();
 				session.close();
-				
-				if(filascreadas>0) {
+
+				if (favoritoInsertado > 0) {
 					resultado = true;
-				}else {
+				} else {
 					resultado = false;
 				}
-				
+
 			} catch (HibernateException e) {
 				System.out.println("Problem creating session factory");
 				e.printStackTrace();
 			}
-			
+
 			break;
-			
-		}case 2: {
 
-			while (iter.hasNext()) {
-				String key = iter.next().getKey().toString();
-				String value = iter.next().getValue().getAsString();
-
-				switch (key) {
-				case "idParqueNatural":
-					idEspacio = value;
-					break;
-				case "idUser":
-					idUser = value;
-					break;
-				}
-			}
+		}
+		case 2: {
 
 			try {
-			
+				Object persistentInstance = session.load(Favoritos.class, 2);
+				session.delete(favorito);
 
-				//tx.commit();
+				tx.commit();
+				session.close();
 
+				resultado = false;
 
 			} catch (HibernateException e) {
 				System.out.println("Problem creating session factory");
 				e.printStackTrace();
 			}
-			
+
 			break;
 		}
 		default:
 			throw new IllegalArgumentException("Unexpected value: " + opcion);
 		}
-		
-		
-		
-		String setFavorito = "{ 'jsonData': [{ " + "'resultado': " + resultado + "}]}";
+
+		String setFavorito = "{ 'jsonData': [{ 'resultado': " + resultado + "}]}";
 
 		sender(setFavorito, salidaRecive);
 
 	}
-	
-	
-	
-	
 
 	public static void savePhoto(Iterator<Entry<String, JsonElement>> iterKey,
 			Iterator<Entry<String, JsonElement>> iterValue, ObjectOutputStream salidaRecive) {

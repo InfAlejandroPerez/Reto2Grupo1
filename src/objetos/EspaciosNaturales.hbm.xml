@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!-- Generated 25 ene. 2022 11:12:31 by Hibernate Tools 5.5.7.Final --><!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 25 ene. 2022 17:35:56 by Hibernate Tools 5.5.7.Final --><!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping auto-import="true" default-access="property" default-cascade="none" default-lazy="true">
     <class catalog="euskalmet" dynamic-insert="false" dynamic-update="false" mutable="true" name="objetos.EspaciosNaturales" optimistic-lock="none" polymorphism="implicit" select-before-update="false" table="espacios_naturales">
         <id name="id" type="java.lang.Integer">
@@ -35,7 +35,7 @@
         </set>
         <set embed-xml="true" fetch="select" inverse="true" lazy="true" mutable="true" name="favoritoses" optimistic-lock="true" sort="unsorted" table="favoritos">
             <key on-delete="noaction">
-                <column name="idEspacioNatural" not-null="true"/>
+                <column name="idEspacioNatural"/>
             </key>
             <one-to-many class="objetos.Favoritos" embed-xml="true" not-found="exception"/>
         </set>

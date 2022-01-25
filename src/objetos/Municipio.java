@@ -1,5 +1,5 @@
 package objetos;
-// Generated 25 ene. 2022 11:12:30 by Hibernate Tools 5.5.7.Final
+// Generated 25 ene. 2022 17:35:55 by Hibernate Tools 5.5.7.Final
 
 import java.util.HashSet;
 import java.util.Set;
@@ -14,6 +14,7 @@ public class Municipio implements java.io.Serializable {
 	private String descripcion;
 	private String localidad;
 	private String territorio;
+	private Set favoritoses = new HashSet(0);
 	private Set estacions = new HashSet(0);
 	private Set espaciosNaturaleses = new HashSet(0);
 
@@ -24,12 +25,13 @@ public class Municipio implements java.io.Serializable {
 		this.nombre = nombre;
 	}
 
-	public Municipio(String nombre, String descripcion, String localidad, String territorio, Set estacions,
-			Set espaciosNaturaleses) {
+	public Municipio(String nombre, String descripcion, String localidad, String territorio, Set favoritoses,
+			Set estacions, Set espaciosNaturaleses) {
 		this.nombre = nombre;
 		this.descripcion = descripcion;
 		this.localidad = localidad;
 		this.territorio = territorio;
+		this.favoritoses = favoritoses;
 		this.estacions = estacions;
 		this.espaciosNaturaleses = espaciosNaturaleses;
 	}
@@ -72,6 +74,14 @@ public class Municipio implements java.io.Serializable {
 
 	public void setTerritorio(String territorio) {
 		this.territorio = territorio;
+	}
+
+	public Set getFavoritoses() {
+		return this.favoritoses;
+	}
+
+	public void setFavoritoses(Set favoritoses) {
+		this.favoritoses = favoritoses;
 	}
 
 	public Set getEstacions() {

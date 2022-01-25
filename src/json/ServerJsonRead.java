@@ -18,7 +18,7 @@ public class ServerJsonRead {
 		String jsonString = cipher.Cifrado.decode(jsonRecive);
 	    System.out.println(jsonString);
 
-		System.out.println(jsonRecive);
+		System.out.println("");
 		
 		JsonObject json = (JsonObject) (new JsonParser()).parse(jsonString);
 		

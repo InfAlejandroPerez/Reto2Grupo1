@@ -281,7 +281,9 @@ public class DetallesEspacioNatural extends JFrame {
 					String key = iterKey.next().getKey().toString();
 					String value = iterValue.next().getValue().getAsString();
 					System.out.println(json);
+					
 					switch (key) {
+					
 					case "resultado":
 						if (Boolean.parseBoolean(value) == true) {
 							btnFavorito.setText("Quitar Favorito");
