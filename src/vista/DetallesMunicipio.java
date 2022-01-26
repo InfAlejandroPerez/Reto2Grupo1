@@ -30,6 +30,8 @@ import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
+import javax.swing.JSeparator;
+import java.awt.Font;
 
 public class DetallesMunicipio extends JFrame {
 
@@ -65,13 +67,14 @@ public class DetallesMunicipio extends JFrame {
 	public DetallesMunicipio(String municipio) {
 		setTitle("Detalles Municipio");
 		setResizable(false);
+		LblMunicipio.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		LblMunicipio.setBounds(89, 11, 298, 14);
 
 		LblMunicipio.setText(municipio);
 
 		setTitle("Detalles municipio");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 400);
+		setBounds(100, 100, 518, 486);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -82,7 +85,7 @@ public class DetallesMunicipio extends JFrame {
 		textPane.setBounds(176, 152, 331, 105);
 
 		JScrollPane ScrollDescripcion = new JScrollPane();
-		ScrollDescripcion.setSize(257, 52);
+		ScrollDescripcion.setSize(337, 52);
 		ScrollDescripcion.setLocation(130, 36);
 		ScrollDescripcion.setViewportView(textPane);
 		contentPane.add(ScrollDescripcion);
@@ -94,7 +97,7 @@ public class DetallesMunicipio extends JFrame {
 		jListEspaciosNaturales = new JList<String>(modelListaNat);
 
 		JScrollPane ScrollEstaciones = new JScrollPane();
-		ScrollEstaciones.setBounds(50, 149, 150, 150);
+		ScrollEstaciones.setBounds(89, 175, 150, 150);
 		jListEstaciones.setBounds(54, 42, 180, 274);
 		ScrollEstaciones.setViewportView(jListEstaciones);
 		jListEstaciones.setLayoutOrientation(JList.VERTICAL);
@@ -113,7 +116,7 @@ public class DetallesMunicipio extends JFrame {
 		contentPane.add(ScrollEstaciones);
 
 		JScrollPane ScrollNaturales = new JScrollPane();
-		ScrollNaturales.setBounds(237, 149, 150, 150);
+		ScrollNaturales.setBounds(288, 175, 150, 150);
 		ScrollNaturales.setViewportView(jListEspaciosNaturales);
 		jListEspaciosNaturales.setLayoutOrientation(JList.VERTICAL);
 		jListEspaciosNaturales.addListSelectionListener(new ListSelectionListener() {
@@ -151,7 +154,7 @@ public class DetallesMunicipio extends JFrame {
 		}
 
 		JButton BtnDetallesEstacion = new JButton("Mas informacion");
-		BtnDetallesEstacion.setBounds(10, 327, 140, 23);
+		BtnDetallesEstacion.setBounds(199, 350, 140, 23);
 		BtnDetallesEstacion.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String operacion = "";
@@ -180,7 +183,7 @@ public class DetallesMunicipio extends JFrame {
 		contentPane.add(BtnDetallesEstacion);
 
 		JButton BtnAtrasToLista = new JButton("Atras");
-		BtnAtrasToLista.setBounds(335, 327, 89, 23);
+		BtnAtrasToLista.setBounds(378, 400, 89, 23);
 		BtnAtrasToLista.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ListaMunicipios lista = new ListaMunicipios();// obj created for class Second()
@@ -191,29 +194,38 @@ public class DetallesMunicipio extends JFrame {
 		contentPane.add(BtnAtrasToLista);
 
 		JLabel lblDetallesDe = new JLabel("Detalles de:");
+		lblDetallesDe.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		lblDetallesDe.setBounds(10, 11, 69, 14);
 		contentPane.add(lblDetallesDe);
 		contentPane.add(LblMunicipio);
 
 		JLabel lblNewLabel_1 = new JLabel("Lista de estaciones");
-		lblNewLabel_1.setBounds(50, 124, 150, 14);
+		lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lblNewLabel_1.setBounds(89, 150, 150, 14);
 		contentPane.add(lblNewLabel_1);
 
 		JLabel lblNewLabel_2 = new JLabel("Lista de Zonas naturales");
-		lblNewLabel_2.setBounds(237, 124, 150, 14);
+		lblNewLabel_2.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lblNewLabel_2.setBounds(288, 150, 150, 14);
 		contentPane.add(lblNewLabel_2);
 
 		JLabel lblNewLabel_3 = new JLabel("Descripción");
+		lblNewLabel_3.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		lblNewLabel_3.setBounds(51, 45, 69, 23);
 		contentPane.add(lblNewLabel_3);
 
 		JLabel lblLocalidad = new JLabel("Localidad:");
+		lblLocalidad.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		lblLocalidad.setBounds(50, 99, 70, 14);
 		contentPane.add(lblLocalidad);
 
-		JLabel lblLocalidInfo = new JLabel("\"\"");
+		JLabel lblLocalidInfo = new JLabel("");
 		lblLocalidInfo.setBounds(130, 99, 128, 14);
 		contentPane.add(lblLocalidInfo);
+		
+		JSeparator separator = new JSeparator();
+		separator.setBounds(47, 137, 419, 2);
+		contentPane.add(separator);
 		
 		try {
 			String json = Cliente.getDetalles(municipio, "detalles_municipio");

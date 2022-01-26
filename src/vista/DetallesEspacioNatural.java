@@ -1,5 +1,6 @@
 package vista;
 
+import java.awt.Desktop;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -16,6 +17,7 @@ import cliente.Cliente;
 
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.net.URL;
 import java.util.Iterator;
 import java.util.Map;
 import java.awt.event.ActionEvent;
@@ -28,8 +30,6 @@ import javax.swing.JTextPane;
 public class DetallesEspacioNatural extends JFrame {
 
 	private JPanel contentPane;
-
-	private JLabel lblInfoDescripcion;
 	private JLabel lblInfoMarca;
 	private JLabel lblInfoNombre;
 	private JLabel lblInfoNaturaleza;
@@ -38,6 +38,8 @@ public class DetallesEspacioNatural extends JFrame {
 	private String idEspacioNatural;
 	private String idUser;
 	private JButton btnFavorito;
+	private String latitud = "";
+	private String longitud = "";
 	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -57,7 +59,7 @@ public class DetallesEspacioNatural extends JFrame {
 
 		setTitle("Detalles estacion");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 560, 473);
+		setBounds(100, 100, 579, 515);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -87,31 +89,28 @@ public class DetallesEspacioNatural extends JFrame {
 		getContentPane().add(lblProvincia);
 
 		JSeparator separator_1 = new JSeparator();
-		separator_1.setBounds(49, 268, 469, 11);
+		separator_1.setBounds(39, 254, 479, 1);
 		getContentPane().add(separator_1);
 
 		JLabel lblDireccion = new JLabel("Marca");
 		lblDireccion.setHorizontalAlignment(SwingConstants.CENTER);
 		lblDireccion.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblDireccion.setBounds(39, 278, 89, 29);
+		lblDireccion.setBounds(39, 264, 79, 23);
 		getContentPane().add(lblDireccion);
 
 		JSeparator separator_1_1 = new JSeparator();
-		separator_1_1.setBounds(59, 318, 459, 7);
+		separator_1_1.setBounds(39, 298, 479, 7);
 		getContentPane().add(separator_1_1);
 
 		JLabel lblMaps = new JLabel("Naturaleza");
 		lblMaps.setHorizontalAlignment(SwingConstants.CENTER);
 		lblMaps.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblMaps.setBounds(39, 336, 114, 23);
+		lblMaps.setBounds(39, 316, 114, 23);
 		getContentPane().add(lblMaps);
 
-		lblInfoDescripcion = new JLabel();
-		lblInfoDescripcion.setBounds(241, 394, 159, 29);
-		getContentPane().add(lblInfoDescripcion);
-
-		JButton BtnAtrasToDetalles = new JButton("Atras");
-		BtnAtrasToDetalles.setBounds(429, 383, 89, 23);
+		JButton BtnAtrasToDetalles = new JButton("Volver");
+		BtnAtrasToDetalles.setFont(new Font("Tahoma", Font.BOLD, 12));
+		BtnAtrasToDetalles.setBounds(429, 421, 89, 23);
 		BtnAtrasToDetalles.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				DetallesMunicipio detallesMun = new DetallesMunicipio(municipio);// obj created for class Second()
@@ -122,7 +121,7 @@ public class DetallesEspacioNatural extends JFrame {
 		contentPane.add(BtnAtrasToDetalles);
 
 		lblInfoMarca = new JLabel();
-		lblInfoMarca.setBounds(162, 278, 294, 29);
+		lblInfoMarca.setBounds(152, 266, 294, 29);
 		contentPane.add(lblInfoMarca);
 
 		lblInfoNombre = new JLabel();
@@ -130,7 +129,7 @@ public class DetallesEspacioNatural extends JFrame {
 		contentPane.add(lblInfoNombre);
 
 		lblInfoNaturaleza = new JLabel();
-		lblInfoNaturaleza.setBounds(174, 331, 213, 38);
+		lblInfoNaturaleza.setBounds(163, 310, 213, 29);
 		contentPane.add(lblInfoNaturaleza);
 
 		textPane = new JTextPane();
@@ -138,7 +137,7 @@ public class DetallesEspacioNatural extends JFrame {
 		textPane.setBounds(176, 152, 331, 105);
 
 		JScrollPane ScrollEstaciones = new JScrollPane();
-		ScrollEstaciones.setSize(366, 107);
+		ScrollEstaciones.setSize(366, 93);
 		ScrollEstaciones.setLocation(152, 150);
 		ScrollEstaciones.setViewportView(textPane);
 		contentPane.add(ScrollEstaciones);
@@ -162,6 +161,35 @@ public class DetallesEspacioNatural extends JFrame {
 		});
 		btnFavorito.setBounds(394, 70, 124, 40);
 		contentPane.add(btnFavorito);
+		
+		JLabel lblMaps_1 = new JLabel("GoogleMaps");
+		lblMaps_1.setHorizontalAlignment(SwingConstants.CENTER);
+		lblMaps_1.setFont(new Font("Tahoma", Font.BOLD, 15));
+		lblMaps_1.setBounds(49, 350, 124, 40);
+		contentPane.add(lblMaps_1);
+		
+		
+		JButton btnAbrirMapa = new JButton("Abrir mapa");
+		btnAbrirMapa.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				String enlaceGoogleMaps = "https://google.com/maps?q=" + latitud + "," + longitud;
+				System.out.println(enlaceGoogleMaps);
+				try {
+					Desktop.getDesktop().browse(new URL(enlaceGoogleMaps).toURI());
+
+				} catch (Exception e2) {
+					e2.printStackTrace();
+				}
+			}
+		});
+		btnAbrirMapa.setFont(new Font("Tahoma", Font.BOLD, 14));
+		btnAbrirMapa.setBounds(231, 306, 136, 34);
+		contentPane.add(btnAbrirMapa);
+				
+		JSeparator separator_1_1_1 = new JSeparator();
+		separator_1_1_1.setBounds(49, 345, 459, 7);
+		contentPane.add(separator_1_1_1);
 
 		/**
 		 ** Cogemos los detalles del Espacio Natural
@@ -205,7 +233,11 @@ public class DetallesEspacioNatural extends JFrame {
 					case "id":
 						idEspacioNatural = value;
 						break;
-
+					case "latitud":
+						latitud = value.replace(',', '.');
+						break;
+					case "longitud":
+						longitud = value.replace(',', '.');
 					}
 				}
 

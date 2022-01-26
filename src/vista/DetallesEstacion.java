@@ -35,7 +35,7 @@ public class DetallesEstacion extends JFrame {
 	private JLabel lblInfoProvincia;
 	private JLabel lblInfoDireccion;
 	private JLabel lblInfoNombre;
-
+	private JLabel lblInfoCalidad;
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -70,31 +70,31 @@ public class DetallesEstacion extends JFrame {
 		JLabel lblNombre = new JLabel("Nombre");
 		lblNombre.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNombre.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblNombre.setBounds(39, 102, 136, 40);
+		lblNombre.setBounds(39, 74, 136, 40);
 		getContentPane().add(lblNombre);
 
 		JSeparator separator = new JSeparator();
-		separator.setBounds(49, 153, 469, 7);
+		separator.setBounds(49, 115, 469, 7);
 		getContentPane().add(separator);
 
 		JLabel lblProvincia = new JLabel("Provincia");
 		lblProvincia.setHorizontalAlignment(SwingConstants.CENTER);
 		lblProvincia.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblProvincia.setBounds(39, 169, 136, 40);
+		lblProvincia.setBounds(49, 125, 116, 40);
 		getContentPane().add(lblProvincia);
 
 		JSeparator separator_1 = new JSeparator();
-		separator_1.setBounds(49, 216, 469, 11);
+		separator_1.setBounds(49, 170, 469, 11);
 		getContentPane().add(separator_1);
 
 		JLabel lblDireccion = new JLabel("Dirección");
 		lblDireccion.setHorizontalAlignment(SwingConstants.CENTER);
 		lblDireccion.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblDireccion.setBounds(39, 238, 136, 40);
+		lblDireccion.setBounds(49, 176, 116, 40);
 		getContentPane().add(lblDireccion);
 
 		JSeparator separator_1_1 = new JSeparator();
-		separator_1_1.setBounds(59, 288, 459, 7);
+		separator_1_1.setBounds(49, 219, 459, 7);
 		getContentPane().add(separator_1_1);
 
 		JLabel lblMaps = new JLabel("GoogleMaps");
@@ -104,10 +104,11 @@ public class DetallesEstacion extends JFrame {
 		getContentPane().add(lblMaps);
 
 		lblInfoProvincia = new JLabel();
-		lblInfoProvincia.setBounds(211, 171, 294, 38);
+		lblInfoProvincia.setBounds(196, 133, 294, 38);
 		getContentPane().add(lblInfoProvincia);
 
-		JButton BtnAtrasToDetalles = new JButton("Atras");
+		JButton BtnAtrasToDetalles = new JButton("Volver");
+		BtnAtrasToDetalles.setFont(new Font("Tahoma", Font.BOLD, 12));
 		BtnAtrasToDetalles.setBounds(429, 383, 89, 23);
 		BtnAtrasToDetalles.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -119,11 +120,11 @@ public class DetallesEstacion extends JFrame {
 		contentPane.add(BtnAtrasToDetalles);
 
 		lblInfoDireccion = new JLabel();
-		lblInfoDireccion.setBounds(211, 238, 294, 38);
+		lblInfoDireccion.setBounds(176, 178, 294, 38);
 		contentPane.add(lblInfoDireccion);
 
 		lblInfoNombre = new JLabel();
-		lblInfoNombre.setBounds(211, 105, 294, 38);
+		lblInfoNombre.setBounds(186, 74, 294, 38);
 		contentPane.add(lblInfoNombre);
 
 		try {
@@ -154,12 +155,14 @@ public class DetallesEstacion extends JFrame {
 					case "provincia":
 						lblInfoProvincia.setText(value);
 						break;
+					case "calidad_aire":
+						lblInfoCalidad.setText(value);
+						break;
 					case "latitud":
 						latitud = value.replace(',', '.');
 						break;
 					case "longitud":
 						longitud = value.replace(',', '.');
-						;
 						break;
 
 					}
@@ -172,8 +175,8 @@ public class DetallesEstacion extends JFrame {
 			e.printStackTrace();
 		}
 
-		JButton btnNewButton = new JButton("Abrir mapa");
-		btnNewButton.addActionListener(new ActionListener() {
+		JButton btnAbrirMapa = new JButton("Abrir mapa");
+		btnAbrirMapa.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
 				String enlaceGoogleMaps = "https://google.com/maps?q=" + latitud + "," + longitud;
@@ -186,9 +189,23 @@ public class DetallesEstacion extends JFrame {
 				}
 			}
 		});
-		btnNewButton.setFont(new Font("Tahoma", Font.BOLD, 14));
-		btnNewButton.setBounds(231, 306, 136, 34);
-		contentPane.add(btnNewButton);
+		btnAbrirMapa.setFont(new Font("Tahoma", Font.BOLD, 14));
+		btnAbrirMapa.setBounds(231, 306, 136, 34);
+		contentPane.add(btnAbrirMapa);
+		
+		JLabel lblCalidadDelAire = new JLabel("Calidad del Aire");
+		lblCalidadDelAire.setHorizontalAlignment(SwingConstants.CENTER);
+		lblCalidadDelAire.setFont(new Font("Tahoma", Font.BOLD, 15));
+		lblCalidadDelAire.setBounds(49, 237, 136, 40);
+		contentPane.add(lblCalidadDelAire);
+		
+		JSeparator separator_1_1_1 = new JSeparator();
+		separator_1_1_1.setBounds(49, 288, 459, 7);
+		contentPane.add(separator_1_1_1);
+		
+		lblInfoCalidad = new JLabel();
+		lblInfoCalidad.setBounds(196, 237, 294, 38);
+		contentPane.add(lblInfoCalidad);
 
 	}
 }

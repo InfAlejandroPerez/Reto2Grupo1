@@ -323,7 +323,7 @@ public class ControllerV2 {
 			hql = "FROM EspaciosNaturales WHERE nombre = :nombres";
 			break;
 		case 2:
-			hql = "FROM Estacion WHERE nombre = :nombres";
+			hql = "FROM Estacion WHERE nombre = :nombres    ";
 			break;
 		}
 
@@ -390,17 +390,35 @@ public class ControllerV2 {
 			break;
 		case 2:
 			Estacion estacion = (Estacion) q.uniqueResult();
-
+			
+			String calidad = "";
+			//calidad = calidad_aire(nameDetail);
+			
 			String jsonEstacion = "{ 'jsonData': [{ " + "'name': '" + estacion.getNombre() + "'," + "'provincia': '"
 					+ estacion.getProvincia() + "'," + "'direccion': '" + estacion.getDireccion() + "',"
 					+ "'latitud': '" + estacion.getLatitud() + "'," + "'municipio': '"
-					+ estacion.getMunicipio().getNombre() + "'," + "'longitud': '" + estacion.getLongitud() + "'}]}";
+					+ estacion.getMunicipio().getNombre() + "'," + "'longitud': '" + estacion.getLongitud() + "', 'calidad_aire':'"+ calidad +"'}]}";
 
 			sender(jsonEstacion, salidaRecive);
 			break;
 		}
 		session.close();
 
+	}
+	
+	private static String calidad_aire(String nameDetail) {
+		
+		SessionFactory sessionFac = HibernateUtil.getSessionFactory();
+		Session session = sessionFac.openSession();
+		
+		String query = "SELECT ICAEstacion FROM CalidadAireIndice JOIN Estacion on CalidadAireIndice.idEstacion=Estacion.id WHERE Estacion.nombre = :nombres ";
+		Query qu = session.createQuery(query);
+		qu.setString("nombres", nameDetail);
+		
+		String calidad = (String) qu.uniqueResult();
+		
+		return calidad; 
+		
 	}
 
 	public static void esFavorito(Iterator<Entry<String, JsonElement>> iter, ObjectOutputStream salidaRecive) {
@@ -486,15 +504,15 @@ public class ControllerV2 {
 		case 2: {
 
 			try {
-				
+
 				String hql = "DELETE FROM Favoritos WHERE idUser= :idUser AND idEspacioNatural= :idEspacioNatural ";
 				Query query = session.createQuery(hql);
-				
+
 				query.setParameter("idUser", idUser);
 				query.setParameter("idEspacioNatural", idEspacio);
-				
+
 				int rowCount = query.executeUpdate();
-				
+
 				tx.commit();
 				session.close();
 
