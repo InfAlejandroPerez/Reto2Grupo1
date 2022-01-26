@@ -63,7 +63,6 @@ public class ServidorPrueba {
 				System.out.println("Error ioe: " + e.getMessage());
 			} catch (Exception e) {
 				System.out.println("Error: " + e.getMessage());
-				
 			}
 		}
 	}
