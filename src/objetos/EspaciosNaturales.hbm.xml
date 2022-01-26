@@ -27,6 +27,12 @@
         <property generated="never" lazy="false" name="naturaleza" optimistic-lock="true" type="string" unique="false">
             <column length="100" name="naturaleza"/>
         </property>
+        <property generated="never" lazy="false" name="latitud" optimistic-lock="true" type="string" unique="false">
+            <column length="100" name="latitud"/>
+        </property>
+        <property generated="never" lazy="false" name="longitud" optimistic-lock="true" type="string" unique="false">
+            <column length="100" name="longitud"/>
+        </property>
         <set embed-xml="true" fetch="select" inverse="true" lazy="true" mutable="true" name="galleries" optimistic-lock="true" sort="unsorted" table="gallery">
             <key on-delete="noaction">
                 <column name="idEspacio" not-null="true"/>
