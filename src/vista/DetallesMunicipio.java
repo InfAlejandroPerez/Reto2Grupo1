@@ -67,7 +67,7 @@ public class DetallesMunicipio extends JFrame {
 	public DetallesMunicipio(String municipio) {
 		setTitle("Detalles Municipio");
 		setResizable(false);
-		LblMunicipio.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		LblMunicipio.setFont(new Font("Tahoma", Font.BOLD, 12));
 		LblMunicipio.setBounds(89, 11, 298, 14);
 
 		LblMunicipio.setText(municipio);
@@ -154,6 +154,7 @@ public class DetallesMunicipio extends JFrame {
 		}
 
 		JButton BtnDetallesEstacion = new JButton("Mas informacion");
+		BtnDetallesEstacion.setFont(new Font("Tahoma", Font.BOLD, 12));
 		BtnDetallesEstacion.setBounds(199, 350, 140, 23);
 		BtnDetallesEstacion.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -182,7 +183,8 @@ public class DetallesMunicipio extends JFrame {
 		});
 		contentPane.add(BtnDetallesEstacion);
 
-		JButton BtnAtrasToLista = new JButton("Atras");
+		JButton BtnAtrasToLista = new JButton("Volver");
+		BtnAtrasToLista.setFont(new Font("Tahoma", Font.BOLD, 12));
 		BtnAtrasToLista.setBounds(378, 400, 89, 23);
 		BtnAtrasToLista.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -194,28 +196,28 @@ public class DetallesMunicipio extends JFrame {
 		contentPane.add(BtnAtrasToLista);
 
 		JLabel lblDetallesDe = new JLabel("Detalles de:");
-		lblDetallesDe.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lblDetallesDe.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblDetallesDe.setBounds(10, 11, 69, 14);
 		contentPane.add(lblDetallesDe);
 		contentPane.add(LblMunicipio);
 
 		JLabel lblNewLabel_1 = new JLabel("Lista de estaciones");
-		lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lblNewLabel_1.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblNewLabel_1.setBounds(89, 150, 150, 14);
 		contentPane.add(lblNewLabel_1);
 
 		JLabel lblNewLabel_2 = new JLabel("Lista de Zonas naturales");
-		lblNewLabel_2.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lblNewLabel_2.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblNewLabel_2.setBounds(288, 150, 150, 14);
 		contentPane.add(lblNewLabel_2);
 
 		JLabel lblNewLabel_3 = new JLabel("Descripción");
-		lblNewLabel_3.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		lblNewLabel_3.setBounds(51, 45, 69, 23);
+		lblNewLabel_3.setFont(new Font("Tahoma", Font.BOLD, 12));
+		lblNewLabel_3.setBounds(31, 45, 89, 23);
 		contentPane.add(lblNewLabel_3);
 
 		JLabel lblLocalidad = new JLabel("Localidad:");
-		lblLocalidad.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lblLocalidad.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblLocalidad.setBounds(50, 99, 70, 14);
 		contentPane.add(lblLocalidad);
 

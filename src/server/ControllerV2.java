@@ -411,12 +411,12 @@ public class ControllerV2 {
 		SessionFactory sessionFac = HibernateUtil.getSessionFactory();
 		Session session = sessionFac.openSession();
 		
-		String query = "SELECT ICAEstacion FROM CalidadAireIndice JOIN Estacion on CalidadAireIndice.idEstacion=Estacion.id WHERE Estacion.nombre = :nombres ";
+		String query = "ICAEstacion FROM CalidadAireIndice JOIN Estacion on CalidadAireIndice.idEstacion=Estacion.id WHERE Estacion.nombre = :nombres ";
 		Query qu = session.createQuery(query);
 		qu.setString("nombres", nameDetail);
 		
 		String calidad = (String) qu.uniqueResult();
-		
+		session.close();
 		return calidad; 
 		
 	}

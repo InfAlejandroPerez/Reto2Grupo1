@@ -165,7 +165,7 @@ public class DetallesEspacioNatural extends JFrame {
 		JLabel lblMaps_1 = new JLabel("GoogleMaps");
 		lblMaps_1.setHorizontalAlignment(SwingConstants.CENTER);
 		lblMaps_1.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblMaps_1.setBounds(49, 350, 124, 40);
+		lblMaps_1.setBounds(49, 350, 103, 40);
 		contentPane.add(lblMaps_1);
 		
 		
@@ -184,7 +184,7 @@ public class DetallesEspacioNatural extends JFrame {
 			}
 		});
 		btnAbrirMapa.setFont(new Font("Tahoma", Font.BOLD, 14));
-		btnAbrirMapa.setBounds(231, 306, 136, 34);
+		btnAbrirMapa.setBounds(226, 356, 136, 34);
 		contentPane.add(btnAbrirMapa);
 				
 		JSeparator separator_1_1_1 = new JSeparator();

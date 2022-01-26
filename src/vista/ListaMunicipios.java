@@ -71,26 +71,26 @@ public class ListaMunicipios extends JFrame implements ActionListener {
 		TxtFiltroMunicipios.setColumns(10);
 
 		RadioBizkaia = new JRadioButton();
-		RadioBizkaia.setFont(new Font("Dialog", Font.PLAIN, 12));
+		RadioBizkaia.setFont(new Font("Dialog", Font.BOLD, 12));
 		RadioBizkaia.setText("Bizkaia");
 		RadioBizkaia.setBounds(274, 99, 109, 23);
 		RadioBizkaia.addActionListener(this);
 		contentPane.add(RadioBizkaia);
 
 		RadioGipuzkoa = new JRadioButton("Gipuzkoa");
-		RadioGipuzkoa.setFont(new Font("Dialog", Font.PLAIN, 12));
+		RadioGipuzkoa.setFont(new Font("Dialog", Font.BOLD, 12));
 		RadioGipuzkoa.addActionListener(this);
 		RadioGipuzkoa.setBounds(274, 125, 109, 23);
 		contentPane.add(RadioGipuzkoa);
 
 		RadioAraba = new JRadioButton("Araba/Álava");
-		RadioAraba.setFont(new Font("Dialog", Font.PLAIN, 12));
+		RadioAraba.setFont(new Font("Dialog", Font.BOLD, 12));
 		RadioAraba.setBounds(274, 151, 109, 23);
 		RadioAraba.addActionListener(this);
 		contentPane.add(RadioAraba);
 
 		JRadioButton RadioTodo = new JRadioButton("Mostrar todo");
-		RadioTodo.setFont(new Font("Dialog", Font.PLAIN, 12));
+		RadioTodo.setFont(new Font("Dialog", Font.BOLD, 12));
 		RadioTodo.setBounds(274, 73, 109, 23);
 		RadioTodo.addActionListener(this);
 		contentPane.add(RadioTodo);
@@ -129,7 +129,7 @@ public class ListaMunicipios extends JFrame implements ActionListener {
 		}
 
 		JButton BtnDetallesMunicipio = new JButton("Mas informacion");
-		BtnDetallesMunicipio.setFont(new Font("Dialog", Font.PLAIN, 12));
+		BtnDetallesMunicipio.setFont(new Font("Dialog", Font.BOLD, 12));
 		BtnDetallesMunicipio.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (ListMunicipios.getSelectedValue() != null) {
@@ -151,7 +151,7 @@ public class ListaMunicipios extends JFrame implements ActionListener {
 		contentPane.add(lblNewLabel);
 
 		JLabel lblNewLabel_1 = new JLabel("Buscar por provincias");
-		lblNewLabel_1.setFont(new Font("Dialog", Font.PLAIN, 12));
+		lblNewLabel_1.setFont(new Font("Dialog", Font.BOLD, 12));
 		lblNewLabel_1.setBounds(274, 52, 143, 14);
 		contentPane.add(lblNewLabel_1);
 
@@ -172,7 +172,7 @@ public class ListaMunicipios extends JFrame implements ActionListener {
 		contentPane.add(listFavoritosProvincia);
 		
 		JLabel lblFavoritosProvincia = new JLabel("Top 5 favoritos por provincia");
-		lblFavoritosProvincia.setFont(new Font("Dialog", Font.PLAIN, 12));
+		lblFavoritosProvincia.setFont(new Font("Dialog", Font.BOLD, 12));
 		lblFavoritosProvincia.setBounds(274, 203, 165, 14);
 		contentPane.add(lblFavoritosProvincia);
 	}
