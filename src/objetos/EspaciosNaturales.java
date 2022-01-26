@@ -17,6 +17,8 @@ public class EspaciosNaturales implements java.io.Serializable {
 	private String territorio;
 	private String marca;
 	private String naturaleza;
+	private String latitud;
+	private String longitud;
 	private Set galleries = new HashSet(0);
 	private Set favoritoses = new HashSet(0);
 
@@ -29,7 +31,7 @@ public class EspaciosNaturales implements java.io.Serializable {
 	}
 
 	public EspaciosNaturales(Municipio municipio, String nombre, String descripcion, String localidad,
-			String territorio, String marca, String naturaleza, Set galleries, Set favoritoses) {
+			String territorio, String marca, String naturaleza, String latitud, String longitud,Set galleries) {
 		this.municipio = municipio;
 		this.nombre = nombre;
 		this.descripcion = descripcion;
@@ -38,9 +40,10 @@ public class EspaciosNaturales implements java.io.Serializable {
 		this.marca = marca;
 		this.naturaleza = naturaleza;
 		this.galleries = galleries;
-		this.favoritoses = favoritoses;
+		this.latitud = latitud;
+		this.longitud = longitud;
 	}
-
+	
 	public Integer getId() {
 		return this.id;
 	}
@@ -103,6 +106,22 @@ public class EspaciosNaturales implements java.io.Serializable {
 
 	public void setNaturaleza(String naturaleza) {
 		this.naturaleza = naturaleza;
+	}
+	
+	public String getLatitud() {
+		return latitud;
+	}
+
+	public void setLatitud(String latitud) {
+		this.latitud = latitud;
+	}
+
+	public String getLongitud() {
+		return longitud;
+	}
+
+	public void setLongitud(String longitud) {
+		this.longitud = longitud;
 	}
 
 	public Set getGalleries() {

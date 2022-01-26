@@ -89,6 +89,7 @@ public class JsonReader {
 					des = des.replace("</strong>", "");
 					des = des.replace("<strong>", "");
 					des = des.replace("</p>", "");
+					des = des.replace("\"", "");
 					municipio.setDescripcion(des);
 					break;
 				case "locality":
@@ -152,6 +153,7 @@ public class JsonReader {
 					des = des.replace("</strong>", "");
 					des = des.replace("<strong>", "");
 					des = des.replace("</p>", "");
+					des = des.replace("\"", "");
 					espacio.setDescripcion(des);
 					break;
 				case "locality":
@@ -168,6 +170,12 @@ public class JsonReader {
 					break;
 				case "natureType":
 					espacio.setNaturaleza(value);
+					break;
+				case "latwgs84":
+					espacio.setLatitud(value);
+					break;
+				case "lonwgs84":
+					espacio.setLongitud(value);
 					break;
 				}
 
