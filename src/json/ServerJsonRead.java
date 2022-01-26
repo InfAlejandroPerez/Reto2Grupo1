@@ -83,6 +83,8 @@ public class ServerJsonRead {
 			case "quitarFavorito":
 				ControllerV2.setFavorito(iterKey, salidaRecive,2);
 				break;
+			case "municipio":
+				ControllerV2.getMunicipios(salidaRecive);
 			}
 			
 		}

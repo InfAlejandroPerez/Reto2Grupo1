@@ -382,8 +382,9 @@ public class ControllerV2 {
 					+ espacios.getDescripcion() + "'," + "'localidad': '" + espacios.getLocalidad() + "',"
 					+ "'territorio': '" + espacios.getTerritorio() + "'," + "'marca': '" + espacios.getMarca() + "',"
 					+ "'naturaleza': '" + espacios.getNaturaleza() + "'," + "'municipio': '"
-					+ espacios.getMunicipio().getNombre() + "', 'idmunicipio': '" + espacios.getMunicipio().getId()
-					+ "', 'id': '" + espacios.getId() + "'}]}";
+					+ espacios.getMunicipio().getNombre() + "', 'latitud': '" + espacios.getLatitud() + "'"
+					+ ",'longitud': '" + espacios.getLongitud() + "',"
+					+ "'id': '" + espacios.getId() + "'}]}";
 
 			sender(jsonEspacios, salidaRecive);
 
@@ -562,6 +563,34 @@ public class ControllerV2 {
 				loginSend(false, salidaRecive);
 			}
 
+		} catch (HibernateException e) {
+			System.out.println("Problem creating session factory");
+			e.printStackTrace();
+		}
+	}
+
+	public static void getMunicipios(ObjectOutputStream salidaRecive) {
+		try {
+			SessionFactory sessionFac = HibernateUtil.getSessionFactory();
+			Session session = sessionFac.openSession();
+			
+			String hql = "SELECT distinct territorio FROM Municipio";
+			Query q = session.createQuery(hql);
+			
+			List<String> items = q.list();
+			
+			String municipios = "";
+			
+			for(int i = 0; i < items.size(); i++) {
+				if(i == 0) {
+					municipios = items.get(i);
+				} else {
+					municipios = municipios + "," + items.get(i); 
+				}
+			}
+			
+			sender(municipios, salidaRecive);
+			
 		} catch (HibernateException e) {
 			System.out.println("Problem creating session factory");
 			e.printStackTrace();

@@ -90,6 +90,7 @@ public class JsonReader {
 					des = des.replace("<strong>", "");
 					des = des.replace("</p>", "");
 					des = des.replace("\"", "");
+					des = des.replace("'", "");
 					municipio.setDescripcion(des);
 					break;
 				case "locality":
@@ -105,7 +106,11 @@ public class JsonReader {
 					municipio.setLocalidad(locB);
 					break;
 				case "territory":
-					municipio.setTerritorio(value);
+					if(value.equals("Araba/Álava")) {
+						municipio.setTerritorio("Araba/Alava");
+					} else {
+						municipio.setTerritorio(value);
+					}
 					break;
 				}
 
@@ -154,6 +159,7 @@ public class JsonReader {
 					des = des.replace("<strong>", "");
 					des = des.replace("</p>", "");
 					des = des.replace("\"", "");
+					des = des.replace("'", "");
 					espacio.setDescripcion(des);
 					break;
 				case "locality":
