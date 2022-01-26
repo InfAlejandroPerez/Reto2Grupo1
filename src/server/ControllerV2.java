@@ -2,7 +2,6 @@ package server;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
-import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Iterator;
 import java.util.List;
@@ -15,12 +14,17 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
+import com.fasterxml.jackson.databind.ser.std.StdKeySerializers.Default;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
-import cipher.Cifrado;
 import hibernateUtil.HibernateUtil;
+
 import objetos.EspaciosNaturales;
 import objetos.Estacion;
+import objetos.Favoritos;
 import objetos.Gallery;
 import objetos.Municipio;
 import objetos.Users;
@@ -60,6 +64,7 @@ public class ControllerV2 {
 		} else {
 			loginSend(false, salida);
 		}
+		session.close();
 	}
 
 	private static void loginSend(boolean valid, ObjectOutputStream salida) {
@@ -101,7 +106,7 @@ public class ControllerV2 {
 			int usuarioInsertado = (int) session.save(user);
 
 			tx.commit();
-
+			session.close();
 			if (usuarioInsertado > 0) {
 				loginSend(true, salida);
 			} else {
@@ -154,7 +159,7 @@ public class ControllerV2 {
 					json = json + "," + items.get(i);
 				}
 			}
-
+			session.close();
 			sender(json, salidaRecive);
 
 		} catch (HibernateException e) {
@@ -162,9 +167,9 @@ public class ControllerV2 {
 			e.printStackTrace();
 		}
 	}
-	
-	
-	public static void listadosPorProvincia(Iterator<Entry<String, JsonElement>> iterKey, ObjectOutputStream salidaRecive) {
+
+	public static void listadosPorProvincia(Iterator<Entry<String, JsonElement>> iterKey,
+			ObjectOutputStream salidaRecive) {
 		String whereFilter = iterKey.next().getValue().getAsString();
 		try {
 			SessionFactory sessionFac = HibernateUtil.getSessionFactory();
@@ -172,9 +177,8 @@ public class ControllerV2 {
 
 			String hql = "SELECT nombre FROM Municipio WHERE territorio=:pronvicia";
 
-
 			Query q = session.createQuery(hql);
-			q.setString("pronvicia", whereFilter );
+			q.setString("pronvicia", whereFilter);
 
 			List<String> items = q.list();
 			String json = "";
@@ -186,7 +190,7 @@ public class ControllerV2 {
 					json = json + "," + items.get(i);
 				}
 			}
-
+			session.close();
 			sender(json, salidaRecive);
 
 		} catch (HibernateException e) {
@@ -194,27 +198,25 @@ public class ControllerV2 {
 			e.printStackTrace();
 		}
 	}
-	
-	
-	public static void listadosPorMunicipio(Iterator<Entry<String, JsonElement>> iterKey, ObjectOutputStream salidaRecive) {
-	
+
+	public static void listadosPorMunicipio(Iterator<Entry<String, JsonElement>> iterKey,
+			ObjectOutputStream salidaRecive) {
+
 		String whereFilter = iterKey.next().getValue().getAsString();
 		int opcion = iterKey.next().getValue().getAsInt();
-		
+
 		try {
 			SessionFactory sessionFac = HibernateUtil.getSessionFactory();
 			Session session = sessionFac.openSession();
-			String hql="";
-			if(opcion == 1 ) {
-				 hql = "SELECT nombre FROM Estacion WHERE idmunicipio = (SELECT id FROM Municipio WHERE nombre=:municipio )";		
-			}else {
-				 hql = "SELECT nombre FROM EspaciosNaturales WHERE idmunicipio = (SELECT id FROM Municipio WHERE nombre=:municipio )";
+			String hql = "";
+			if (opcion == 1) {
+				hql = "SELECT nombre FROM Estacion WHERE idmunicipio = (SELECT id FROM Municipio WHERE nombre=:municipio )";
+			} else {
+				hql = "SELECT nombre FROM EspaciosNaturales WHERE idmunicipio = (SELECT id FROM Municipio WHERE nombre=:municipio )";
 			}
-			
-
 
 			Query q = session.createQuery(hql);
-			q.setString("municipio", whereFilter );
+			q.setString("municipio", whereFilter);
 
 			List<String> items = q.list();
 			String json = "";
@@ -226,17 +228,15 @@ public class ControllerV2 {
 					json = json + "," + items.get(i);
 				}
 			}
-
+			session.close();
 			sender(json, salidaRecive);
 
 		} catch (HibernateException e) {
 			System.out.println("Problem creating session factory");
 			e.printStackTrace();
 		}
-		
+
 	}
-	
-	
 
 	private static void sender(String msg, ObjectOutputStream salida) {
 		try {
@@ -269,7 +269,7 @@ public class ControllerV2 {
 					names = names + "," + items.get(i);
 				}
 			}
-
+			session.close();
 			sender(names, salidaRecive);
 
 		} catch (HibernateException e) {
@@ -300,7 +300,7 @@ public class ControllerV2 {
 					imageString = imageString + "holaimagen" + (Base64.getEncoder().encodeToString(items.get(i)));
 				}
 			}
-
+			session.close();
 			sender(imageString, salidaRecive);
 
 		} catch (HibernateException e) {
@@ -382,37 +382,154 @@ public class ControllerV2 {
 					+ espacios.getDescripcion() + "'," + "'localidad': '" + espacios.getLocalidad() + "',"
 					+ "'territorio': '" + espacios.getTerritorio() + "'," + "'marca': '" + espacios.getMarca() + "',"
 					+ "'naturaleza': '" + espacios.getNaturaleza() + "'," + "'municipio': '"
-					+ espacios.getMunicipio().getNombre() + "'}]}";
+					+ espacios.getMunicipio().getNombre() + "', 'idmunicipio': '" + espacios.getMunicipio().getId()
+					+ "', 'id': '" + espacios.getId() + "'}]}";
 
 			sender(jsonEspacios, salidaRecive);
 
 			break;
 		case 2:
 			Estacion estacion = (Estacion) q.uniqueResult();
-			
+
 			String jsonEstacion = "{ 'jsonData': [{ " + "'name': '" + estacion.getNombre() + "'," + "'provincia': '"
 					+ estacion.getProvincia() + "'," + "'direccion': '" + estacion.getDireccion() + "',"
-					+ "'latitud': '" + estacion.getLatitud() + "'," + "'municipio': '" + estacion.getMunicipio().getNombre() + "',"   + "'longitud': '" + estacion.getLongitud() + "'}]}";
+					+ "'latitud': '" + estacion.getLatitud() + "'," + "'municipio': '"
+					+ estacion.getMunicipio().getNombre() + "'," + "'longitud': '" + estacion.getLongitud() + "'}]}";
 
 			sender(jsonEstacion, salidaRecive);
 			break;
-		} 
+		}
+		session.close();
+
+	}
+
+	public static void esFavorito(Iterator<Entry<String, JsonElement>> iter, ObjectOutputStream salidaRecive) {
+
+		String idEspacio = iter.next().getValue().getAsString();
+		String idUser = iter.next().getValue().getAsString();
+		String hql = "FROM Favoritos WHERE idUser= :idUser AND idEspacioNatural= :idEspacio ";
+
+		SessionFactory sessionFac = HibernateUtil.getSessionFactory();
+		Session session = sessionFac.openSession();
+
+		Query q = session.createQuery(hql);
+		q.setString("idUser", idUser);
+		q.setString("idEspacio", idEspacio);
+
+		Favoritos favorito = (Favoritos) q.uniqueResult();
+		session.close();
+
+		boolean resultado;
+
+		if (null != favorito) {
+			resultado = true;
+		} else {
+			resultado = false;
+		}
+
+		String jsonEsFvorito = "{ 'jsonData': [{ 'resultado': " + resultado + "}]}";
+
+		sender(jsonEsFvorito, salidaRecive);
+
+	}
+
+	public static void setFavorito(Iterator<Entry<String, JsonElement>> iter, ObjectOutputStream salidaRecive,
+			int opcion) {
+
+		boolean resultado = false;
+
+		int idEspacio = iter.next().getValue().getAsInt();
+		int idUser = iter.next().getValue().getAsInt();
+		int idMunicipio = iter.next().getValue().getAsInt();
+
+		SessionFactory sessionFac = HibernateUtil.getSessionFactory();
+		Session session = sessionFac.openSession();
+		Transaction tx = session.beginTransaction();
+
+		Users user = new Users();
+		Favoritos favorito = new Favoritos();
+		EspaciosNaturales espacN = new EspaciosNaturales();
+		Municipio municipio = new Municipio();
+		user.setIdUser(idUser);
+		favorito.setUsers(user);
+
+		espacN.setId(idEspacio);
+		favorito.setEspaciosNaturales(espacN);
+
+		municipio.setId(idMunicipio);
+		favorito.setMunicipio(municipio);
+
+		switch (opcion) {
+		case 1: {
+
+			try {
+
+				int favoritoInsertado = (int) session.save(favorito);
+
+				tx.commit();
+				session.close();
+
+				if (favoritoInsertado > 0) {
+					resultado = true;
+				} else {
+					resultado = false;
+				}
+
+			} catch (HibernateException e) {
+				System.out.println("Problem creating session factory");
+				e.printStackTrace();
+			}
+
+			break;
+
+		}
+		case 2: {
+
+			try {
+				
+				String hql = "DELETE FROM Favoritos WHERE idUser= :idUser AND idEspacioNatural= :idEspacioNatural ";
+				Query query = session.createQuery(hql);
+				
+				query.setParameter("idUser", idUser);
+				query.setParameter("idEspacioNatural", idEspacio);
+				
+				int rowCount = query.executeUpdate();
+				
+				tx.commit();
+				session.close();
+
+				resultado = false;
+
+			} catch (HibernateException e) {
+				System.out.println("Problem creating session factory");
+				e.printStackTrace();
+			}
+
+			break;
+		}
+		default:
+			throw new IllegalArgumentException("Unexpected value: " + opcion);
+		}
+
+		String setFavorito = "{ 'jsonData': [{ 'resultado': " + resultado + "}]}";
+
+		sender(setFavorito, salidaRecive);
 
 	}
 
 	public static void savePhoto(Iterator<Entry<String, JsonElement>> iterKey,
 			Iterator<Entry<String, JsonElement>> iterValue, ObjectOutputStream salidaRecive) {
-		
+
 		try {
-			
+
 			byte[] image = null;
 			String espacio = "";
-			
-			while(iterKey.hasNext()) {
+
+			while (iterKey.hasNext()) {
 				String key = iterKey.next().getKey().toString();
 				String value = iterValue.next().getValue().getAsString();
-				
-				switch(key) {
+
+				switch (key) {
 				case "image":
 					image = Base64.getDecoder().decode(value);
 					break;
@@ -421,31 +538,30 @@ public class ControllerV2 {
 					break;
 				}
 			}
-			
+
 			SessionFactory sessionFac = HibernateUtil.getSessionFactory();
 			Session session = sessionFac.openSession();
 			Transaction tx = session.beginTransaction();
-			
+
 			String hql = "FROM EspaciosNaturales WHERE nombre = :nombres";
 			Query q = session.createQuery(hql);
 			q.setString("nombres", espacio);
 			EspaciosNaturales espacios = (EspaciosNaturales) q.uniqueResult();
-			
+
 			Gallery gallery = new Gallery();
 			gallery.setImage(image);
 			gallery.setEspaciosNaturales(espacios);
-			
+
 			int foto = (int) session.save(gallery);
-			
+
 			tx.commit();
-			
+			session.close();
 			if (foto > 0) {
 				loginSend(true, salidaRecive);
 			} else {
 				loginSend(false, salidaRecive);
 			}
-			
-			
+
 		} catch (HibernateException e) {
 			System.out.println("Problem creating session factory");
 			e.printStackTrace();

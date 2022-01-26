@@ -11,6 +11,7 @@
 		<sql-type jdbc-type="VARCHAR" hibernate-type="string"></sql-type>
 		<sql-type jdbc-type="VARCHAR" hibernate-type="string"></sql-type>
 		<sql-type jdbc-type="VARCHAR" hibernate-type="string"></sql-type>
+		<sql-type jdbc-type="VARCHAR" hibernate-type="string"></sql-type>
 	</type-mapping>
 	<table-filter match-catalog="euskalmet"
 		match-name="calidad_aire_diario" />
@@ -21,62 +22,69 @@
 	<table-filter match-catalog="euskalmet"
 		match-name="espacios_naturales" />
 	<table-filter match-catalog="euskalmet" match-name="estacion" />
+	<table-filter match-catalog="euskalmet" match-name="favoritos" />
 	<table-filter match-catalog="euskalmet" match-name="gallery" />
 	<table-filter match-catalog="euskalmet" match-name="municipio" />
 	<table-filter match-catalog="euskalmet" match-name="users" />
 	<table catalog="euskalmet" name="calidad_aire_diario">
 		<column name="id"></column>
-		<column name="fecha"></column>
-		<column name="PM25gm3"></column>
-		<column name="NOgm3"></column>
-		<column name="idEstacion"></column>
 		<column name="NOXgm3"></column>
-		<column name="PM10gm3"></column>
+		<column name="fecha"></column>
+		<column name="NOgm3"></column>
 		<column name="NO2gm3"></column>
+		<column name="PM25gm3"></column>
+		<column name="PM10gm3"></column>
+		<column name="idEstacion"></column>
 	</table>
 	<table catalog="euskalmet" name="calidad_aire_horario">
 		<column name="id"></column>
 		<column name="PM25gm3"></column>
-		<column name="COmgm3"></column>
-		<column name="NOXgm3"></column>
 		<column name="PM10gm3"></column>
-		<column name="SO2gm3"></column>
-		<column name="fecha"></column>
-		<column name="hora"></column>
-		<column name="NOgm3"></column>
-		<column name="NO2gm3"></column>
 		<column name="idEstacion"></column>
+		<column name="hora"></column>
+		<column name="SO2gm3"></column>
+		<column name="COmgm3"></column>
+		<column name="NO2gm3"></column>
+		<column name="NOXgm3"></column>
+		<column name="fecha"></column>
+		<column name="NOgm3"></column>
 	</table>
 	<table catalog="euskalmet" name="calidad_aire_indice">
 		<column name="id"></column>
-		<column name="SO2ICA"></column>
 		<column name="hora"></column>
 		<column name="NOXgm3"></column>
 		<column name="idEstacion"></column>
+		<column name="NO2ICA"></column>
+		<column name="SO2ICA"></column>
 		<column name="fecha"></column>
 		<column name="PM10ICA"></column>
-		<column name="ICAEstacion"></column>
 		<column name="PM25ICA"></column>
-		<column name="NO2ICA"></column>
+		<column name="ICAEstacion"></column>
 	</table>
 	<table catalog="euskalmet" name="espacios_naturales">
 		<column name="id"></column>
-		<column name="territorio"></column>
-		<column name="marca"></column>
-		<column name="localidad"></column>
 		<column name="idmunicipio"></column>
+		<column name="localidad"></column>
+		<column name="marca"></column>
 		<column name="naturaleza"></column>
-		<column name="nombre"></column>
 		<column name="descripcion"></column>
+		<column name="nombre"></column>
+		<column name="territorio"></column>
 	</table>
 	<table catalog="euskalmet" name="estacion">
 		<column name="id"></column>
-		<column name="latitud"></column>
 		<column name="nombre"></column>
-		<column name="provincia"></column>
-		<column name="idmunicipio"></column>
 		<column name="longitud"></column>
+		<column name="idmunicipio"></column>
+		<column name="provincia"></column>
 		<column name="direccion"></column>
+		<column name="latitud"></column>
+	</table>
+	<table catalog="euskalmet" name="favoritos">
+		<column name="id"></column>
+		<column name="idEspacioNatural"></column>
+		<column name="idUser"></column>
+		<column name="idMunicipio"></column>
 	</table>
 	<table catalog="euskalmet" name="gallery">
 		<column name="id"></column>
@@ -85,9 +93,9 @@
 	</table>
 	<table catalog="euskalmet" name="municipio">
 		<column name="id"></column>
+		<column name="nombre"></column>
 		<column name="descripcion"></column>
 		<column name="territorio"></column>
-		<column name="nombre"></column>
 		<column name="localidad"></column>
 	</table>
 	<table catalog="euskalmet" name="users">

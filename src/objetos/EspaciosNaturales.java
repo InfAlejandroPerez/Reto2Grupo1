@@ -1,5 +1,5 @@
 package objetos;
-// Generated 22 ene. 2022 21:44:56 by Hibernate Tools 5.5.7.Final
+// Generated 25 ene. 2022 17:35:55 by Hibernate Tools 5.5.7.Final
 
 import java.util.HashSet;
 import java.util.Set;
@@ -20,6 +20,7 @@ public class EspaciosNaturales implements java.io.Serializable {
 	private String latitud;
 	private String longitud;
 	private Set galleries = new HashSet(0);
+	private Set favoritoses = new HashSet(0);
 
 	public EspaciosNaturales() {
 	}
@@ -129,6 +130,14 @@ public class EspaciosNaturales implements java.io.Serializable {
 
 	public void setGalleries(Set galleries) {
 		this.galleries = galleries;
+	}
+
+	public Set getFavoritoses() {
+		return this.favoritoses;
+	}
+
+	public void setFavoritoses(Set favoritoses) {
+		this.favoritoses = favoritoses;
 	}
 
 }

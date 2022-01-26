@@ -1,7 +1,5 @@
 package vista;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -18,45 +16,35 @@ import cliente.Cliente;
 
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.Iterator;
 import java.util.Map;
 import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
-import javax.swing.JList;
-
 import java.awt.Font;
 import javax.swing.SwingConstants;
-import java.awt.Component;
-import java.awt.Desktop;
-
-import javax.swing.Box;
 import javax.swing.JSeparator;
-import javax.swing.JTextField;
 import javax.swing.JTextPane;
 
 public class DetallesEspacioNatural extends JFrame {
 
 	private JPanel contentPane;
 
-	private String latitud = "";
-	private String longitud = "";
 	private JLabel lblInfoDescripcion;
 	private JLabel lblInfoMarca;
 	private JLabel lblInfoNombre;
-	private String lugarSelecionado;
-	private String opcion;
 	private JLabel lblInfoNaturaleza;
-	JTextPane textPane;
+	private JTextPane textPane;
+	private String idMunicipio;
+	private String idEspacioNatural;
+	private String idUser;
+	private JButton btnFavorito;
+	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					//DetallesEstacion frame = new DetallesEstacion();
-					//frame.setVisible(true);
+					// DetallesEstacion frame = new DetallesEstacion();
+					// frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -64,20 +52,8 @@ public class DetallesEspacioNatural extends JFrame {
 		});
 	}
 
-	/**
-	 * Create the frame.
-	 * @throws URISyntaxException 
-	 */
-
-//	public DetallesEstacion(String lugarSelecionado, String opcion) {
-//		this.lugarSelecionado = lugarSelecionado;
-//		this.opcion = opcion;
-//		
-//		DetallesEstacion frame = new DetallesEstacion();
-//		frame.setVisible(true);
-//	}
-
-	public DetallesEspacioNatural(String lugarSelecionado, String opcion, String municipio)  {
+	public DetallesEspacioNatural(String lugarSelecionado, String opcion, String municipio) {
+		setResizable(false);
 
 		setTitle("Detalles estacion");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -97,7 +73,7 @@ public class DetallesEspacioNatural extends JFrame {
 		JLabel lblNombre = new JLabel("Nombre");
 		lblNombre.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNombre.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblNombre.setBounds(39, 87, 136, 40);
+		lblNombre.setBounds(39, 87, 103, 40);
 		getContentPane().add(lblNombre);
 
 		JSeparator separator = new JSeparator();
@@ -107,7 +83,7 @@ public class DetallesEspacioNatural extends JFrame {
 		JLabel lblProvincia = new JLabel("Descripción");
 		lblProvincia.setHorizontalAlignment(SwingConstants.CENTER);
 		lblProvincia.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblProvincia.setBounds(39, 171, 136, 40);
+		lblProvincia.setBounds(39, 171, 103, 40);
 		getContentPane().add(lblProvincia);
 
 		JSeparator separator_1 = new JSeparator();
@@ -117,20 +93,18 @@ public class DetallesEspacioNatural extends JFrame {
 		JLabel lblDireccion = new JLabel("Marca");
 		lblDireccion.setHorizontalAlignment(SwingConstants.CENTER);
 		lblDireccion.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblDireccion.setBounds(39, 278, 136, 29);
+		lblDireccion.setBounds(39, 278, 89, 29);
 		getContentPane().add(lblDireccion);
 
 		JSeparator separator_1_1 = new JSeparator();
-		separator_1_1.setBounds(39, 318, 459, 7);
+		separator_1_1.setBounds(59, 318, 459, 7);
 		getContentPane().add(separator_1_1);
 
 		JLabel lblMaps = new JLabel("Naturaleza");
 		lblMaps.setHorizontalAlignment(SwingConstants.CENTER);
 		lblMaps.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblMaps.setBounds(39, 336, 136, 23);
+		lblMaps.setBounds(39, 336, 114, 23);
 		getContentPane().add(lblMaps);
-
-		
 
 		lblInfoDescripcion = new JLabel();
 		lblInfoDescripcion.setBounds(241, 394, 159, 29);
@@ -148,29 +122,50 @@ public class DetallesEspacioNatural extends JFrame {
 		contentPane.add(BtnAtrasToDetalles);
 
 		lblInfoMarca = new JLabel();
-		lblInfoMarca.setBounds(185, 269, 294, 38);
+		lblInfoMarca.setBounds(162, 278, 294, 29);
 		contentPane.add(lblInfoMarca);
 
 		lblInfoNombre = new JLabel();
-		lblInfoNombre.setBounds(200, 87, 294, 38);
+		lblInfoNombre.setBounds(152, 87, 294, 38);
 		contentPane.add(lblInfoNombre);
-		
+
 		lblInfoNaturaleza = new JLabel();
-		lblInfoNaturaleza.setBounds(185, 337, 213, 46);
+		lblInfoNaturaleza.setBounds(174, 331, 213, 38);
 		contentPane.add(lblInfoNaturaleza);
-		
+
 		textPane = new JTextPane();
-//		contentPane.add(textPane);
 		textPane.setEditable(false);
 		textPane.setBounds(176, 152, 331, 105);
-		
+
 		JScrollPane ScrollEstaciones = new JScrollPane();
-		ScrollEstaciones.setSize(333, 107);
-		ScrollEstaciones.setLocation(185, 138);
+		ScrollEstaciones.setSize(366, 107);
+		ScrollEstaciones.setLocation(152, 150);
 		ScrollEstaciones.setViewportView(textPane);
 		contentPane.add(ScrollEstaciones);
-		
-		
+
+		btnFavorito = new JButton();
+		btnFavorito.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				if (btnFavorito.getText() == "Add Favorito") {
+
+					setFavorito(1);
+
+					btnFavorito.setText("Quitar Favorito");
+				} else {
+					setFavorito(2);
+					btnFavorito.setText("Add Favorito");
+				}
+
+			}
+
+		});
+		btnFavorito.setBounds(394, 70, 124, 40);
+		contentPane.add(btnFavorito);
+
+		/**
+		 ** Cogemos los detalles del Espacio Natural
+		 */
 
 		try {
 			String json = Cliente.getDetalles(lugarSelecionado, opcion);
@@ -193,6 +188,7 @@ public class DetallesEspacioNatural extends JFrame {
 					switch (key) {
 					case "name":
 						lblInfoNombre.setText(value);
+						System.out.println(json);
 						break;
 					case "marca":
 						lblInfoMarca.setText(value);
@@ -202,6 +198,12 @@ public class DetallesEspacioNatural extends JFrame {
 						break;
 					case "naturaleza":
 						lblInfoNaturaleza.setText(value);
+						break;
+					case "idmunicipio":
+						idMunicipio = value;
+						break;
+					case "id":
+						idEspacioNatural = value;
 						break;
 
 					}
@@ -213,8 +215,94 @@ public class DetallesEspacioNatural extends JFrame {
 
 			e.printStackTrace();
 		}
-		
-		
+
+		/***
+		 * miramos si es Favoritos o no
+		 * 
+		 */
+
+		try {
+			String json = Cliente.getFavorito(idEspacioNatural, "1");
+
+			JsonObject jsonObject = (JsonObject) (new JsonParser()).parse(json);
+
+			JsonArray array = (JsonArray) jsonObject.get("jsonData");
+			Iterator<JsonElement> iter = array.iterator();
+
+			while (iter.hasNext()) {
+				JsonElement entradaJson = iter.next();
+				JsonObject objeto = entradaJson.getAsJsonObject();
+				Iterator<Map.Entry<String, JsonElement>> iterKey = objeto.entrySet().iterator();
+				Iterator<Map.Entry<String, JsonElement>> iterValue = objeto.entrySet().iterator();
+
+				while (iterKey.hasNext()) {
+					String key = iterKey.next().getKey().toString();
+					String value = iterValue.next().getValue().getAsString();
+					System.out.println(json);
+					switch (key) {
+					case "resultado":
+						if (Boolean.parseBoolean(value) == true) {
+							btnFavorito.setText("Quitar Favorito");
+						} else if (Boolean.parseBoolean(value) == false) {
+							btnFavorito.setText("Add Favorito");
+						}
+						break;
+
+					}
+				}
+
+			}
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+		}
 
 	}
+
+	private void setFavorito(int opcion) {
+
+		try {
+			
+			String json = Cliente.setFavorito(idEspacioNatural, idMunicipio, "1", opcion);
+			System.out.println(json);
+			JsonObject jsonObject = (JsonObject) (new JsonParser()).parse(json);
+
+			JsonArray array = (JsonArray) jsonObject.get("jsonData");
+			Iterator<JsonElement> iter = array.iterator();
+
+			while (iter.hasNext()) {
+				JsonElement entradaJson = iter.next();
+				JsonObject objeto = entradaJson.getAsJsonObject();
+				Iterator<Map.Entry<String, JsonElement>> iterKey = objeto.entrySet().iterator();
+				Iterator<Map.Entry<String, JsonElement>> iterValue = objeto.entrySet().iterator();
+
+				while (iterKey.hasNext()) {
+					String key = iterKey.next().getKey().toString();
+					String value = iterValue.next().getValue().getAsString();
+					System.out.println(json);
+					
+					switch (key) {
+					
+					case "resultado":
+						if (Boolean.parseBoolean(value) == true) {
+							btnFavorito.setText("Quitar Favorito");
+						} else if (Boolean.parseBoolean(value) == false) {
+							btnFavorito.setText("Add Favorito");
+						}
+						
+						break;
+					}
+				}
+
+			}
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+		}
+
+	}
+	
+
 }

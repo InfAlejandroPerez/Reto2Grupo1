@@ -1,6 +1,5 @@
 package vista;
 
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -11,7 +10,6 @@ import javax.swing.border.EmptyBorder;
 import cliente.Cliente;
 import objetos.Municipio;
 
-import java.awt.List;
 import java.util.ArrayList;
 
 import javax.swing.JList;
@@ -23,7 +21,6 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
-import javax.swing.JScrollBar;
 import javax.swing.JRadioButton;
 import java.awt.Font;
 
@@ -34,7 +31,6 @@ public class ListaMunicipios extends JFrame implements ActionListener {
 	private JList<String> ListMunicipios;
 	ArrayList<Municipio> Listamunicipios = new ArrayList<Municipio>();
 	private JLabel lblNewLabel;
-	private JButton BtnBuscar;
 	DefaultListModel<String> modelListaMun;
 	private JRadioButton RadioBizkaia;
 	private JRadioButton RadioGipuzkoa;
@@ -60,6 +56,7 @@ public class ListaMunicipios extends JFrame implements ActionListener {
 	 * Create the frame.
 	 */
 	public ListaMunicipios() {
+		setResizable(false);
 		setTitle("Lista de municipios");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 400);
@@ -84,7 +81,7 @@ public class ListaMunicipios extends JFrame implements ActionListener {
 		RadioGipuzkoa.setBounds(274, 125, 109, 23);
 		contentPane.add(RadioGipuzkoa);
 
-		RadioAraba = new JRadioButton("Araba");
+		RadioAraba = new JRadioButton("Araba/Álava");
 		RadioAraba.setBounds(274, 151, 109, 23);
 		RadioAraba.addActionListener(this);
 		contentPane.add(RadioAraba);
@@ -133,7 +130,6 @@ public class ListaMunicipios extends JFrame implements ActionListener {
 				if (ListMunicipios.getSelectedValue() != null) {
 					String str = ListMunicipios.getSelectedValue().toString();
 					DetallesMunicipio detallesMun = new DetallesMunicipio(str);// obj created for class Second()
-//					detallesMun.NombreMun(str); // Execute the method my_update to pass str
 					detallesMun.setVisible(true); // Open the Second.java window
 					dispose(); // Close the First.java window
 				} else {
@@ -148,15 +144,6 @@ public class ListaMunicipios extends JFrame implements ActionListener {
 		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lblNewLabel.setBounds(121, 11, 89, 28);
 		contentPane.add(lblNewLabel);
-
-//		BtnBuscar = new JButton("Buscar");
-//		BtnBuscar.addActionListener(new ActionListener() {
-//			public void actionPerformed(ActionEvent e) {
-//
-//			}
-//		});
-//		BtnBuscar.setBounds(274, 10, 89, 23);
-//		//contentPane.add(BtnBuscar);
 
 		JLabel lblNewLabel_1 = new JLabel("Buscar por provincias");
 		lblNewLabel_1.setBounds(274, 52, 143, 14);
@@ -182,12 +169,12 @@ public class ListaMunicipios extends JFrame implements ActionListener {
 		String[] item = null;
 		try {
 
-			if(provincia.equals("Mostrar todo")) {
+			if (provincia.equals("Mostrar todo")) {
 				item = Cliente.getArrayListas(Cliente.MUNICIPIO);
-			}else {
+			} else {
 				item = Cliente.getArrayListasMunicipiosPorProvincia(provincia);
 			}
-			
+
 			modelListaMun.clear();
 			int i = 0;
 			for (String st : item) {

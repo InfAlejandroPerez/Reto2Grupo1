@@ -1,7 +1,5 @@
 package vista;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -17,9 +15,6 @@ import cliente.Cliente;
 
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Iterator;
 import java.util.Map;
@@ -27,12 +22,9 @@ import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.SwingConstants;
-import java.awt.Component;
 import java.awt.Desktop;
 
-import javax.swing.Box;
 import javax.swing.JSeparator;
-import javax.swing.JTextField;
 
 public class DetallesEstacion extends JFrame {
 
@@ -43,16 +35,13 @@ public class DetallesEstacion extends JFrame {
 	private JLabel lblInfoProvincia;
 	private JLabel lblInfoDireccion;
 	private JLabel lblInfoNombre;
-	private String lugarSelecionado;
-	private String opcion;
 
-	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					//DetallesEstacion frame = new DetallesEstacion();
-					//frame.setVisible(true);
+					// DetallesEstacion frame = new DetallesEstacion();
+					// frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -60,20 +49,8 @@ public class DetallesEstacion extends JFrame {
 		});
 	}
 
-	/**
-	 * Create the frame.
-	 * @throws URISyntaxException 
-	 */
-
-//	public DetallesEstacion(String lugarSelecionado, String opcion) {
-//		this.lugarSelecionado = lugarSelecionado;
-//		this.opcion = opcion;
-//		
-//		DetallesEstacion frame = new DetallesEstacion();
-//		frame.setVisible(true);
-//	}
-
-	public DetallesEstacion(String lugarSelecionado, String opcion, String  municipio)  {
+	public DetallesEstacion(String lugarSelecionado, String opcion, String municipio) {
+		setResizable(false);
 
 		setTitle("Detalles estacion");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -126,8 +103,6 @@ public class DetallesEstacion extends JFrame {
 		lblMaps.setBounds(49, 306, 136, 40);
 		getContentPane().add(lblMaps);
 
-		
-
 		lblInfoProvincia = new JLabel();
 		lblInfoProvincia.setBounds(211, 171, 294, 38);
 		getContentPane().add(lblInfoProvincia);
@@ -150,10 +125,7 @@ public class DetallesEstacion extends JFrame {
 		lblInfoNombre = new JLabel();
 		lblInfoNombre.setBounds(211, 105, 294, 38);
 		contentPane.add(lblInfoNombre);
-		
-		
-	 
-	
+
 		try {
 			String json = Cliente.getDetalles(lugarSelecionado, opcion);
 
@@ -186,7 +158,8 @@ public class DetallesEstacion extends JFrame {
 						latitud = value.replace(',', '.');
 						break;
 					case "longitud":
-						longitud = value.replace(',', '.');;
+						longitud = value.replace(',', '.');
+						;
 						break;
 
 					}
@@ -198,26 +171,24 @@ public class DetallesEstacion extends JFrame {
 
 			e.printStackTrace();
 		}
-		
+
 		JButton btnNewButton = new JButton("Abrir mapa");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+
 				String enlaceGoogleMaps = "https://google.com/maps?q=" + latitud + "," + longitud;
 				System.out.println(enlaceGoogleMaps);
 				try {
 					Desktop.getDesktop().browse(new URL(enlaceGoogleMaps).toURI());
-					
+
 				} catch (Exception e2) {
-					// TODO: handle exception
+					e2.printStackTrace();
 				}
 			}
 		});
 		btnNewButton.setFont(new Font("Tahoma", Font.BOLD, 14));
 		btnNewButton.setBounds(231, 306, 136, 34);
 		contentPane.add(btnNewButton);
-		
-		
 
 	}
 }

@@ -18,7 +18,7 @@ public class ServerJsonRead {
 		String jsonString = cipher.Cifrado.decode(jsonRecive);
 	    System.out.println(jsonString);
 
-		System.out.println(jsonRecive);
+		System.out.println("");
 		
 		JsonObject json = (JsonObject) (new JsonParser()).parse(jsonString);
 		
@@ -73,6 +73,15 @@ public class ServerJsonRead {
 				break;
 			case "savephoto":
 				ControllerV2.savePhoto(iterKey, iterValue,salidaRecive);
+				break;
+			case "es_favorito":
+				ControllerV2.esFavorito(iterKey, salidaRecive);
+				break;
+			case "addFavorito":
+				ControllerV2.setFavorito(iterKey, salidaRecive,1);
+				break;	
+			case "quitarFavorito":
+				ControllerV2.setFavorito(iterKey, salidaRecive,2);
 				break;
 			}
 			
