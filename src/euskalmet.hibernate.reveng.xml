@@ -12,95 +12,108 @@
 		<sql-type jdbc-type="VARCHAR" hibernate-type="string"></sql-type>
 		<sql-type jdbc-type="VARCHAR" hibernate-type="string"></sql-type>
 		<sql-type jdbc-type="VARCHAR" hibernate-type="string"></sql-type>
+		<sql-type jdbc-type="VARCHAR" hibernate-type="string"></sql-type>
 	</type-mapping>
-	<table-filter match-catalog="euskalmet"
-		match-name="calidad_aire_diario" />
-	<table-filter match-catalog="euskalmet"
-		match-name="calidad_aire_horario" />
-	<table-filter match-catalog="euskalmet"
-		match-name="calidad_aire_indice" />
-	<table-filter match-catalog="euskalmet"
-		match-name="espacios_naturales" />
-	<table-filter match-catalog="euskalmet" match-name="estacion" />
-	<table-filter match-catalog="euskalmet" match-name="favoritos" />
-	<table-filter match-catalog="euskalmet" match-name="gallery" />
-	<table-filter match-catalog="euskalmet" match-name="municipio" />
-	<table-filter match-catalog="euskalmet" match-name="users" />
+	<table-filter match-name=".*"></table-filter>
+	<table-filter match-name="calidad_aire_diario"
+		match-catalog="euskalmet">
+	</table-filter>
+	<table-filter match-name="calidad_aire_horario"
+		match-catalog="euskalmet">
+	</table-filter>
+	<table-filter match-name="calidad_aire_indice"
+		match-catalog="euskalmet">
+	</table-filter>
+	<table-filter match-name="espacios_naturales"
+		match-catalog="euskalmet">
+	</table-filter>
+	<table-filter match-name="estacion" match-catalog="euskalmet"></table-filter>
+	<table-filter match-name="favoritos" match-catalog="euskalmet"></table-filter>
+	<table-filter match-name="gallery" match-catalog="euskalmet"></table-filter>
+	<table-filter match-name="hash" match-catalog="euskalmet"></table-filter>
+	<table-filter match-name="municipio" match-catalog="euskalmet"></table-filter>
+	<table-filter match-name="users" match-catalog="euskalmet"></table-filter>
 	<table catalog="euskalmet" name="calidad_aire_diario">
 		<column name="id"></column>
-		<column name="NOXgm3"></column>
-		<column name="fecha"></column>
-		<column name="NOgm3"></column>
-		<column name="NO2gm3"></column>
-		<column name="PM25gm3"></column>
 		<column name="PM10gm3"></column>
+		<column name="PM25gm3"></column>
+		<column name="fecha"></column>
+		<column name="NO2gm3"></column>
 		<column name="idEstacion"></column>
+		<column name="NOgm3"></column>
+		<column name="NOXgm3"></column>
 	</table>
 	<table catalog="euskalmet" name="calidad_aire_horario">
 		<column name="id"></column>
-		<column name="PM25gm3"></column>
-		<column name="PM10gm3"></column>
-		<column name="idEstacion"></column>
 		<column name="hora"></column>
-		<column name="SO2gm3"></column>
-		<column name="COmgm3"></column>
-		<column name="NO2gm3"></column>
 		<column name="NOXgm3"></column>
+		<column name="SO2gm3"></column>
+		<column name="NO2gm3"></column>
+		<column name="COmgm3"></column>
 		<column name="fecha"></column>
 		<column name="NOgm3"></column>
+		<column name="idEstacion"></column>
+		<column name="PM25gm3"></column>
+		<column name="PM10gm3"></column>
 	</table>
 	<table catalog="euskalmet" name="calidad_aire_indice">
 		<column name="id"></column>
 		<column name="hora"></column>
-		<column name="NOXgm3"></column>
+		<column name="ICAEstacion"></column>
 		<column name="idEstacion"></column>
-		<column name="NO2ICA"></column>
 		<column name="SO2ICA"></column>
-		<column name="fecha"></column>
 		<column name="PM10ICA"></column>
 		<column name="PM25ICA"></column>
-		<column name="ICAEstacion"></column>
+		<column name="fecha"></column>
+		<column name="NOXgm3"></column>
+		<column name="NO2ICA"></column>
 	</table>
 	<table catalog="euskalmet" name="espacios_naturales">
 		<column name="id"></column>
-		<column name="idmunicipio"></column>
-		<column name="localidad"></column>
 		<column name="marca"></column>
-		<column name="naturaleza"></column>
-		<column name="descripcion"></column>
 		<column name="nombre"></column>
+		<column name="descripcion"></column>
+		<column name="localidad"></column>
 		<column name="territorio"></column>
+		<column name="latitud"></column>
+		<column name="naturaleza"></column>
+		<column name="longitud"></column>
+		<column name="idmunicipio"></column>
 	</table>
 	<table catalog="euskalmet" name="estacion">
 		<column name="id"></column>
 		<column name="nombre"></column>
-		<column name="longitud"></column>
-		<column name="idmunicipio"></column>
 		<column name="provincia"></column>
-		<column name="direccion"></column>
+		<column name="idmunicipio"></column>
 		<column name="latitud"></column>
+		<column name="longitud"></column>
+		<column name="direccion"></column>
 	</table>
 	<table catalog="euskalmet" name="favoritos">
 		<column name="id"></column>
-		<column name="idEspacioNatural"></column>
-		<column name="idUser"></column>
 		<column name="idMunicipio"></column>
+		<column name="idUser"></column>
+		<column name="idEspacioNatural"></column>
 	</table>
 	<table catalog="euskalmet" name="gallery">
 		<column name="id"></column>
 		<column name="image"></column>
 		<column name="idEspacio"></column>
 	</table>
+	<table catalog="euskalmet" name="hash">
+		<column name="id"></column>
+		<column name="hash"></column>
+	</table>
 	<table catalog="euskalmet" name="municipio">
 		<column name="id"></column>
-		<column name="nombre"></column>
-		<column name="descripcion"></column>
 		<column name="territorio"></column>
+		<column name="descripcion"></column>
 		<column name="localidad"></column>
+		<column name="nombre"></column>
 	</table>
 	<table catalog="euskalmet" name="users">
 		<column name="idUser"></column>
-		<column name="userName"></column>
 		<column name="password"></column>
+		<column name="userName"></column>
 	</table>
 </hibernate-reverse-engineering>
