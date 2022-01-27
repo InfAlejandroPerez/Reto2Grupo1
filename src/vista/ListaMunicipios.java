@@ -52,6 +52,11 @@ public class ListaMunicipios extends JFrame implements ActionListener {
 	 * Create the frame.
 	 */
 	public ListaMunicipios() {
+		ListaMunicipios lista = new ListaMunicipios("");
+		lista.setVisible(true);
+	}
+	
+	public ListaMunicipios(String idUser) {
 		setResizable(false);
 		setTitle("Lista de municipios");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

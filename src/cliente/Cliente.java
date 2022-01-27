@@ -125,7 +125,7 @@ public class Cliente {
 
 				if (response.equals("true")) {
 	
-					ListaMunicipios listaMun = new ListaMunicipios();
+					ListaMunicipios listaMun = new ListaMunicipios(String idUser);
 					listaMun.setVisible(true);
 				} else if (response.equals("false")) {
 					JOptionPane.showMessageDialog(null, "Nombre de usuario o contrase�a incorrectos");

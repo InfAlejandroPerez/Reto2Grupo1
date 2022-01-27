@@ -9,6 +9,7 @@ public class Favoritos implements java.io.Serializable {
 	private Integer id;
 	private EspaciosNaturales espaciosNaturales;
 	private Municipio municipio;
+	
 	private Users users;
 
 	public Favoritos() {

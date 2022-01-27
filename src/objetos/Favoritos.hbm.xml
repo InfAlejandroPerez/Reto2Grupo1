@@ -16,4 +16,5 @@
             <column name="idUser"/>
         </many-to-one>
     </class>
+    
 </hibernate-mapping>

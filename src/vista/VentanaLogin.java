@@ -100,7 +100,6 @@ public class VentanaLogin extends JFrame {
 		
 		
 		BufferedImage myPicture=null;
-		///Euskalmet/src/euskalmet.png
 			try {
 				myPicture = ImageIO.read(new File("./src/euskalmet.png"));
 			} catch (IOException e1) {
