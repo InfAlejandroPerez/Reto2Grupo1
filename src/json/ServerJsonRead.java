@@ -85,6 +85,8 @@ public class ServerJsonRead {
 				break;
 			case "municipio":
 				ControllerV2.getMunicipios(salidaRecive);
+			case "getTopFavoritos":
+				ControllerV2.getTopFavoritos(salidaRecive);
 			}
 			
 		}

@@ -196,7 +196,7 @@ public class DetallesEstacion extends JFrame {
 		JLabel lblCalidadDelAire = new JLabel("Calidad del Aire");
 		lblCalidadDelAire.setHorizontalAlignment(SwingConstants.CENTER);
 		lblCalidadDelAire.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblCalidadDelAire.setBounds(49, 237, 136, 40);
+		lblCalidadDelAire.setBounds(49, 237, 130, 40);
 		contentPane.add(lblCalidadDelAire);
 		
 		JSeparator separator_1_1_1 = new JSeparator();

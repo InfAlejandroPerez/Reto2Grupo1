@@ -43,7 +43,7 @@ public class Cliente {
 
 //		while(true) {
 
-			System.out.println("Conexi�n realizada con servidor");
+			System.out.println("Conexió n realizada con servidor");
 			salida = new ObjectOutputStream(cliente.getOutputStream());
 			entrada = new ObjectInputStream(cliente.getInputStream());
 
@@ -390,6 +390,35 @@ public class Cliente {
 			try {
 
 				return Cifrado.decode((String) entrada.readObject());
+
+
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			}
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public static String[] getTopFavoritos() {
+		try {
+			Socket client = new Socket(IP, 5005);
+
+			ObjectInputStream entrada = new ObjectInputStream(client.getInputStream());
+			ObjectOutputStream salida = new ObjectOutputStream(client.getOutputStream());
+
+			String json = Cifrado
+					.encode("{ 'jsonData': [{ " + "'operacion' : 'getTopFavoritos'}]}");
+
+			salida.writeObject(json);
+
+			salida.flush();
+
+			try {
+
+				return Cifrado.decode((String) entrada.readObject()).split(",");
 
 
 			} catch (ClassNotFoundException e) {

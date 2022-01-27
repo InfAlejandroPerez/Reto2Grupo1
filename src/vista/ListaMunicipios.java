@@ -8,9 +8,6 @@ import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 
 import cliente.Cliente;
-import objetos.Municipio;
-
-import java.util.ArrayList;
 
 import javax.swing.JList;
 import javax.swing.JOptionPane;
@@ -28,17 +25,16 @@ public class ListaMunicipios extends JFrame implements ActionListener {
 
 	private JPanel contentPane;
 	private JTextField TxtFiltroMunicipios;
-	private JList<String> ListMunicipios;
-	ArrayList<Municipio> Listamunicipios = new ArrayList<Municipio>();
+	private JList<String> listMunicipios;
+	private JList<String> listTopFavoritos;
+	//ArrayList<Municipio> Listamunicipios = new ArrayList<Municipio>();
 	private JLabel lblNewLabel;
 	DefaultListModel<String> modelListaMun;
+	DefaultListModel<String> modelListaFavorito;
 	private JRadioButton RadioBizkaia;
 	private JRadioButton RadioGipuzkoa;
 	private JRadioButton RadioAraba;
 
-	/**
-	 * Launch the application.
-	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -104,16 +100,32 @@ public class ListaMunicipios extends JFrame implements ActionListener {
 		RadioTodo.setSelected(true);
 
 		modelListaMun = new DefaultListModel<String>();
-		ListMunicipios = new JList<String>(modelListaMun);
+		listMunicipios = new JList<String>(modelListaMun);
 
+		modelListaFavorito = new DefaultListModel<String>();
+		listTopFavoritos = new JList<String>(modelListaFavorito);
+		
 		JScrollPane ScrollMunicipios = new JScrollPane();
-		ListMunicipios.setBounds(54, 42, 180, 274);
+		listMunicipios.setBounds(54, 42, 180, 274);
 		ScrollMunicipios.setSize(200, 300);
 		ScrollMunicipios.setLocation(50, 50);
-		ScrollMunicipios.setViewportView(ListMunicipios);
-		ListMunicipios.setLayoutOrientation(JList.VERTICAL);
+		ScrollMunicipios.setViewportView(listMunicipios);
+		listMunicipios.setLayoutOrientation(JList.VERTICAL);
 		contentPane.add(ScrollMunicipios);
-
+		
+//
+//		JScrollPane scrollPane = new JScrollPane();
+//		scrollPane.setBounds(274, 235, 165, 115);	
+//		scrollPane.setSize(165, 115);
+//		//scrollPane.setLocation(70, 50);
+		//scrollPane.setViewportView(listTopFavoritos);
+		listTopFavoritos.setLayoutOrientation(JList.VERTICAL);
+		listTopFavoritos.setBounds(274, 226, 199, 124);
+		contentPane.add(listTopFavoritos);
+	
+		
+		
+		
 		try {
 
 			String[] item = Cliente.getArrayListas(Cliente.MUNICIPIO);
@@ -127,13 +139,30 @@ public class ListaMunicipios extends JFrame implements ActionListener {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+
+		try {
+
+			String[] item = Cliente.getTopFavoritos();
+
+			int i = 0;
+			for (String st : item) {
+				System.out.println(st);
+				modelListaFavorito.add(i, st);
+				i++;
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 
 		JButton BtnDetallesMunicipio = new JButton("Mas informacion");
 		BtnDetallesMunicipio.setFont(new Font("Dialog", Font.BOLD, 12));
 		BtnDetallesMunicipio.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (ListMunicipios.getSelectedValue() != null) {
-					String str = ListMunicipios.getSelectedValue().toString();
+				if (listMunicipios.getSelectedValue() != null) {
+					String str = listMunicipios.getSelectedValue().toString();
 					DetallesMunicipio detallesMun = new DetallesMunicipio(str);// obj created for class Second()
 					detallesMun.setVisible(true); // Open the Second.java window
 					dispose(); // Close the First.java window
@@ -144,6 +173,7 @@ public class ListaMunicipios extends JFrame implements ActionListener {
 		});
 		BtnDetallesMunicipio.setBounds(50, 378, 200, 23);
 		contentPane.add(BtnDetallesMunicipio);
+		
 
 		lblNewLabel = new JLabel("Municipios");
 		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 15));
@@ -166,10 +196,7 @@ public class ListaMunicipios extends JFrame implements ActionListener {
 		});
 		BtnSalir.setBounds(384, 410, 89, 23);
 		contentPane.add(BtnSalir);
-		
-		JList listFavoritosProvincia = new JList();
-		listFavoritosProvincia.setBounds(274, 226, 160, 124);
-		contentPane.add(listFavoritosProvincia);
+
 		
 		JLabel lblFavoritosProvincia = new JLabel("Top 5 favoritos por provincia");
 		lblFavoritosProvincia.setFont(new Font("Dialog", Font.BOLD, 12));

@@ -451,6 +451,33 @@ public class ControllerV2 {
 		sender(jsonEsFvorito, salidaRecive);
 
 	}
+	
+	
+	public static void getTopFavoritos(ObjectOutputStream salidaRecive) {
+
+		String hql = "SELECT esp.nombre FROM `favoritos` JOIN espacios_naturales ESP ON ESP.id=favoritos.idEspacioNatural GROUP BY idEspacioNatural ORDER BY COUNT(idEspacioNatural) DESC LIMIT 5";
+
+		SessionFactory sessionFac = HibernateUtil.getSessionFactory();
+		Session session = sessionFac.openSession();
+
+		Query q = session.createSQLQuery(hql);
+
+		List<String> items = q.list();
+		session.close();
+
+		String json = "";
+		for (int i = 0; i < items.size(); i++) {
+			if (i == 0) {
+				json = items.get(i);
+			} else {
+				json = json + "," + items.get(i);
+			}
+		}
+
+		sender(json, salidaRecive);
+
+	}
+	
 
 	public static void setFavorito(Iterator<Entry<String, JsonElement>> iter, ObjectOutputStream salidaRecive,
 			int opcion) {
