@@ -295,7 +295,7 @@ public class DetallesEspacioNatural extends JFrame {
 	private void setFavorito(int opcion) {
 
 		try {
-			
+			System.out.println(idEspacioNatural + " "+ idMunicipio);
 			String json = Cliente.setFavorito(idEspacioNatural, idMunicipio, "1", opcion);
 			System.out.println(json);
 			JsonObject jsonObject = (JsonObject) (new JsonParser()).parse(json);

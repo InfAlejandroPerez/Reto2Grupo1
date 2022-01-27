@@ -384,7 +384,7 @@ public class ControllerV2 {
 					+ "'naturaleza': '" + espacios.getNaturaleza() + "'," + "'municipio': '"
 					+ espacios.getMunicipio().getNombre() + "', 'latitud': '" + espacios.getLatitud() + "'"
 					+ ",'longitud': '" + espacios.getLongitud() + "',"
-					+ "'id': '" + espacios.getId() + "'}]}";
+					+ "'id': '" + espacios.getId() + "', 'idmunicipio': '"+ espacios.getMunicipio().getId()  +"'}]}";
 
 			sender(jsonEspacios, salidaRecive);
 
@@ -469,6 +469,7 @@ public class ControllerV2 {
 		Favoritos favorito = new Favoritos();
 		EspaciosNaturales espacN = new EspaciosNaturales();
 		Municipio municipio = new Municipio();
+		
 		user.setIdUser(idUser);
 		favorito.setUsers(user);
 
@@ -477,7 +478,7 @@ public class ControllerV2 {
 
 		municipio.setId(idMunicipio);
 		favorito.setMunicipio(municipio);
-
+  
 		switch (opcion) {
 		case 1: {
 

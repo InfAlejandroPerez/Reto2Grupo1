@@ -124,7 +124,7 @@ public class Cliente {
 				// DTO datosCliente = (new Gson()).fromJson(usuarioJson, DTO.class);
 
 				if (response.equals("true")) {
-					System.out.println(" ha entrado" + response.equals("true"));
+	
 					ListaMunicipios listaMun = new ListaMunicipios();
 					listaMun.setVisible(true);
 				} else if (response.equals("false")) {

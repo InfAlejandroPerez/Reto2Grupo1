@@ -9,7 +9,7 @@ import java.net.Socket;
 public class ServidorPrueba {
 	
 	private final int PORT = 5005;
-	private ServerSocket servidor;
+	private ServerSocket servidor; 
 	
 	public void init() {
 		
