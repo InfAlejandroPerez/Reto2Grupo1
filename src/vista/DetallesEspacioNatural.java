@@ -254,7 +254,7 @@ public class DetallesEspacioNatural extends JFrame {
 		 */
 
 		try {
-			String json = Cliente.getFavorito(idEspacioNatural, "2");
+			String json = Cliente.getFavorito(idEspacioNatural, "3");
 
 			JsonObject jsonObject = (JsonObject) (new JsonParser()).parse(json);
 
@@ -296,7 +296,7 @@ public class DetallesEspacioNatural extends JFrame {
 
 		try {
 			System.out.println(idEspacioNatural + " "+ idMunicipio);
-			String json = Cliente.setFavorito(idEspacioNatural, idMunicipio, "2", opcion);
+			String json = Cliente.setFavorito(idEspacioNatural, idMunicipio, "3", opcion);
 			System.out.println(json);
 			JsonObject jsonObject = (JsonObject) (new JsonParser()).parse(json);
 

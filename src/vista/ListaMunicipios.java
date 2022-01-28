@@ -27,7 +27,6 @@ public class ListaMunicipios extends JFrame implements ActionListener {
 	private JTextField TxtFiltroMunicipios;
 	private JList<String> listMunicipios;
 	private JList<String> listTopFavoritos;
-	//ArrayList<Municipio> Listamunicipios = new ArrayList<Municipio>();
 	private JLabel lblNewLabel;
 	DefaultListModel<String> modelListaMun;
 	DefaultListModel<String> modelListaFavorito;
@@ -57,6 +56,7 @@ public class ListaMunicipios extends JFrame implements ActionListener {
 	}
 	
 	public ListaMunicipios(String idUser) {
+	System.out.println(idUser);
 		setResizable(false);
 		setTitle("Lista de municipios");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -117,50 +117,11 @@ public class ListaMunicipios extends JFrame implements ActionListener {
 		ScrollMunicipios.setViewportView(listMunicipios);
 		listMunicipios.setLayoutOrientation(JList.VERTICAL);
 		contentPane.add(ScrollMunicipios);
-		
-//
-//		JScrollPane scrollPane = new JScrollPane();
-//		scrollPane.setBounds(274, 235, 165, 115);	
-//		scrollPane.setSize(165, 115);
-//		//scrollPane.setLocation(70, 50);
-		//scrollPane.setViewportView(listTopFavoritos);
+
 		listTopFavoritos.setLayoutOrientation(JList.VERTICAL);
 		listTopFavoritos.setBounds(274, 226, 199, 124);
 		contentPane.add(listTopFavoritos);
 	
-		
-		
-		
-		try {
-
-			String[] item = Cliente.getArrayListas(Cliente.MUNICIPIO);
-
-			int i = 0;
-			for (String st : item) {
-				modelListaMun.add(i, st);
-				i++;
-			}
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-
-		try {
-
-			String[] item = Cliente.getTopFavoritos();
-
-			int i = 0;
-			for (String st : item) {
-				System.out.println(st);
-				modelListaFavorito.add(i, st);
-				i++;
-			}
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
 
 		JButton BtnDetallesMunicipio = new JButton("Mas informacion");
 		BtnDetallesMunicipio.setFont(new Font("Dialog", Font.BOLD, 12));
@@ -207,6 +168,10 @@ public class ListaMunicipios extends JFrame implements ActionListener {
 		lblFavoritosProvincia.setFont(new Font("Dialog", Font.BOLD, 12));
 		lblFavoritosProvincia.setBounds(274, 203, 165, 14);
 		contentPane.add(lblFavoritosProvincia);
+		
+		rellenarListas();
+		
+		
 	}
 
 	@Override
@@ -235,4 +200,39 @@ public class ListaMunicipios extends JFrame implements ActionListener {
 		}
 
 	}
+	
+	
+	private void rellenarListas() {
+
+		try {
+
+			String[] item = Cliente.getArrayListas(Cliente.MUNICIPIO);
+
+			int i = 0;
+			for (String st : item) {
+				modelListaMun.add(i, st);
+				i++;
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+
+		try {
+
+			String[] item = Cliente.getTopFavoritos();
+
+			int i = 0;
+			for (String st : item) {
+				System.out.println(st);
+				modelListaFavorito.add(i, st);
+				i++;
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 }
