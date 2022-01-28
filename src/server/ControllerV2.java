@@ -495,7 +495,6 @@ public class ControllerV2 {
 		Users user = new Users();
 		Favoritos favorito = new Favoritos();
 		EspaciosNaturales espacN = new EspaciosNaturales();
-		Municipio municipio = new Municipio();
 		
 		user.setIdUser(idUser);
 		favorito.setUsers(user);
@@ -503,8 +502,7 @@ public class ControllerV2 {
 		espacN.setId(idEspacio);
 		favorito.setEspaciosNaturales(espacN);
 
-		municipio.setId(idMunicipio);
-		favorito.setMunicipio(municipio);
+		favorito.setIdMunicipio(idMunicipio);
   
 		switch (opcion) {
 		case 1: {
