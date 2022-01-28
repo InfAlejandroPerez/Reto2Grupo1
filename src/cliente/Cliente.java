@@ -76,7 +76,7 @@ public class Cliente {
 
 	}
 
-	public static void login(String user, String password) {
+	/*public static void login(String user, String password) {
 		try {
 
 			Socket client = new Socket(IP, 5005); // connect to server
@@ -110,7 +110,7 @@ public class Cliente {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	}
+	}*/
 
 	public static void login2(String user, String password) {
 		try {

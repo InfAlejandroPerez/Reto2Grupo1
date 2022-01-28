@@ -38,8 +38,8 @@ public class ListaMunicipios extends JFrame implements ActionListener {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					ListaMunicipios frame = new ListaMunicipios();
-					frame.setVisible(true);
+//					ListaMunicipios frame = new ListaMunicipios();
+//					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -50,10 +50,6 @@ public class ListaMunicipios extends JFrame implements ActionListener {
 	/**
 	 * Create the frame.
 	 */
-	public ListaMunicipios() {
-		ListaMunicipios lista = new ListaMunicipios("");
-		lista.setVisible(true);
-	}
 	
 	public ListaMunicipios(String idUser) {
 	System.out.println(idUser);
@@ -129,7 +125,7 @@ public class ListaMunicipios extends JFrame implements ActionListener {
 			public void actionPerformed(ActionEvent e) {
 				if (listMunicipios.getSelectedValue() != null) {
 					String str = listMunicipios.getSelectedValue().toString();
-					DetallesMunicipio detallesMun = new DetallesMunicipio(str);// obj created for class Second()
+					DetallesMunicipio detallesMun = new DetallesMunicipio(str, idUser );// obj created for class Second()
 					detallesMun.setVisible(true); // Open the Second.java window
 					dispose(); // Close the First.java window
 				} else {

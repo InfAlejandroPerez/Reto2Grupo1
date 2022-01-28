@@ -49,7 +49,7 @@ public class DetallesEstacion extends JFrame {
 		});
 	}
 
-	public DetallesEstacion(String lugarSelecionado, String opcion, String municipio) {
+	public DetallesEstacion(String lugarSelecionado, String opcion, String municipio, String IDUSER) {
 		setResizable(false);
 
 		setTitle("Detalles estacion");
@@ -112,7 +112,7 @@ public class DetallesEstacion extends JFrame {
 		BtnAtrasToDetalles.setBounds(429, 383, 89, 23);
 		BtnAtrasToDetalles.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				DetallesMunicipio detallesMun = new DetallesMunicipio(municipio);// obj created for class Second()
+				DetallesMunicipio detallesMun = new DetallesMunicipio(municipio, IDUSER);// obj created for class Second()
 				detallesMun.setVisible(true); // Open the Second.java window
 				dispose(); // Close the First.java window
 			}

@@ -50,6 +50,7 @@ public class DetallesMunicipio extends JFrame {
 	ArrayList<Municipio> listaEstaciones = new ArrayList<Municipio>();
 	ArrayList<EspaciosNaturales> listaEspacios = new ArrayList<EspaciosNaturales>();
 	JTextPane textPane;
+	
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -64,7 +65,7 @@ public class DetallesMunicipio extends JFrame {
 		});
 	}
 
-	public DetallesMunicipio(String municipio) {
+	public DetallesMunicipio(String municipio, String idUser) {
 		setTitle("Detalles Municipio");
 		setResizable(false);
 		LblMunicipio.setFont(new Font("Tahoma", Font.BOLD, 12));
@@ -163,14 +164,14 @@ public class DetallesMunicipio extends JFrame {
 				if (jListEstaciones.getSelectedValue() != null) {
 					lugarSeleccionado = jListEstaciones.getSelectedValue().toString();
 					operacion = "detalles_estaciones";
-					DetallesEstacion detallesEst = new DetallesEstacion(lugarSeleccionado, operacion, municipio);// obj
+					DetallesEstacion detallesEst = new DetallesEstacion(lugarSeleccionado, operacion, municipio, idUser);// obj
 																								// Second()
 					detallesEst.setVisible(true);
 				} else if (jListEspaciosNaturales.getSelectedValue() != null) {
 					lugarSeleccionado = jListEspaciosNaturales.getSelectedValue().toString();
 					operacion = "detalles_espacios";
 					DetallesEspacioNatural detallesEpacioNatural = new DetallesEspacioNatural(lugarSeleccionado,
-							operacion, municipio);// obj created for class Second()
+							operacion, municipio, idUser);// obj created for class Second()
 					detallesEpacioNatural.setVisible(true);
 				} else {
 					JOptionPane.showMessageDialog(null, "Seleccione un lugar");
@@ -188,7 +189,7 @@ public class DetallesMunicipio extends JFrame {
 		BtnAtrasToLista.setBounds(378, 400, 89, 23);
 		BtnAtrasToLista.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ListaMunicipios lista = new ListaMunicipios();// obj created for class Second()
+				ListaMunicipios lista = new ListaMunicipios(idUser);// obj created for class Second()
 				lista.setVisible(true); // Open the Second.java window
 				dispose(); // Close the First.java window
 			}

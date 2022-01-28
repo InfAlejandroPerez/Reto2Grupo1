@@ -54,9 +54,9 @@ public class DetallesEspacioNatural extends JFrame {
 		});
 	}
 
-	public DetallesEspacioNatural(String lugarSelecionado, String opcion, String municipio) {
+	public DetallesEspacioNatural(String lugarSelecionado, String opcion, String municipio, String IDUSER) {
 		setResizable(false);
-
+		idUser = IDUSER;
 		setTitle("Detalles estacion");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 579, 515);
@@ -113,7 +113,7 @@ public class DetallesEspacioNatural extends JFrame {
 		BtnAtrasToDetalles.setBounds(429, 421, 89, 23);
 		BtnAtrasToDetalles.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				DetallesMunicipio detallesMun = new DetallesMunicipio(municipio);// obj created for class Second()
+				DetallesMunicipio detallesMun = new DetallesMunicipio(municipio, idUser);// obj created for class Second()
 				detallesMun.setVisible(true); // Open the Second.java window
 				dispose(); // Close the First.java window
 			}
@@ -254,7 +254,7 @@ public class DetallesEspacioNatural extends JFrame {
 		 */
 
 		try {
-			String json = Cliente.getFavorito(idEspacioNatural, "3");
+			String json = Cliente.getFavorito(idEspacioNatural, idUser);
 
 			JsonObject jsonObject = (JsonObject) (new JsonParser()).parse(json);
 
@@ -296,7 +296,7 @@ public class DetallesEspacioNatural extends JFrame {
 
 		try {
 			System.out.println(idEspacioNatural + " "+ idMunicipio);
-			String json = Cliente.setFavorito(idEspacioNatural, idMunicipio, "3", opcion);
+			String json = Cliente.setFavorito(idEspacioNatural, idMunicipio, idUser, opcion);
 			System.out.println(json);
 			JsonObject jsonObject = (JsonObject) (new JsonParser()).parse(json);
 
