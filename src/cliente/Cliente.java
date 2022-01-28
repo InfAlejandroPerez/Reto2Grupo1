@@ -5,10 +5,17 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.swing.JOptionPane;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import cipher.Cifrado;
 import dto.DTO;
@@ -121,12 +128,10 @@ public class Cliente {
 
 			try {
 				String response = Cifrado.decode((String) entrada.readObject());
-				// DTO datosCliente = (new Gson()).fromJson(usuarioJson, DTO.class);
 
 				if (response.equals("true")) {
-	
-					ListaMunicipios listaMun = new ListaMunicipios(String idUser);
-					listaMun.setVisible(true);
+					String jsonIdUser = Cliente.getIdUser(user);
+					usuarioValidado(jsonIdUser);
 				} else if (response.equals("false")) {
 					JOptionPane.showMessageDialog(null, "Nombre de usuario o contrase�a incorrectos");
 				} else {
@@ -140,6 +145,51 @@ public class Cliente {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	private static void usuarioValidado(String jsonRespuesta) {
+		
+		JsonObject json = (JsonObject) (new JsonParser()).parse(jsonRespuesta);
+		
+		JsonArray array = (JsonArray) json.get("jsonData");
+		Iterator<JsonElement> iter = array.iterator();	
+		
+		JsonElement entrada = iter.next();
+		JsonObject objeto = entrada.getAsJsonObject();
+		
+		Iterator<Map.Entry<String, JsonElement>> iterKey = objeto.entrySet().iterator();
+						
+		String idUser = iterKey.next().getValue().getAsString();		
+		
+		ListaMunicipios listaMun = new ListaMunicipios(idUser);
+		listaMun.setVisible(true);
+	}
+
+	public static String getIdUser(String userName) {
+		try {
+
+			Socket client = new Socket(IP, 5005); // connect to server
+			System.out.println("Conectado con el servidor");
+			ObjectInputStream entrada = new ObjectInputStream(client.getInputStream());
+			ObjectOutputStream salida = new ObjectOutputStream(client.getOutputStream());
+
+			String json = Cifrado.encode("{ 'jsonData': [ { 'operacion' : 'getIdUser',  'user' : '" + userName + "'} ]}");
+
+			salida.writeObject(json);
+			salida.flush();
+
+			try {
+
+				return Cifrado.decode((String) entrada.readObject());
+
+			} catch (ClassNotFoundException e) {
+
+			}
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	public static void register(String user, String password) {
@@ -371,8 +421,7 @@ public class Cliente {
 		}
 		return null;
 	}
-	
-	
+
 	public static String getFavorito(String idParqueNatural, String idUser) {
 		try {
 			Socket client = new Socket(IP, 5005);
@@ -380,8 +429,8 @@ public class Cliente {
 			ObjectInputStream entrada = new ObjectInputStream(client.getInputStream());
 			ObjectOutputStream salida = new ObjectOutputStream(client.getOutputStream());
 
-			String json = Cifrado
-					.encode("{ 'jsonData': [{ " + "'operacion' : 'es_favorito', 'idParqueNatural': '" + idParqueNatural +"', 'idUser': '"+ idUser + "'}]}");
+			String json = Cifrado.encode("{ 'jsonData': [{ " + "'operacion' : 'es_favorito', 'idParqueNatural': '"
+					+ idParqueNatural + "', 'idUser': '" + idUser + "'}]}");
 
 			salida.writeObject(json);
 
@@ -390,7 +439,6 @@ public class Cliente {
 			try {
 
 				return Cifrado.decode((String) entrada.readObject());
-
 
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
@@ -401,7 +449,7 @@ public class Cliente {
 		}
 		return null;
 	}
-	
+
 	public static String[] getTopFavoritos() {
 		try {
 			Socket client = new Socket(IP, 5005);
@@ -409,8 +457,7 @@ public class Cliente {
 			ObjectInputStream entrada = new ObjectInputStream(client.getInputStream());
 			ObjectOutputStream salida = new ObjectOutputStream(client.getOutputStream());
 
-			String json = Cifrado
-					.encode("{ 'jsonData': [{ " + "'operacion' : 'getTopFavoritos'}]}");
+			String json = Cifrado.encode("{ 'jsonData': [{ " + "'operacion' : 'getTopFavoritos'}]}");
 
 			salida.writeObject(json);
 
@@ -420,7 +467,6 @@ public class Cliente {
 
 				return Cifrado.decode((String) entrada.readObject()).split(",");
 
-
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
 			}
@@ -430,20 +476,18 @@ public class Cliente {
 		}
 		return null;
 	}
-	
-	
-	public static String setFavorito(String idParqueNatural, String idMunicipio , String idUser, int opcion) {
+
+	public static String setFavorito(String idParqueNatural, String idMunicipio, String idUser, int opcion) {
 		try {
 			Socket client = new Socket(IP, 5005);
 
 			ObjectInputStream entrada = new ObjectInputStream(client.getInputStream());
 			ObjectOutputStream salida = new ObjectOutputStream(client.getOutputStream());
 
-			String operacion = (opcion==1)?"addFavorito":"quitarFavorito";
-			
-			String json = Cifrado
-					.encode("{ 'jsonData': [{ " + "'operacion' : '"+ operacion +"', 'idParqueNatural': '" + idParqueNatural +
-							"', 'idUser': '"+ idUser + "', 'idMunicipio': '"+ idMunicipio + "'}]}");
+			String operacion = (opcion == 1) ? "addFavorito" : "quitarFavorito";
+
+			String json = Cifrado.encode("{ 'jsonData': [{ " + "'operacion' : '" + operacion + "', 'idParqueNatural': '"
+					+ idParqueNatural + "', 'idUser': '" + idUser + "', 'idMunicipio': '" + idMunicipio + "'}]}");
 
 			salida.writeObject(json);
 
@@ -453,7 +497,6 @@ public class Cliente {
 
 				return Cifrado.decode((String) entrada.readObject());
 
-
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
 			}
@@ -463,8 +506,5 @@ public class Cliente {
 		}
 		return null;
 	}
-	
-	
-	
-	
+
 }

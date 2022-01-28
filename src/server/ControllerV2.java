@@ -413,7 +413,7 @@ public class ControllerV2 {
 		Session session = sessionFac.openSession();
 		
 		String query = "ICAEstacion FROM CalidadAireIndice JOIN Estacion on CalidadAireIndice.idEstacion=Estacion.id WHERE Estacion.nombre = :nombres ";
-		Query qu = session.createQuery(query);
+		Query qu = session.createSQLQuery(query);
 		qu.setString("nombres", nameDetail);
 		
 		String calidad = (String) qu.uniqueResult();
@@ -421,6 +421,30 @@ public class ControllerV2 {
 		return calidad; 
 		
 	}
+	
+	
+	public static void getIdUser(Iterator<Entry<String, JsonElement>> iter, ObjectOutputStream salidaRecive) {
+
+		String userName = iter.next().getValue().getAsString();
+		String hql = "SELECT idUser FROM Users WHERE userName= :userName";
+
+		SessionFactory sessionFac = HibernateUtil.getSessionFactory();
+		Session session = sessionFac.openSession();
+
+		Query q = session.createQuery(hql);
+		q.setString("userName", userName);
+
+		int resultado = (int) q.uniqueResult();
+		
+		String id = String.valueOf(resultado);
+		session.close();
+
+		String jsonEsFvorito = "{ 'jsonData': [{ 'resultado': '" + id + "'}]}";
+
+		sender(jsonEsFvorito, salidaRecive);
+
+	}
+	
 
 	public static void esFavorito(Iterator<Entry<String, JsonElement>> iter, ObjectOutputStream salidaRecive) {
 
