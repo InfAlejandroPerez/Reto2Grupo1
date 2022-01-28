@@ -13,6 +13,7 @@ import java.text.SimpleDateFormat;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -30,34 +31,93 @@ import objetos.CalidadAireHorario;
 import objetos.CalidadAireIndice;
 import objetos.EspaciosNaturales;
 import objetos.Estacion;
+import objetos.Hash;
 import objetos.Municipio;
 
 public class JsonReader {
 	private static final String url = "https://opendata.euskadi.eus/contenidos/ds_informes_estudios/calidad_aire_2021/es_def/adjuntos/index.json";
 	private static Session s;
-	
+
 	public static void main(String args[]) {
-		HttpCert.validCert();
-		
-		setHibernateUtils();
-		
-		// municipio
+		//HttpCert.validCert();
+		checkHash();
+		//refillDb();
+	}
+	
+	private static void refillDb() {
+		// Municipio
 		uploadMunicipio();
 		// espacios naturales
 		uploadEspaciosNaturales();
 		// estaciones
 		uploadEstaciones();
-
+		
+		//datos clima
 		refreshHorarios();
-		System.out.println("Fizalizamos");
-		System.exit(0);
 	}
-	
+
+	public static void checkHash() {
+		HttpCert.validCert();
+		JsonObject mainHorarios = readJsonFromUrl(url);
+
+		String last = mainHorarios.get("lastUpdateDate").getAsString();
+		setHibernateUtils();
+		try {
+
+			String hql = "FROM Hash WHERE id = 1";
+			Query q = s.createQuery(hql);
+
+			Hash now = (Hash) q.uniqueResult();
+
+			if (!last.equals(now.getHash())) {
+				Transaction tx = s.beginTransaction();
+				
+				String names[] = { "calidad_aire_diario", "calidad_aire_horario", "calidad_aire_indice",
+						"municipio", "espacios_naturales", "estacion" };
+
+				//Para que pueda eliminar es necesario deshabilitar las fk
+				removeAllFromTable("set foreign_key_checks=0");
+				for (int i = 0; i < names.length; i++) {
+					removeAllFromTable("TRUNCATE " + names[i]);
+				}
+				
+				removeAllFromTable("set foreign_key_checks=1");
+				
+				//actualizamos hash
+				now.setHash(last);
+				s.update(now);
+
+				// Actualizar información en la base de datos
+				tx.commit();
+				s.flush();
+				
+			} else {
+				return;
+			}
+			
+			refillDb();
+
+		} catch (HibernateException e) {
+			System.out.println("Problem creating session factory");
+			e.printStackTrace();
+		}
+
+	}
+
+	private static void removeAllFromTable(String hql) {
+		try {
+			s.createSQLQuery(hql).executeUpdate();
+		} catch (HibernateException e) {
+			System.out.println("Problem creating session factory");
+			e.printStackTrace();
+		}
+	}
+
 	private static void setHibernateUtils() {
 		SessionFactory sessionFac = HibernateUtil.getSessionFactory();
 		s = sessionFac.openSession();
 	}
-	
+
 	public static void uploadMunicipio() {
 		String urlMunicipio = "https://drive.google.com/uc?id=1syFXxNOiNZQ-Zf_BNk0uTDgeZxV4CaB0&export=download";
 
@@ -81,7 +141,7 @@ public class JsonReader {
 				case "documentName":
 					String normalized = Normalizer.normalize(value, Normalizer.Form.NFD);
 					String accentRemoved = normalized.replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
-					
+
 					municipio.setNombre(accentRemoved);
 					break;
 				case "turismDescription":
@@ -96,17 +156,18 @@ public class JsonReader {
 				case "locality":
 					String loc[] = value.split("\\s+");
 					String locB = "";
-					
-					if(loc[0].toLowerCase().equals("la") || loc[0].toLowerCase().equals("san") || loc[0].toLowerCase().equals("el")) {
+
+					if (loc[0].toLowerCase().equals("la") || loc[0].toLowerCase().equals("san")
+							|| loc[0].toLowerCase().equals("el")) {
 						locB = loc[0] + " " + loc[1];
 					} else {
 						locB = loc[0];
 					}
-					
+
 					municipio.setLocalidad(locB);
 					break;
 				case "territory":
-					if(value.equals("Araba/Álava")) {
+					if (value.equals("Araba/Álava")) {
 						municipio.setTerritorio("Araba/Alava");
 					} else {
 						municipio.setTerritorio(value);
@@ -248,11 +309,11 @@ public class JsonReader {
 				case "Name":
 					String normalized = Normalizer.normalize(value, Normalizer.Form.NFD);
 					String accentRemoved = normalized.replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
-					
-					if(accentRemoved.equals("Mª DIAZ HARO")) {
+
+					if (accentRemoved.equals("Mª DIAZ HARO")) {
 						accentRemoved = "Maria Diaz de Haro";
 					}
-					
+
 					estacion.setNombre(accentRemoved);
 					break;
 				case "Province":
@@ -284,7 +345,7 @@ public class JsonReader {
 
 					if (idMunicipio.contains("San Sebastián")) {
 						result = "San Sebastián";
-					} else if(idMunicipio.contains("Agurain")) {
+					} else if (idMunicipio.contains("Agurain")) {
 						result = "Salvatierra/Agurain";
 					} else {
 						result = (idMunicipio.split(operator))[0];
@@ -341,7 +402,7 @@ public class JsonReader {
 				break;
 			case 1:
 				// diarios
-				
+
 				datosDiarioGenerator(nameEstacion, jsonStringUrl);
 
 				count++;
@@ -354,12 +415,12 @@ public class JsonReader {
 				count = 0;
 				break;
 			}
-			
-			if(!iter.hasNext())
-				break;
+
+			if (!iter.hasNext()) {
+				s.close();
+				return;
+			}
 		}
-		
-		System.out.println("OK");
 	}
 
 	private static void datosDiarioGenerator(String name, String urlEstacion) {
@@ -383,8 +444,8 @@ public class JsonReader {
 			while (iter2.hasNext()) {
 				String key = iter2.next().getKey().toString();
 				String value = iter3.next().getValue().getAsString();
-			
-				switch(key) {
+
+				switch (key) {
 				case "Date":
 					try {
 						aire.setFecha(new SimpleDateFormat("dd/MM/yyyy").parse(value));
@@ -409,10 +470,10 @@ public class JsonReader {
 					aire.setPm25gm3(value);
 					break;
 				}
-				
-				if(!iter2.hasNext()) {
+
+				if (!iter2.hasNext()) {
 					Transaction tx = s.beginTransaction();
-					
+
 					String response = name;
 					if (name.contains("_")) {
 						response = response.replace("_", " ");
@@ -431,7 +492,7 @@ public class JsonReader {
 						tx.commit();
 						aire = new CalidadAireDiario();
 					}
-					
+
 					return;
 				}
 			}

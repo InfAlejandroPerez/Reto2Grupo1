@@ -16,7 +16,10 @@ public class ServidorPrueba {
 		try {
 			servidor = new ServerSocket(PORT);
 			Socket client = null;
-
+			
+			//check Hash
+			json.JsonReader.checkHash();
+			
 			while(!servidor.isClosed()) {
 				try {
 					System.out.println("Esperando peticiones.");

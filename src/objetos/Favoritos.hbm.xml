@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!-- Generated 25 ene. 2022 17:35:56 by Hibernate Tools 5.5.7.Final --><!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 27 ene 2022 19:01:25 by Hibernate Tools 5.5.7.Final --><!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping auto-import="true" default-access="property" default-cascade="none" default-lazy="true">
     <class catalog="euskalmet" dynamic-insert="false" dynamic-update="false" mutable="true" name="objetos.Favoritos" optimistic-lock="none" polymorphism="implicit" select-before-update="false" table="favoritos">
         <id name="id" type="java.lang.Integer">
@@ -9,12 +9,12 @@
         <many-to-one class="objetos.EspaciosNaturales" embed-xml="true" fetch="select" insert="true" name="espaciosNaturales" not-found="exception" optimistic-lock="true" unique="false" update="true">
             <column name="idEspacioNatural"/>
         </many-to-one>
-        <many-to-one class="objetos.Municipio" embed-xml="true" fetch="select" insert="true" name="municipio" not-found="exception" optimistic-lock="true" unique="false" update="true">
-            <column name="idMunicipio"/>
-        </many-to-one>
         <many-to-one class="objetos.Users" embed-xml="true" fetch="select" insert="true" name="users" not-found="exception" optimistic-lock="true" unique="false" update="true">
             <column name="idUser"/>
         </many-to-one>
+        <property generated="never" lazy="false" name="idMunicipio" optimistic-lock="true" type="java.lang.Integer" unique="false">
+            <column name="idMunicipio"/>
+        </property>
     </class>
     
 </hibernate-mapping>

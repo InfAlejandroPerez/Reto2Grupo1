@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!-- Generated 25 ene. 2022 17:35:56 by Hibernate Tools 5.5.7.Final --><!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 27 ene 2022 19:01:25 by Hibernate Tools 5.5.7.Final --><!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping auto-import="true" default-access="property" default-cascade="none" default-lazy="true">
     <class catalog="euskalmet" dynamic-insert="false" dynamic-update="false" mutable="true" name="objetos.Municipio" optimistic-lock="none" polymorphism="implicit" select-before-update="false" table="municipio">
         <id name="id" type="java.lang.Integer">
@@ -18,12 +18,6 @@
         <property generated="never" lazy="false" name="territorio" optimistic-lock="true" type="string" unique="false">
             <column length="100" name="territorio"/>
         </property>
-        <set embed-xml="true" fetch="select" inverse="true" lazy="true" mutable="true" name="favoritoses" optimistic-lock="true" sort="unsorted" table="favoritos">
-            <key on-delete="noaction">
-                <column name="idMunicipio"/>
-            </key>
-            <one-to-many class="objetos.Favoritos" embed-xml="true" not-found="exception"/>
-        </set>
         <set embed-xml="true" fetch="select" inverse="true" lazy="true" mutable="true" name="estacions" optimistic-lock="true" sort="unsorted" table="estacion">
             <key on-delete="noaction">
                 <column name="idmunicipio" not-null="true"/>
