@@ -18,7 +18,6 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import cipher.Cifrado;
-import dto.DTO;
 import objetos.Estacion;
 import vista.ListaMunicipios;
 import vista.VentanaLogin;
@@ -76,34 +75,6 @@ public class Cliente {
 
 	}
 
-	/*
-	 * public static void login(String user, String password) { try {
-	 * 
-	 * Socket client = new Socket(IP, 5005); // connect to server
-	 * System.out.println("Conectado con el servidor"); ObjectInputStream entrada =
-	 * new ObjectInputStream(client.getInputStream()); ObjectOutputStream salida =
-	 * new ObjectOutputStream(client.getOutputStream());
-	 * 
-	 * String json = "{ \"operacion\" : \"login\"," + " \"userName\" : \"" + user +
-	 * "\"," + " \"password\" : \"" + password + "\"}";
-	 * 
-	 * salida.writeObject(json); salida.flush();
-	 * 
-	 * try { String usuarioJson = (String) entrada.readObject(); DTO datosCliente =
-	 * (new Gson()).fromJson(usuarioJson, DTO.class);
-	 * 
-	 * if (datosCliente.isLoginValidador()) { ListaMunicipios listaMun = new
-	 * ListaMunicipios(); listaMun.setVisible(true); } else if
-	 * (!datosCliente.isLoginValidador()) { JOptionPane.showMessageDialog(null,
-	 * "Nombre de usuario o contrase�a incorrectos"); } else {
-	 * JOptionPane.showMessageDialog(null, "Server error"); }
-	 * 
-	 * } catch (ClassNotFoundException e) {
-	 * 
-	 * }
-	 * 
-	 * } catch (IOException e) { e.printStackTrace(); } }
-	 */
 
 	public static void login2(String user, String password) {
 		try {
@@ -184,42 +155,6 @@ public class Cliente {
 			e.printStackTrace();
 		}
 		return null;
-	}
-
-	public static void register(String user, String password) {
-		try {
-			Socket client = new Socket(IP, 5005); // connect to server
-
-			ObjectInputStream entrada = new ObjectInputStream(client.getInputStream());
-			ObjectOutputStream salida = new ObjectOutputStream(client.getOutputStream());
-
-			String json = "{ 'operacion' : 'registrar'," + " \"userName\" : \"" + user + "\"," + " \"password\" : \""
-					+ password + "\"}";
-
-			salida.writeObject(json);
-
-			salida.flush();
-
-			try {
-				String usuarioJson = (String) entrada.readObject();
-				DTO datosCliente = (new Gson()).fromJson(usuarioJson, DTO.class);
-
-				if (datosCliente.isUsuarioRegistrado()) {
-					VentanaLogin VentLog = new VentanaLogin();
-					VentLog.setVisible(true);
-				} else if (!datosCliente.isUsuarioRegistrado()) {
-					JOptionPane.showMessageDialog(null, "Error de registro");
-				} else {
-					JOptionPane.showMessageDialog(null, "Server error");
-				}
-
-			} catch (ClassNotFoundException e) {
-
-			}
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 
 	public static void register2(String user, String password) {
@@ -403,8 +338,6 @@ public class Cliente {
 			try {
 
 				return Cifrado.decode((String) entrada.readObject());
-
-//	                				JsonObject jsonObject = (JsonObject) (new JsonParser()).parse(recive);
 
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
