@@ -93,6 +93,10 @@ public class DetallesEstacion extends JFrame {
 		lblDireccion.setBounds(49, 176, 116, 40);
 		getContentPane().add(lblDireccion);
 
+		lblInfoCalidad = new JLabel();
+		lblInfoCalidad.setBounds(196, 237, 294, 38);
+		contentPane.add(lblInfoCalidad);
+		
 		JSeparator separator_1_1 = new JSeparator();
 		separator_1_1.setBounds(49, 219, 459, 7);
 		getContentPane().add(separator_1_1);
@@ -203,9 +207,7 @@ public class DetallesEstacion extends JFrame {
 		separator_1_1_1.setBounds(49, 288, 459, 7);
 		contentPane.add(separator_1_1_1);
 		
-		lblInfoCalidad = new JLabel();
-		lblInfoCalidad.setBounds(196, 237, 294, 38);
-		contentPane.add(lblInfoCalidad);
+		
 
 	}
 }

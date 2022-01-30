@@ -383,22 +383,23 @@ public class ControllerV2 {
 					+ "'territorio': '" + espacios.getTerritorio() + "'," + "'marca': '" + espacios.getMarca() + "',"
 					+ "'naturaleza': '" + espacios.getNaturaleza() + "'," + "'municipio': '"
 					+ espacios.getMunicipio().getNombre() + "', 'latitud': '" + espacios.getLatitud() + "'"
-					+ ",'longitud': '" + espacios.getLongitud() + "',"
-					+ "'id': '" + espacios.getId() + "', 'idmunicipio': '"+ espacios.getMunicipio().getId()  +"'}]}";
+					+ ",'longitud': '" + espacios.getLongitud() + "'," + "'id': '" + espacios.getId()
+					+ "', 'idmunicipio': '" + espacios.getMunicipio().getId() + "'}]}";
 
 			sender(jsonEspacios, salidaRecive);
 
 			break;
 		case 2:
 			Estacion estacion = (Estacion) q.uniqueResult();
-			
+
 			String calidad = "";
-			//calidad = calidad_aire(nameDetail);
-			
+			calidad = calidad_aire(nameDetail);
+
 			String jsonEstacion = "{ 'jsonData': [{ " + "'name': '" + estacion.getNombre() + "'," + "'provincia': '"
 					+ estacion.getProvincia() + "'," + "'direccion': '" + estacion.getDireccion() + "',"
 					+ "'latitud': '" + estacion.getLatitud() + "'," + "'municipio': '"
-					+ estacion.getMunicipio().getNombre() + "'," + "'longitud': '" + estacion.getLongitud() + "', 'calidad_aire':'"+ calidad +"'}]}";
+					+ estacion.getMunicipio().getNombre() + "'," + "'longitud': '" + estacion.getLongitud()
+					+ "', 'calidad_aire' : '" + calidad + "'}]}";
 
 			sender(jsonEstacion, salidaRecive);
 			break;
@@ -406,23 +407,23 @@ public class ControllerV2 {
 		session.close();
 
 	}
-	
+
 	private static String calidad_aire(String nameDetail) {
-		
+
 		SessionFactory sessionFac = HibernateUtil.getSessionFactory();
 		Session session = sessionFac.openSession();
-		
-		String query = "ICAEstacion FROM CalidadAireIndice JOIN Estacion on CalidadAireIndice.idEstacion=Estacion.id WHERE Estacion.nombre = :nombres ";
+
+		String query = "SELECT ICAEstacion FROM calidad_aire_indice CAD JOIN estacion es ON cad.idEstacion=es.id WHERE es.nombre =:nombre LIMIT 1"
+				+ " ";
 		Query qu = session.createSQLQuery(query);
-		qu.setString("nombres", nameDetail);
-		
+		qu.setString("nombre", nameDetail);
+
 		String calidad = (String) qu.uniqueResult();
 		session.close();
-		return calidad; 
-		
+		return calidad;
+
 	}
-	
-	
+
 	public static void getIdUser(Iterator<Entry<String, JsonElement>> iter, ObjectOutputStream salidaRecive) {
 
 		String userName = iter.next().getValue().getAsString();
@@ -435,7 +436,7 @@ public class ControllerV2 {
 		q.setString("userName", userName);
 
 		int resultado = (int) q.uniqueResult();
-		
+
 		String id = String.valueOf(resultado);
 		session.close();
 
@@ -444,7 +445,6 @@ public class ControllerV2 {
 		sender(jsonEsFvorito, salidaRecive);
 
 	}
-	
 
 	public static void esFavorito(Iterator<Entry<String, JsonElement>> iter, ObjectOutputStream salidaRecive) {
 
@@ -475,17 +475,35 @@ public class ControllerV2 {
 		sender(jsonEsFvorito, salidaRecive);
 
 	}
-	
-	
-	public static void getTopFavoritos(ObjectOutputStream salidaRecive) {
 
-		String hql = "SELECT esp.nombre FROM `favoritos` JOIN espacios_naturales ESP ON ESP.id=favoritos.idEspacioNatural GROUP BY idEspacioNatural ORDER BY COUNT(idEspacioNatural) DESC LIMIT 5";
+	public static void getTopFavoritos(Iterator<Entry<String, JsonElement>> iter, ObjectOutputStream salidaRecive, int opcion) {
 
+		String hql = "";
+
+		String provincia = iter.next().getValue().getAsString();
+		
 		SessionFactory sessionFac = HibernateUtil.getSessionFactory();
 		Session session = sessionFac.openSession();
 
-		Query q = session.createSQLQuery(hql);
+		switch (opcion) {
+		case 0: {
+			hql = "SELECT esp.nombre FROM `favoritos` JOIN espacios_naturales ESP ON ESP.id=favoritos.idEspacioNatural GROUP BY idEspacioNatural ORDER BY COUNT(idEspacioNatural) DESC LIMIT 5";
+			break;
+		}
+		case 1: {
+			hql = "SELECT esp.nombre FROM `favoritos` JOIN espacios_naturales ESP ON ESP.id=favoritos.idEspacioNatural JOIN municipio m ON m.territorio=esp.territorio WHERE m.territorio= :provincia GROUP BY idEspacioNatural ORDER BY COUNT(idEspacioNatural) DESC LIMIT 5";
+			break;
+		}
+		default:
+			throw new IllegalArgumentException("Unexpected value: " + opcion);
+		}
 
+		Query q = session.createSQLQuery(hql);
+		if(opcion==1) {
+			
+			q.setString("provincia", provincia);
+		}
+		
 		List<String> items = q.list();
 		session.close();
 
@@ -501,7 +519,6 @@ public class ControllerV2 {
 		sender(json, salidaRecive);
 
 	}
-	
 
 	public static void setFavorito(Iterator<Entry<String, JsonElement>> iter, ObjectOutputStream salidaRecive,
 			int opcion) {
@@ -519,7 +536,7 @@ public class ControllerV2 {
 		Users user = new Users();
 		Favoritos favorito = new Favoritos();
 		EspaciosNaturales espacN = new EspaciosNaturales();
-		
+
 		user.setIdUser(idUser);
 		favorito.setUsers(user);
 
@@ -527,7 +544,7 @@ public class ControllerV2 {
 		favorito.setEspaciosNaturales(espacN);
 
 		favorito.setIdMunicipio(idMunicipio);
-  
+
 		switch (opcion) {
 		case 1: {
 
@@ -641,27 +658,48 @@ public class ControllerV2 {
 		try {
 			SessionFactory sessionFac = HibernateUtil.getSessionFactory();
 			Session session = sessionFac.openSession();
-			
+
 			String hql = "SELECT distinct territorio FROM Municipio";
 			Query q = session.createQuery(hql);
-			
+
 			List<String> items = q.list();
-			
+
 			String municipios = "";
-			
-			for(int i = 0; i < items.size(); i++) {
-				if(i == 0) {
+
+			for (int i = 0; i < items.size(); i++) {
+				if (i == 0) {
 					municipios = items.get(i);
 				} else {
-					municipios = municipios + "," + items.get(i); 
+					municipios = municipios + "," + items.get(i);
 				}
 			}
-			
+
 			sender(municipios, salidaRecive);
-			
+
 		} catch (HibernateException e) {
 			System.out.println("Problem creating session factory");
 			e.printStackTrace();
 		}
 	}
+	
+	public static void getNombreMunicipioPorEspacio(Iterator<Entry<String, JsonElement>> iter, ObjectOutputStream salidaRecive) {
+
+		String espacio = iter.next().getValue().getAsString();
+		String hql = "SELECT m.nombre FROM `espacios_naturales` JOIN municipio m ON m.id=espacios_naturales.idmunicipio WHERE espacios_naturales.nombre = :espacio ";
+
+		SessionFactory sessionFac = HibernateUtil.getSessionFactory();
+		Session session = sessionFac.openSession();
+
+		Query q = session.createSQLQuery(hql);
+		q.setString("espacio", espacio);
+		
+		String municipio = (String) q.uniqueResult();
+		session.close();
+
+		//String jsonEsFvorito = " + municipio + "'}]}";
+
+		sender(municipio, salidaRecive);
+
+	}
+	
 }

@@ -6,6 +6,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import cliente.Cliente;
 
@@ -38,8 +40,8 @@ public class ListaMunicipios extends JFrame implements ActionListener {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-//					ListaMunicipios frame = new ListaMunicipios();
-//					frame.setVisible(true);
+					ListaMunicipios frame = new ListaMunicipios();
+					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -47,12 +49,13 @@ public class ListaMunicipios extends JFrame implements ActionListener {
 		});
 	}
 
-	/**
-	 * Create the frame.
-	 */
-	
+	public ListaMunicipios() {
+		ListaMunicipios lista = new ListaMunicipios("");
+		lista.setVisible(true);
+	}
+
 	public ListaMunicipios(String idUser) {
-	System.out.println(idUser);
+		System.out.println(idUser);
 		setResizable(false);
 		setTitle("Lista de municipios");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -105,37 +108,63 @@ public class ListaMunicipios extends JFrame implements ActionListener {
 
 		modelListaFavorito = new DefaultListModel<String>();
 		listTopFavoritos = new JList<String>(modelListaFavorito);
-		
+
 		JScrollPane ScrollMunicipios = new JScrollPane();
 		listMunicipios.setBounds(54, 42, 180, 274);
 		ScrollMunicipios.setSize(200, 300);
 		ScrollMunicipios.setLocation(50, 50);
 		ScrollMunicipios.setViewportView(listMunicipios);
 		listMunicipios.setLayoutOrientation(JList.VERTICAL);
+		listMunicipios.addListSelectionListener(new ListSelectionListener() {
+			@Override
+			public void valueChanged(ListSelectionEvent e) {
+				if (listMunicipios.getSelectedValue() != null) {
+					listTopFavoritos.clearSelection();
+
+				}
+			}
+
+		});
 		contentPane.add(ScrollMunicipios);
 
 		listTopFavoritos.setLayoutOrientation(JList.VERTICAL);
 		listTopFavoritos.setBounds(274, 226, 199, 124);
+		listTopFavoritos.addListSelectionListener(new ListSelectionListener() {
+			@Override
+			public void valueChanged(ListSelectionEvent e) {
+				if (listTopFavoritos.getSelectedValue() != null) {
+					listMunicipios.clearSelection();
+
+				}
+			}
+
+		});
 		contentPane.add(listTopFavoritos);
-	
 
 		JButton BtnDetallesMunicipio = new JButton("Mas informacion");
 		BtnDetallesMunicipio.setFont(new Font("Dialog", Font.BOLD, 12));
 		BtnDetallesMunicipio.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (listMunicipios.getSelectedValue() != null) {
-					String str = listMunicipios.getSelectedValue().toString();
-					DetallesMunicipio detallesMun = new DetallesMunicipio(str, idUser );// obj created for class Second()
+					String municipio = listMunicipios.getSelectedValue().toString();
+					DetallesMunicipio detallesMun = new DetallesMunicipio(municipio, idUser);// obj created for class Second()
 					detallesMun.setVisible(true); // Open the Second.java window
 					dispose(); // Close the First.java window
-				} else {
+				}else if(listTopFavoritos.getSelectedValue() != null) {
+					String espacioNat = listTopFavoritos.getSelectedValue().toString();
+					String municipio = Cliente.getMunicipioPorEspacio(espacioNat);
+					DetallesEspacioNatural detallesEspacio = new DetallesEspacioNatural(espacioNat, "detalles_espacios", municipio,idUser);// obj created for class Second()
+					detallesEspacio.setVisible(true); // Open the Second.java window
+					dispose();
+				}
+				
+				else {
 					JOptionPane.showMessageDialog(null, "Seleccione un municipio");
 				}
 			}
 		});
 		BtnDetallesMunicipio.setBounds(50, 378, 200, 23);
 		contentPane.add(BtnDetallesMunicipio);
-		
 
 		lblNewLabel = new JLabel("Municipios");
 		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 15));
@@ -159,15 +188,13 @@ public class ListaMunicipios extends JFrame implements ActionListener {
 		BtnSalir.setBounds(384, 410, 89, 23);
 		contentPane.add(BtnSalir);
 
-		
-		JLabel lblFavoritosProvincia = new JLabel("Top 5 favoritos por provincia");
+		JLabel lblFavoritosProvincia = new JLabel("Top 5 favoritos");
 		lblFavoritosProvincia.setFont(new Font("Dialog", Font.BOLD, 12));
 		lblFavoritosProvincia.setBounds(274, 203, 165, 14);
 		contentPane.add(lblFavoritosProvincia);
-		
+
 		rellenarListas();
-		
-		
+
 	}
 
 	@Override
@@ -176,11 +203,14 @@ public class ListaMunicipios extends JFrame implements ActionListener {
 		JRadioButton theJRB = (JRadioButton) e.getSource();
 		String provincia = theJRB.getText();
 		String[] item = null;
+		String[] listaFavoritos = null;
 		try {
 
 			if (provincia.equals("Mostrar todo")) {
 				item = Cliente.getArrayListas(Cliente.MUNICIPIO);
+				listaFavoritos = Cliente.getTopFavoritos("");
 			} else {
+				listaFavoritos = Cliente.getTopFavoritos(provincia);
 				item = Cliente.getArrayListasMunicipiosPorProvincia(provincia);
 			}
 
@@ -191,13 +221,19 @@ public class ListaMunicipios extends JFrame implements ActionListener {
 				i++;
 			}
 
+			modelListaFavorito.clear();
+			int j = 0;
+			for (String st : listaFavoritos) {
+				modelListaFavorito.add(j, st);
+				j++;
+			}
+
 		} catch (Exception eX) {
 			eX.printStackTrace();
 		}
 
 	}
-	
-	
+
 	private void rellenarListas() {
 
 		try {
@@ -213,11 +249,10 @@ public class ListaMunicipios extends JFrame implements ActionListener {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
 
 		try {
 
-			String[] item = Cliente.getTopFavoritos();
+			String[] item = Cliente.getTopFavoritos("");
 
 			int i = 0;
 			for (String st : item) {
@@ -230,5 +265,5 @@ public class ListaMunicipios extends JFrame implements ActionListener {
 			e.printStackTrace();
 		}
 	}
-	
+
 }
