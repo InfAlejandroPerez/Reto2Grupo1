@@ -377,7 +377,7 @@ public class Cliente {
 		return null;
 	}
 
-	public static String[] getTopFavoritos(String provincia) {
+	public static String[] getTopFavoritos(String provincia, int opcion) {
 		try {
 			Socket client = new Socket(IP, 5005);
 
@@ -385,12 +385,15 @@ public class Cliente {
 			ObjectOutputStream salida = new ObjectOutputStream(client.getOutputStream());
 			String json = null;
 
-			if (provincia.equals("")) {
+			if (provincia.equals("") && opcion == 1) {
 
 				json = Cifrado.encode(
 						"{ 'jsonData': [{ " + "'operacion' : 'getTopFavoritos', 'provincia':'" + provincia + "'}]}");
-			} else {
-
+			}else if(opcion==2) { 
+				json = Cifrado.encode(
+						"{ 'jsonData': [{ " + "'operacion' : 'getTopFavoritos_municipio', 'municipio':'" + provincia + "'}]}");
+			}
+			else {
 				json = Cifrado.encode("{ 'jsonData': [{ " + "'operacion' : 'getTopFavoritosPorProvincia', 'provincia':'"
 						+ provincia + "'}]}");
 

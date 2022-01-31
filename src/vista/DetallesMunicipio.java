@@ -32,6 +32,7 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JSeparator;
 import java.awt.Font;
+import javax.swing.ListModel;
 
 public class DetallesMunicipio extends JFrame {
 
@@ -47,6 +48,8 @@ public class DetallesMunicipio extends JFrame {
 
 	private JList<String> jListEstaciones;
 	private JList<String> jListEspaciosNaturales;
+	private JList<String> listTopFavoritos;
+	DefaultListModel<String> modelListaFavorito;
 	ArrayList<Municipio> listaEstaciones = new ArrayList<Municipio>();
 	ArrayList<EspaciosNaturales> listaEspacios = new ArrayList<EspaciosNaturales>();
 	JTextPane textPane;
@@ -69,19 +72,17 @@ public class DetallesMunicipio extends JFrame {
 		setTitle("Detalles Municipio");
 		setResizable(false);
 		LblMunicipio.setFont(new Font("Tahoma", Font.BOLD, 12));
-		LblMunicipio.setBounds(89, 11, 298, 14);
-
+		LblMunicipio.setBounds(125, 11, 262, 14);
 		LblMunicipio.setText(municipio);
 
 		setTitle("Detalles municipio");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 518, 486);
+		setBounds(100, 100, 697, 486);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 
 		textPane = new JTextPane();
-//		contentPane.add(textPane);
 		textPane.setEditable(false);
 		textPane.setBounds(176, 152, 331, 105);
 
@@ -96,6 +97,10 @@ public class DetallesMunicipio extends JFrame {
 
 		DefaultListModel<String> modelListaNat = new DefaultListModel<String>();
 		jListEspaciosNaturales = new JList<String>(modelListaNat);
+		
+		modelListaFavorito = new DefaultListModel<String>();
+		listTopFavoritos = new JList<String>(modelListaFavorito);
+		
 
 		JScrollPane ScrollEstaciones = new JScrollPane();
 		ScrollEstaciones.setBounds(89, 175, 150, 150);
@@ -108,10 +113,9 @@ public class DetallesMunicipio extends JFrame {
 			public void valueChanged(ListSelectionEvent e) {
 				if (jListEstaciones.getSelectedValue() != null) {
 					jListEspaciosNaturales.clearSelection();
-
+					listTopFavoritos.clearSelection();
 				}
 			}
-
 		});
 		contentPane.setLayout(null);
 		contentPane.add(ScrollEstaciones);
@@ -125,13 +129,31 @@ public class DetallesMunicipio extends JFrame {
 			public void valueChanged(ListSelectionEvent e) {
 				if (jListEspaciosNaturales.getSelectedValue() != null) {
 					jListEstaciones.clearSelection();
+					listTopFavoritos.clearSelection();
+				}
+			}
+		});
+		contentPane.add(ScrollNaturales);
+
+		JLabel lblTopFavoritos = new JLabel("Top 5 favoritos");
+		lblTopFavoritos.setFont(new Font("Dialog", Font.BOLD, 12));
+		lblTopFavoritos.setBounds(483, 150, 107, 14);
+		contentPane.add(lblTopFavoritos);
+		listTopFavoritos.setLayoutOrientation(JList.VERTICAL);
+		listTopFavoritos.setBounds(458, 175, 202, 124);
+		listTopFavoritos.addListSelectionListener(new ListSelectionListener() {
+			@Override
+			public void valueChanged(ListSelectionEvent e) {
+				if (listTopFavoritos.getSelectedValue() != null) {
+					jListEspaciosNaturales.clearSelection();
+					jListEstaciones.clearSelection();
 
 				}
 			}
 
 		});
-		contentPane.add(ScrollNaturales);
-
+		contentPane.add(listTopFavoritos);
+		
 		try {
 
 			String[] item = Cliente.getArrayListasLugaresPorMunicipio(municipio, 1);
@@ -149,6 +171,17 @@ public class DetallesMunicipio extends JFrame {
 				modelListaNat.add(j, st);
 				j++;
 			}
+			
+			String [] item3 = Cliente.getTopFavoritos(municipio, 2);
+			int k = 0;
+			for (String st : item3) {
+				modelListaFavorito.add(k, st);
+				k++;
+			}
+			
+			
+			
+			
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -163,17 +196,20 @@ public class DetallesMunicipio extends JFrame {
 
 				if (jListEstaciones.getSelectedValue() != null) {
 					lugarSeleccionado = jListEstaciones.getSelectedValue().toString();
-					operacion = "detalles_estaciones";
-					DetallesEstacion detallesEst = new DetallesEstacion(lugarSeleccionado, operacion, municipio, idUser);// obj
-																								// Second()
+					DetallesEstacion detallesEst = new DetallesEstacion(lugarSeleccionado, "detalles_estaciones", municipio, idUser);											
 					detallesEst.setVisible(true);
 				} else if (jListEspaciosNaturales.getSelectedValue() != null) {
 					lugarSeleccionado = jListEspaciosNaturales.getSelectedValue().toString();
-					operacion = "detalles_espacios";
 					DetallesEspacioNatural detallesEpacioNatural = new DetallesEspacioNatural(lugarSeleccionado,
-							operacion, municipio, idUser);// obj created for class Second()
+							"detalles_espacios", municipio, idUser);
 					detallesEpacioNatural.setVisible(true);
-				} else {
+				}else if ( listTopFavoritos.getSelectedValue() != null) {
+					lugarSeleccionado = jListEspaciosNaturales.getSelectedValue().toString();
+					DetallesEspacioNatural detallesEpacioNatural = new DetallesEspacioNatural(lugarSeleccionado,
+							"detalles_espacios", municipio, idUser);
+					detallesEpacioNatural.setVisible(true);
+				} 
+				else {
 					JOptionPane.showMessageDialog(null, "Seleccione un lugar");
 					return;
 				}
@@ -186,7 +222,7 @@ public class DetallesMunicipio extends JFrame {
 
 		JButton BtnAtrasToLista = new JButton("Volver");
 		BtnAtrasToLista.setFont(new Font("Tahoma", Font.BOLD, 12));
-		BtnAtrasToLista.setBounds(378, 400, 89, 23);
+		BtnAtrasToLista.setBounds(501, 402, 89, 23);
 		BtnAtrasToLista.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ListaMunicipios lista = new ListaMunicipios(idUser);// obj created for class Second()
@@ -198,7 +234,7 @@ public class DetallesMunicipio extends JFrame {
 
 		JLabel lblDetallesDe = new JLabel("Detalles de:");
 		lblDetallesDe.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblDetallesDe.setBounds(10, 11, 69, 14);
+		lblDetallesDe.setBounds(10, 11, 89, 14);
 		contentPane.add(lblDetallesDe);
 		contentPane.add(LblMunicipio);
 
@@ -219,7 +255,7 @@ public class DetallesMunicipio extends JFrame {
 
 		JLabel lblLocalidad = new JLabel("Localidad:");
 		lblLocalidad.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblLocalidad.setBounds(50, 99, 70, 14);
+		lblLocalidad.setBounds(31, 99, 70, 14);
 		contentPane.add(lblLocalidad);
 
 		JLabel lblLocalidInfo = new JLabel("");
@@ -227,9 +263,9 @@ public class DetallesMunicipio extends JFrame {
 		contentPane.add(lblLocalidInfo);
 		
 		JSeparator separator = new JSeparator();
-		separator.setBounds(47, 137, 419, 2);
+		separator.setBounds(47, 137, 613, 2);
 		contentPane.add(separator);
-		
+				
 		try {
 			String json = Cliente.getDetalles(municipio, "detalles_municipio");
 
@@ -268,5 +304,4 @@ public class DetallesMunicipio extends JFrame {
 		
 
 	}
-
 }

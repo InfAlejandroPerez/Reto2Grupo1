@@ -494,14 +494,19 @@ public class ControllerV2 {
 			hql = "SELECT esp.nombre FROM `favoritos` JOIN espacios_naturales ESP ON ESP.id=favoritos.idEspacioNatural JOIN municipio m ON m.territorio=esp.territorio WHERE m.territorio= :provincia GROUP BY idEspacioNatural ORDER BY COUNT(idEspacioNatural) DESC LIMIT 5";
 			break;
 		}
+		case 2: {
+			hql = "SELECT esp.nombre FROM `favoritos` JOIN espacios_naturales ESP ON ESP.id=favoritos.idEspacioNatural JOIN municipio m ON m.id =esp.idmunicipio WHERE m.nombre = :municipio GROUP BY idEspacioNatural ORDER BY COUNT(idEspacioNatural) DESC LIMIT 5";
+			break;
+		}
 		default:
 			throw new IllegalArgumentException("Unexpected value: " + opcion);
 		}
 
 		Query q = session.createSQLQuery(hql);
 		if(opcion==1) {
-			
 			q.setString("provincia", provincia);
+		}else if(opcion==2) {
+			q.setString("municipio", provincia);
 		}
 		
 		List<String> items = q.list();
