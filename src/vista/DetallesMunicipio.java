@@ -53,7 +53,6 @@ public class DetallesMunicipio extends JFrame {
 	ArrayList<Municipio> listaEstaciones = new ArrayList<Municipio>();
 	ArrayList<EspaciosNaturales> listaEspacios = new ArrayList<EspaciosNaturales>();
 	JTextPane textPane;
-	
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -97,10 +96,9 @@ public class DetallesMunicipio extends JFrame {
 
 		DefaultListModel<String> modelListaNat = new DefaultListModel<String>();
 		jListEspaciosNaturales = new JList<String>(modelListaNat);
-		
+
 		modelListaFavorito = new DefaultListModel<String>();
 		listTopFavoritos = new JList<String>(modelListaFavorito);
-		
 
 		JScrollPane ScrollEstaciones = new JScrollPane();
 		ScrollEstaciones.setBounds(89, 175, 150, 150);
@@ -153,7 +151,7 @@ public class DetallesMunicipio extends JFrame {
 
 		});
 		contentPane.add(listTopFavoritos);
-		
+
 		try {
 
 			String[] item = Cliente.getArrayListasLugaresPorMunicipio(municipio, 1);
@@ -171,17 +169,13 @@ public class DetallesMunicipio extends JFrame {
 				modelListaNat.add(j, st);
 				j++;
 			}
-			
-			String [] item3 = Cliente.getTopFavoritos(municipio, 2);
+
+			String[] item3 = Cliente.getTopFavoritos(municipio, 2);
 			int k = 0;
 			for (String st : item3) {
 				modelListaFavorito.add(k, st);
 				k++;
 			}
-			
-			
-			
-			
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -196,20 +190,20 @@ public class DetallesMunicipio extends JFrame {
 
 				if (jListEstaciones.getSelectedValue() != null) {
 					lugarSeleccionado = jListEstaciones.getSelectedValue().toString();
-					DetallesEstacion detallesEst = new DetallesEstacion(lugarSeleccionado, "detalles_estaciones", municipio, idUser);											
+					DetallesEstacion detallesEst = new DetallesEstacion(lugarSeleccionado, "detalles_estaciones",
+							municipio, idUser);
 					detallesEst.setVisible(true);
 				} else if (jListEspaciosNaturales.getSelectedValue() != null) {
 					lugarSeleccionado = jListEspaciosNaturales.getSelectedValue().toString();
 					DetallesEspacioNatural detallesEpacioNatural = new DetallesEspacioNatural(lugarSeleccionado,
 							"detalles_espacios", municipio, idUser);
 					detallesEpacioNatural.setVisible(true);
-				}else if ( listTopFavoritos.getSelectedValue() != null) {
+				} else if (listTopFavoritos.getSelectedValue() != null) {
 					lugarSeleccionado = jListEspaciosNaturales.getSelectedValue().toString();
 					DetallesEspacioNatural detallesEpacioNatural = new DetallesEspacioNatural(lugarSeleccionado,
 							"detalles_espacios", municipio, idUser);
 					detallesEpacioNatural.setVisible(true);
-				} 
-				else {
+				} else {
 					JOptionPane.showMessageDialog(null, "Seleccione un lugar");
 					return;
 				}
@@ -261,11 +255,11 @@ public class DetallesMunicipio extends JFrame {
 		JLabel lblLocalidInfo = new JLabel("");
 		lblLocalidInfo.setBounds(130, 99, 128, 14);
 		contentPane.add(lblLocalidInfo);
-		
+
 		JSeparator separator = new JSeparator();
 		separator.setBounds(47, 137, 613, 2);
 		contentPane.add(separator);
-				
+
 		try {
 			String json = Cliente.getDetalles(municipio, "detalles_municipio");
 
@@ -301,7 +295,6 @@ public class DetallesMunicipio extends JFrame {
 
 			e.printStackTrace();
 		}
-		
 
 	}
 }
