@@ -127,6 +127,7 @@ public class ListaMunicipios extends JFrame implements ActionListener {
 		});
 		contentPane.add(ScrollMunicipios);
 
+		
 		listTopFavoritos.setLayoutOrientation(JList.VERTICAL);
 		listTopFavoritos.setBounds(274, 226, 199, 124);
 		listTopFavoritos.addListSelectionListener(new ListSelectionListener() {
@@ -208,9 +209,9 @@ public class ListaMunicipios extends JFrame implements ActionListener {
 
 			if (provincia.equals("Mostrar todo")) {
 				item = Cliente.getArrayListas(Cliente.MUNICIPIO);
-				listaFavoritos = Cliente.getTopFavoritos("");
+				listaFavoritos = Cliente.getTopFavoritos("",1);
 			} else {
-				listaFavoritos = Cliente.getTopFavoritos(provincia);
+				listaFavoritos = Cliente.getTopFavoritos(provincia,0);
 				item = Cliente.getArrayListasMunicipiosPorProvincia(provincia);
 			}
 
@@ -252,7 +253,7 @@ public class ListaMunicipios extends JFrame implements ActionListener {
 
 		try {
 
-			String[] item = Cliente.getTopFavoritos("");
+			String[] item = Cliente.getTopFavoritos("",1);
 
 			int i = 0;
 			for (String st : item) {
