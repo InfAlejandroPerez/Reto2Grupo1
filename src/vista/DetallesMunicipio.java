@@ -32,14 +32,8 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JSeparator;
 import java.awt.Font;
-import javax.swing.ListModel;
 
 public class DetallesMunicipio extends JFrame {
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 
 	private JPanel contentPane;
 
@@ -185,8 +179,7 @@ public class DetallesMunicipio extends JFrame {
 		BtnDetallesEstacion.setFont(new Font("Tahoma", Font.BOLD, 12));
 		BtnDetallesEstacion.setBounds(199, 350, 140, 23);
 		BtnDetallesEstacion.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				String operacion = "";
+			public void actionPerformed(ActionEvent e) {  
 
 				if (jListEstaciones.getSelectedValue() != null) {
 					lugarSeleccionado = jListEstaciones.getSelectedValue().toString();
@@ -199,7 +192,7 @@ public class DetallesMunicipio extends JFrame {
 							"detalles_espacios", municipio, idUser);
 					detallesEpacioNatural.setVisible(true);
 				} else if (listTopFavoritos.getSelectedValue() != null) {
-					lugarSeleccionado = jListEspaciosNaturales.getSelectedValue().toString();
+					lugarSeleccionado = listTopFavoritos.getSelectedValue().toString();
 					DetallesEspacioNatural detallesEpacioNatural = new DetallesEspacioNatural(lugarSeleccionado,
 							"detalles_espacios", municipio, idUser);
 					detallesEpacioNatural.setVisible(true);
@@ -208,8 +201,7 @@ public class DetallesMunicipio extends JFrame {
 					return;
 				}
 
-				// Open the Second.java window
-				dispose(); // Close the First.java window
+				dispose(); 
 			}
 		});
 		contentPane.add(BtnDetallesEstacion);

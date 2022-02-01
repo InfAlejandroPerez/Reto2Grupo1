@@ -96,6 +96,8 @@ public class ServerJsonRead {
 				ControllerV2.getTopFavoritos(iterKey, salidaRecive, 2);
 			case "municipio_por_espacio":
 				ControllerV2.getNombreMunicipioPorEspacio(iterKey, salidaRecive);
+			case "getFavoritoPorUsuario":
+				ControllerV2.getFavoritosPorUsuario(iterKey, salidaRecive);
 			}
 			
 		}

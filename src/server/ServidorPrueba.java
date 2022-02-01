@@ -34,7 +34,7 @@ public class ServidorPrueba {
 		} catch (IOException e) {
 			System.out.println("Error ioe: " + e.getMessage());
 		} catch (Exception e) {
-			System.out.println("Error: " + e.getMessage());	
+			System.out.println("Error server: " + e.getMessage());	
 		}
 		
 		
@@ -61,12 +61,18 @@ public class ServidorPrueba {
 				String jsonRecive = (String) entrada.readObject();
 				
 				json.ServerJsonRead.jsonMethodRead(jsonRecive, salida);
-				this.stop();
+				return;
 			} catch (IOException e) {
 				System.out.println("Error ioe: " + e.getMessage());
+				
 			} catch (Exception e) {
-				System.out.println("Error: " + e.getMessage());
+				System.out.println("Error ThreadServer : " + e.getMessage());
+				e.printStackTrace();
+
+				
 			}
+			
+			return;
 		}
 	}
 }

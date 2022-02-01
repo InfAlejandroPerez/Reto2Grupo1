@@ -151,6 +151,7 @@ public class ListaMunicipios extends JFrame implements ActionListener {
 					DetallesMunicipio detallesMun = new DetallesMunicipio(municipio, idUser);// obj created for class Second()
 					detallesMun.setVisible(true); // Open the Second.java window
 					dispose(); // Close the First.java window
+					
 				}else if(listTopFavoritos.getSelectedValue() != null) {
 					String espacioNat = listTopFavoritos.getSelectedValue().toString();
 					String municipio = Cliente.getMunicipioPorEspacio(espacioNat);

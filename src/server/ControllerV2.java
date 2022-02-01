@@ -14,11 +14,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
-import com.fasterxml.jackson.databind.ser.std.StdKeySerializers.Default;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 
 import hibernateUtil.HibernateUtil;
 
@@ -476,12 +472,13 @@ public class ControllerV2 {
 
 	}
 
-	public static void getTopFavoritos(Iterator<Entry<String, JsonElement>> iter, ObjectOutputStream salidaRecive, int opcion) {
+	public static void getTopFavoritos(Iterator<Entry<String, JsonElement>> iter, ObjectOutputStream salidaRecive,
+			int opcion) {
 
 		String hql = "";
 
 		String provincia = iter.next().getValue().getAsString();
-		
+
 		SessionFactory sessionFac = HibernateUtil.getSessionFactory();
 		Session session = sessionFac.openSession();
 
@@ -503,12 +500,41 @@ public class ControllerV2 {
 		}
 
 		Query q = session.createSQLQuery(hql);
-		if(opcion==1) {
+		if (opcion == 1) {
 			q.setString("provincia", provincia);
-		}else if(opcion==2) {
+		} else if (opcion == 2) {
 			q.setString("municipio", provincia);
 		}
-		
+
+		List<String> items = q.list();
+		session.close();
+
+		String json = "";
+		for (int i = 0; i < items.size(); i++) {
+			if (i == 0) {
+				json = items.get(i);
+			} else {
+				json = json + "," + items.get(i);
+			}
+		}
+
+		sender(json, salidaRecive);
+
+	}
+
+	public static void getFavoritosPorUsuario(Iterator<Entry<String, JsonElement>> iter, ObjectOutputStream salidaRecive) {
+
+		String idUser = iter.next().getValue().getAsString();
+
+		SessionFactory sessionFac = HibernateUtil.getSessionFactory();
+		Session session = sessionFac.openSession();
+
+		String hql = "SELECT espacios_naturales.nombre FROM `favoritos` join espacios_naturales on favoritos.idEspacioNatural=espacios_naturales.id WHERE idUser= :idUser";
+
+		Query q = session.createSQLQuery(hql);
+
+		q.setString("idUser", idUser);
+
 		List<String> items = q.list();
 		session.close();
 
@@ -686,8 +712,9 @@ public class ControllerV2 {
 			e.printStackTrace();
 		}
 	}
-	
-	public static void getNombreMunicipioPorEspacio(Iterator<Entry<String, JsonElement>> iter, ObjectOutputStream salidaRecive) {
+
+	public static void getNombreMunicipioPorEspacio(Iterator<Entry<String, JsonElement>> iter,
+			ObjectOutputStream salidaRecive) {
 
 		String espacio = iter.next().getValue().getAsString();
 		String hql = "SELECT m.nombre FROM `espacios_naturales` JOIN municipio m ON m.id=espacios_naturales.idmunicipio WHERE espacios_naturales.nombre = :espacio ";
@@ -697,14 +724,14 @@ public class ControllerV2 {
 
 		Query q = session.createSQLQuery(hql);
 		q.setString("espacio", espacio);
-		
+
 		String municipio = (String) q.uniqueResult();
 		session.close();
 
-		//String jsonEsFvorito = " + municipio + "'}]}";
+		// String jsonEsFvorito = " + municipio + "'}]}";
 
 		sender(municipio, salidaRecive);
 
 	}
-	
+
 }
