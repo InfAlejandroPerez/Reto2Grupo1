@@ -83,7 +83,7 @@ public class ListaMunicipios extends JFrame implements ActionListener {
 		RadioGipuzkoa.setBounds(274, 125, 109, 23);
 		contentPane.add(RadioGipuzkoa);
 
-		RadioAraba = new JRadioButton("Araba/Álava");
+		RadioAraba = new JRadioButton("Araba/Alava");
 		RadioAraba.setFont(new Font("Dialog", Font.BOLD, 12));
 		RadioAraba.setBounds(274, 151, 109, 23);
 		RadioAraba.addActionListener(this);
@@ -267,5 +267,4 @@ public class ListaMunicipios extends JFrame implements ActionListener {
 			e.printStackTrace();
 		}
 	}
-
 }
