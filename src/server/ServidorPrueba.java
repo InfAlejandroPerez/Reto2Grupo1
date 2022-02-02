@@ -19,6 +19,9 @@ public class ServidorPrueba {
 			
 			//check Hash
 			json.JsonReader.checkHash();
+			System.out.println("Comprobando cambios en base de datos.");
+			
+			System.out.println("Base de datos actualizada");
 			
 			while(!servidor.isClosed()) {
 				try {
@@ -32,7 +35,7 @@ public class ServidorPrueba {
 			}
 			
 		} catch (IOException e) {
-			System.out.println("Error ioe: " + e.getMessage());
+			
 		} catch (Exception e) {
 			System.out.println("Error server: " + e.getMessage());	
 		}
@@ -41,8 +44,10 @@ public class ServidorPrueba {
 	}
 	
 	public static void main(String args[]) {
-		ServidorPrueba server = new ServidorPrueba();
-		server.init();
+		while(true) {
+			ServidorPrueba server = new ServidorPrueba();
+			server.init();
+		}
 	}
 	
 	private class ThreadServer extends Thread {
@@ -61,15 +66,14 @@ public class ServidorPrueba {
 				String jsonRecive = (String) entrada.readObject();
 				
 				json.ServerJsonRead.jsonMethodRead(jsonRecive, salida);
-				return;
+				
 			} catch (IOException e) {
 				System.out.println("Error ioe: " + e.getMessage());
-				
 			} catch (Exception e) {
-				System.out.println("Error ThreadServer : " + e.getMessage());
-				e.printStackTrace();
 
-			}
+				
+			} 
+
 			
 			return;
 		}
