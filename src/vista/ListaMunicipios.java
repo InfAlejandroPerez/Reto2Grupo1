@@ -40,8 +40,7 @@ public class ListaMunicipios extends JFrame implements ActionListener {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-//					ListaMunicipios frame = new ListaMunicipios();
-//					frame.setVisible(true);
+
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -49,13 +48,8 @@ public class ListaMunicipios extends JFrame implements ActionListener {
 		});
 	}
 
-//	public ListaMunicipios() {
-//		ListaMunicipios lista = new ListaMunicipios("");
-//		lista.setVisible(true);
-//	}
-
 	public ListaMunicipios(String idUser) {
-		System.out.println(idUser);
+		
 		setResizable(false);
 		setTitle("Lista de municipios");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -256,7 +250,7 @@ public class ListaMunicipios extends JFrame implements ActionListener {
 
 			int i = 0;
 			for (String st : item) {
-				System.out.println(st);
+	
 				modelListaFavorito.add(i, st);
 				i++;
 			}

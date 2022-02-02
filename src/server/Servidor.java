@@ -6,7 +6,7 @@ import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class ServidorPrueba {
+public class Servidor {
 	
 	private final int PORT = 5005;
 	private ServerSocket servidor; 
@@ -39,13 +39,12 @@ public class ServidorPrueba {
 		} catch (Exception e) {
 			System.out.println("Error server: " + e.getMessage());	
 		}
-		
-		
+
 	}
 	
 	public static void main(String args[]) {
 		while(true) {
-			ServidorPrueba server = new ServidorPrueba();
+			Servidor server = new Servidor();
 			server.init();
 		}
 	}
@@ -73,7 +72,6 @@ public class ServidorPrueba {
 
 				
 			} 
-
 			
 			return;
 		}

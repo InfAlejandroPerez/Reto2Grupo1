@@ -80,7 +80,7 @@ public class DetallesMunicipio extends JFrame {
 		textPane.setBounds(176, 152, 331, 105);
 
 		JScrollPane ScrollDescripcion = new JScrollPane();
-		ScrollDescripcion.setSize(337, 52);
+		ScrollDescripcion.setSize(530, 52);
 		ScrollDescripcion.setLocation(130, 36);
 		ScrollDescripcion.setViewportView(textPane);
 		contentPane.add(ScrollDescripcion);

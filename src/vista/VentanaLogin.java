@@ -73,8 +73,12 @@ public class VentanaLogin extends JFrame {
 		BtnIniciarSesion.setFont(new Font("Tahoma", Font.BOLD, 12));
 		BtnIniciarSesion.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Cliente.login2(TxtUsuario.getText().toString(), passwordField.getText().toString());
-				dispose();
+				String login = Cliente.login2(TxtUsuario.getText().toString(), passwordField.getText().toString());
+				
+				if(login.equals("true")) {
+					
+					dispose();
+				}
 			}
 		});
 		BtnIniciarSesion.setBounds(109, 261, 126, 44);

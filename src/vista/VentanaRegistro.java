@@ -83,8 +83,10 @@ public class VentanaRegistro extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 
 				if (NuevaPass.getText().toString().equals(NuevaPass2.getText().toString())) {
-					Cliente.register2(TxtNuevoUser.getText().toString(), NuevaPass.getText().toString());
-					dispose(); // Close the First.java window
+					String registrado = Cliente.register2(TxtNuevoUser.getText().toString(), NuevaPass.getText().toString());
+					if(registrado.equals("true")) {						
+						dispose(); // Close the First.java window
+					}
 				} else {
 					JOptionPane.showMessageDialog(null, "Error de confirmación, las contraseñas deben coincidir");
 				}

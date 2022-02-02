@@ -47,8 +47,6 @@ public class Cliente {
 
 			cliente = new Socket(IP, PUERTO);
 
-//		while(true) {
-
 			System.out.println("Conexión realizada con servidor");
 			salida = new ObjectOutputStream(cliente.getOutputStream());
 			entrada = new ObjectInputStream(cliente.getInputStream());
@@ -58,7 +56,6 @@ public class Cliente {
 			String usuarioJson = (String) entrada.readObject();
 
 			return usuarioJson;
-//			}
 
 		} catch (IOException e) {
 			System.out.println("Error ioe : " + e.getMessage());
@@ -71,7 +68,7 @@ public class Cliente {
 	}
 
 
-	public static void login2(String user, String password) {
+	public static String login2(String user, String password) {
 		try {
 
 			Socket client = new Socket(IP, 5005); // connect to server
@@ -80,7 +77,7 @@ public class Cliente {
 			ObjectOutputStream salida = new ObjectOutputStream(client.getOutputStream());
 
 			String json = Cifrado.encode("{ \"jsonData\": [ { \"operacion\" : \"login\",  \"user\" : \"" + user + "\", "
-					+ "\"password\" : \"" + password + "\"} ]}");
+					+ "\"password\" : \"" + Cifrado.encode(password) + "\"} ]}");
 
 			salida.writeObject(json);
 			salida.flush();
@@ -91,6 +88,7 @@ public class Cliente {
 				if (response.equals("true")) {
 					String jsonIdUser = Cliente.getIdUser(user);
 					usuarioValidado(jsonIdUser);
+					return response;
 				} else if (response.equals("false")) {
 					JOptionPane.showMessageDialog(null, "Nombre de usuario o contrase�a incorrectos");
 				} else {
@@ -104,6 +102,7 @@ public class Cliente {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		return "";
 	}
 
 	private static void usuarioValidado(String jsonRespuesta) {
@@ -152,7 +151,7 @@ public class Cliente {
 		return null;
 	}
 
-	public static void register2(String user, String password) {
+	public static String register2(String user, String password) {
 
 		try {
 			Socket client = new Socket(IP, 5005); // connect to server
@@ -161,7 +160,7 @@ public class Cliente {
 			ObjectOutputStream salida = new ObjectOutputStream(client.getOutputStream());
 
 			String json = Cifrado.encode("{ 'jsonData': [{ " + "'operacion' : 'registrar'," + "'user': '" + user + "',"
-					+ "'password': '" + password + "'}]}");
+					+ "'password': '" + Cifrado.encode(password) + "'}]}");
 
 			salida.writeObject(json);
 
@@ -171,9 +170,14 @@ public class Cliente {
 				String response = Cifrado.decode((String) entrada.readObject());
 
 				if (response.equals("true")) {
+					JOptionPane.showMessageDialog(null, "Usuario creado con exito");
 					VentanaLogin VentLog = new VentanaLogin();
 					VentLog.setVisible(true);
-				} else if (response.equals("false")) {
+					return response;
+				}else if(response.equals("duplicate")) {
+					JOptionPane.showMessageDialog(null, "Usuario ya existe");
+				}
+				else if (response.equals("false")) {
 					JOptionPane.showMessageDialog(null, "Usuario no registrado");
 				} else {
 					JOptionPane.showMessageDialog(null, "Server error");
@@ -186,6 +190,7 @@ public class Cliente {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		return "";
 	}
 
 	public static ArrayList<String> getArrayNamesData(int type) {
@@ -230,11 +235,7 @@ public class Cliente {
 
 				String[] arrayString = reciveJson.split("/");
 
-				System.out.println("Get info:" + reciveJson);
-
 				for (int i = 0; i < arrayString.length; i++) {
-
-//					System.out.println(arrayString[i].toString());
 
 					listaInfos.add(arrayString[i].toString());
 
