@@ -16,7 +16,7 @@ public class ServerJsonRead {
 	public static void jsonMethodRead(String jsonRecive, ObjectOutputStream salidaRecive) {
 		//Desciframos el String que hemos recibido
 		String jsonString = cipher.Cifrado.decode(jsonRecive);
-//	    System.out.println(jsonString);
+	    System.out.println(jsonString);
 
 		System.out.println("");
 		
