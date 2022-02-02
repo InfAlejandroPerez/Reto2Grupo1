@@ -14,11 +14,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
-import com.fasterxml.jackson.databind.ser.std.StdKeySerializers.Default;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 
 import hibernateUtil.HibernateUtil;
 import objetos.CalidadAireDiario;
@@ -507,6 +503,10 @@ public class ControllerV2 {
 			hql = "SELECT esp.nombre FROM `favoritos` JOIN espacios_naturales ESP ON ESP.id=favoritos.idEspacioNatural JOIN municipio m ON m.territorio=esp.territorio WHERE m.territorio= :provincia GROUP BY idEspacioNatural ORDER BY COUNT(idEspacioNatural) DESC LIMIT 5";
 			break;
 		}
+		case 2: {
+			hql = "SELECT esp.nombre FROM `favoritos` JOIN espacios_naturales ESP ON ESP.id=favoritos.idEspacioNatural JOIN municipio m ON m.id =esp.idmunicipio WHERE m.nombre = :municipio GROUP BY idEspacioNatural ORDER BY COUNT(idEspacioNatural) DESC LIMIT 5";
+			break;
+		}
 		default:
 			throw new IllegalArgumentException("Unexpected value: " + opcion);
 		}
@@ -515,7 +515,38 @@ public class ControllerV2 {
 		if (opcion == 1) {
 
 			q.setString("provincia", provincia);
+		} else if (opcion == 2) {
+			q.setString("municipio", provincia);
 		}
+
+		List<String> items = q.list();
+		session.close();
+
+		String json = "";
+		for (int i = 0; i < items.size(); i++) {
+			if (i == 0) {
+				json = items.get(i);
+			} else {
+				json = json + "," + items.get(i);
+			}
+		}
+
+		sender(json, salidaRecive);
+
+	}
+
+	public static void getFavoritosPorUsuario(Iterator<Entry<String, JsonElement>> iter, ObjectOutputStream salidaRecive) {
+
+		String idUser = iter.next().getValue().getAsString();
+
+		SessionFactory sessionFac = HibernateUtil.getSessionFactory();
+		Session session = sessionFac.openSession();
+
+		String hql = "SELECT espacios_naturales.nombre FROM `favoritos` join espacios_naturales on favoritos.idEspacioNatural=espacios_naturales.id WHERE idUser= :idUser";
+
+		Query q = session.createSQLQuery(hql);
+
+		q.setString("idUser", idUser);
 
 		List<String> items = q.list();
 		session.close();
@@ -818,7 +849,4 @@ public class ControllerV2 {
 		
 		sender(jsonToSend, salidaRecive);	
 	}
-	
-	
-	
 }

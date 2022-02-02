@@ -11,7 +11,6 @@ import cliente.Cliente;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JPasswordField;
-import javax.swing.JCheckBox;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -20,6 +19,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.awt.event.ActionEvent;
+import java.awt.Font;
 
 public class VentanaLogin extends JFrame {
 
@@ -27,9 +27,6 @@ public class VentanaLogin extends JFrame {
 	private JTextField TxtUsuario;
 	private JPasswordField passwordField;
 
-	/**
-	 * Launch the application.
-	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -43,51 +40,48 @@ public class VentanaLogin extends JFrame {
 		});
 	}
 
-	/**
-	 * Create the frame.
-	 */
 	public VentanaLogin() {
 		setResizable(false);
 		setTitle("Login");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 310, 359);
+		setBounds(100, 100, 366, 422);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
 		JLabel lblNewLabel_1 = new JLabel("Usuario");
-		lblNewLabel_1.setBounds(52, 107, 86, 14);
+		lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		lblNewLabel_1.setBounds(52, 112, 86, 14);
 		contentPane.add(lblNewLabel_1);
 
 		TxtUsuario = new JTextField();
-		TxtUsuario.setBounds(52, 132, 214, 20);
+		TxtUsuario.setBounds(52, 137, 214, 33);
 		contentPane.add(TxtUsuario);
 		TxtUsuario.setColumns(10);
 
 		JLabel lblNewLabel_2 = new JLabel("Contrase\u00F1a");
-		lblNewLabel_2.setBounds(52, 163, 86, 14);
+		lblNewLabel_2.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		lblNewLabel_2.setBounds(52, 181, 86, 14);
 		contentPane.add(lblNewLabel_2);
 
 		passwordField = new JPasswordField();
-		passwordField.setBounds(52, 188, 214, 20);
+		passwordField.setBounds(52, 206, 214, 33);
 		contentPane.add(passwordField);
 
-		JCheckBox ChechRecordar = new JCheckBox("Recordarme");
-		ChechRecordar.setBounds(10, 144, 97, 23);
-		//contentPane.add(ChechRecordar);
-
 		JButton BtnIniciarSesion = new JButton("Iniciar sesion");
+		BtnIniciarSesion.setFont(new Font("Tahoma", Font.BOLD, 12));
 		BtnIniciarSesion.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Cliente.login2(TxtUsuario.getText().toString(), passwordField.getText().toString());
 				dispose();
 			}
 		});
-		BtnIniciarSesion.setBounds(103, 219, 110, 23);
+		BtnIniciarSesion.setBounds(109, 261, 126, 44);
 		contentPane.add(BtnIniciarSesion);
 
 		JButton BtnRegistro = new JButton("Registrarse");
+		BtnRegistro.setFont(new Font("Tahoma", Font.BOLD, 12));
 		BtnRegistro.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				VentanaRegistro registro = new VentanaRegistro();
@@ -95,22 +89,19 @@ public class VentanaLogin extends JFrame {
 				dispose();
 			}
 		});
-		BtnRegistro.setBounds(103, 253, 110, 23);
+		BtnRegistro.setBounds(109, 316, 126, 39);
 		contentPane.add(BtnRegistro);
-		
-		
-		BufferedImage myPicture=null;
-			try {
-				myPicture = ImageIO.read(new File("./src/euskalmet.png"));
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-	
-		
+
+		BufferedImage myPicture = null;
+		try {
+			myPicture = ImageIO.read(new File("./src/euskalmet.png"));
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+
 		JLabel lblImage = new JLabel(new ImageIcon(myPicture));
-		lblImage.setBounds(111, 11, 86, 85);
+		lblImage.setBounds(124, 11, 94, 100);
 		contentPane.add(lblImage);
-	
+
 	}
 }

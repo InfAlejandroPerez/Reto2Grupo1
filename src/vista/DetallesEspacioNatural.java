@@ -137,8 +137,7 @@ public class DetallesEspacioNatural extends JFrame {
 		textPane.setBounds(176, 152, 331, 105);
 
 		JScrollPane ScrollEstaciones = new JScrollPane();
-		ScrollEstaciones.setSize(366, 93);
-		ScrollEstaciones.setLocation(152, 150);
+		ScrollEstaciones.setBounds(152, 150, 366, 93);
 		ScrollEstaciones.setViewportView(textPane);
 		contentPane.add(ScrollEstaciones);
 
@@ -167,7 +166,6 @@ public class DetallesEspacioNatural extends JFrame {
 		lblMaps_1.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lblMaps_1.setBounds(49, 350, 103, 40);
 		contentPane.add(lblMaps_1);
-		
 		
 		JButton btnAbrirMapa = new JButton("Abrir mapa");
 		btnAbrirMapa.addActionListener(new ActionListener() {
@@ -279,7 +277,6 @@ public class DetallesEspacioNatural extends JFrame {
 							btnFavorito.setText("Add Favorito");
 						}
 						break;
-
 					}
 				}
 
@@ -335,6 +332,5 @@ public class DetallesEspacioNatural extends JFrame {
 		}
 
 	}
-	
 
 }

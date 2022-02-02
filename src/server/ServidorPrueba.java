@@ -37,7 +37,7 @@ public class ServidorPrueba {
 		} catch (IOException e) {
 			
 		} catch (Exception e) {
-			
+			System.out.println("Error server: " + e.getMessage());	
 		}
 		
 		
@@ -68,10 +68,10 @@ public class ServidorPrueba {
 				json.ServerJsonRead.jsonMethodRead(jsonRecive, salida);
 				
 			} catch (IOException e) {
-				
+				System.out.println("Error ioe: " + e.getMessage());
 			} catch (Exception e) {
 				
-			}
+			} 
 			
 			return;
 		}
