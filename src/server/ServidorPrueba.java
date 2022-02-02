@@ -69,7 +69,6 @@ public class ServidorPrueba {
 				System.out.println("Error ThreadServer : " + e.getMessage());
 				e.printStackTrace();
 
-				
 			}
 			
 			return;

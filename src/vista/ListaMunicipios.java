@@ -40,8 +40,8 @@ public class ListaMunicipios extends JFrame implements ActionListener {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					ListaMunicipios frame = new ListaMunicipios();
-					frame.setVisible(true);
+//					ListaMunicipios frame = new ListaMunicipios();
+//					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -49,10 +49,10 @@ public class ListaMunicipios extends JFrame implements ActionListener {
 		});
 	}
 
-	public ListaMunicipios() {
-		ListaMunicipios lista = new ListaMunicipios("");
-		lista.setVisible(true);
-	}
+//	public ListaMunicipios() {
+//		ListaMunicipios lista = new ListaMunicipios("");
+//		lista.setVisible(true);
+//	}
 
 	public ListaMunicipios(String idUser) {
 		System.out.println(idUser);
@@ -67,7 +67,6 @@ public class ListaMunicipios extends JFrame implements ActionListener {
 
 		TxtFiltroMunicipios = new JTextField();
 		TxtFiltroMunicipios.setBounds(164, 11, 100, 20);
-		// contentPane.add(TxtFiltroMunicipios);
 		TxtFiltroMunicipios.setColumns(10);
 
 		RadioBizkaia = new JRadioButton();
@@ -159,7 +158,6 @@ public class ListaMunicipios extends JFrame implements ActionListener {
 					detallesEspacio.setVisible(true); // Open the Second.java window
 					dispose();
 				}
-				
 				else {
 					JOptionPane.showMessageDialog(null, "Seleccione un municipio");
 				}
@@ -210,7 +208,7 @@ public class ListaMunicipios extends JFrame implements ActionListener {
 
 			if (provincia.equals("Mostrar todo")) {
 				item = Cliente.getArrayListas(Cliente.MUNICIPIO);
-				listaFavoritos = Cliente.getTopFavoritos("",1);
+				listaFavoritos = Cliente.getTopFavoritos("", 1);
 			} else {
 				listaFavoritos = Cliente.getTopFavoritos(provincia,0);
 				item = Cliente.getArrayListasMunicipiosPorProvincia(provincia);
@@ -254,7 +252,7 @@ public class ListaMunicipios extends JFrame implements ActionListener {
 
 		try {
 
-			String[] item = Cliente.getTopFavoritos("",1);
+			String[] item = Cliente.getTopFavoritos("", 1);
 
 			int i = 0;
 			for (String st : item) {

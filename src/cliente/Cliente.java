@@ -49,18 +49,13 @@ public class Cliente {
 
 //		while(true) {
 
-			System.out.println("Conexió n realizada con servidor");
+			System.out.println("Conexión realizada con servidor");
 			salida = new ObjectOutputStream(cliente.getOutputStream());
 			entrada = new ObjectInputStream(cliente.getInputStream());
 
 			salida.writeObject(json);
 
 			String usuarioJson = (String) entrada.readObject();
-			System.out.println(usuarioJson);
-
-			// Estacion datosCliente = gson.fromJson(usuarioJson, Estacion.class);
-
-			// System.out.println("Recibido cliente: " + datosCliente.isLoginValidador());
 
 			return usuarioJson;
 //			}
@@ -239,7 +234,7 @@ public class Cliente {
 
 				for (int i = 0; i < arrayString.length; i++) {
 
-					System.out.println(arrayString[i].toString());
+//					System.out.println(arrayString[i].toString());
 
 					listaInfos.add(arrayString[i].toString());
 
@@ -388,13 +383,14 @@ public class Cliente {
 			if (provincia.equals("") && opcion == 1) {
 
 				json = Cifrado.encode(
-						"{ 'jsonData': [{ " + "'operacion' : 'getTopFavoritos', 'provincia':'" + provincia + "'}]}");
+						"{ 'jsonData': [{ 'operacion' : 'getTopFavoritos', 'provincia':'MostrarTodo'}]}");
+			
 			}else if(opcion==2) { 
 				json = Cifrado.encode(
-						"{ 'jsonData': [{ " + "'operacion' : 'getTopFavoritos_municipio', 'municipio':'" + provincia + "'}]}");
+						"{ 'jsonData': [{'operacion' : 'getTopFavoritos_municipio', 'municipio':'" + provincia + "'}]}");
 			}
 			else {
-				json = Cifrado.encode("{ 'jsonData': [{ " + "'operacion' : 'getTopFavoritosPorProvincia', 'provincia':'"
+				json = Cifrado.encode("{ 'jsonData': [{'operacion' : 'getTopFavoritosPorProvincia', 'provincia':'"
 						+ provincia + "'}]}");
 
 			}

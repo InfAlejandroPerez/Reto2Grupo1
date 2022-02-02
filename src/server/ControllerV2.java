@@ -14,7 +14,11 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
+import com.fasterxml.jackson.databind.ser.std.StdKeySerializers.Default;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import hibernateUtil.HibernateUtil;
 
@@ -475,13 +479,12 @@ public class ControllerV2 {
 	public static void getTopFavoritos(Iterator<Entry<String, JsonElement>> iter, ObjectOutputStream salidaRecive,
 			int opcion) {
 
-		String hql = "";
-
-		String provincia = iter.next().getValue().getAsString();
-
 		SessionFactory sessionFac = HibernateUtil.getSessionFactory();
 		Session session = sessionFac.openSession();
 
+		String hql = "";
+		String provincia = iter.next().getValue().getAsString();
+		
 		switch (opcion) {
 		case 0: {
 			hql = "SELECT esp.nombre FROM `favoritos` JOIN espacios_naturales ESP ON ESP.id=favoritos.idEspacioNatural GROUP BY idEspacioNatural ORDER BY COUNT(idEspacioNatural) DESC LIMIT 5";
