@@ -21,7 +21,9 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import hibernateUtil.HibernateUtil;
-
+import objetos.CalidadAireDiario;
+import objetos.CalidadAireHorario;
+import objetos.CalidadAireIndice;
 import objetos.EspaciosNaturales;
 import objetos.Estacion;
 import objetos.Favoritos;
@@ -102,15 +104,25 @@ public class ControllerV2 {
 			SessionFactory sessionFac = HibernateUtil.getSessionFactory();
 			Session session = sessionFac.openSession();
 			Transaction tx = session.beginTransaction();
-
-			int usuarioInsertado = (int) session.save(user);
-
-			tx.commit();
-			session.close();
-			if (usuarioInsertado > 0) {
-				loginSend(true, salida);
+			
+			String hql = "FROM Users WHERE userName = :user";
+			Query q = session.createQuery(hql);
+			q.setString("user", user.getUserName());
+			
+			if(q.list().size() > 0) {
+				sender("duplicate", salida);
 			} else {
-				loginSend(false, salida);
+				int usuarioInsertado = (int) session.save(user);
+
+				tx.commit();
+				session.close();
+				
+				if (usuarioInsertado > 0) {
+					loginSend(true, salida);
+				} else {
+					loginSend(false, salida);
+				}
+				
 			}
 
 		} catch (HibernateException e) {
@@ -476,12 +488,13 @@ public class ControllerV2 {
 
 	}
 
-	public static void getTopFavoritos(Iterator<Entry<String, JsonElement>> iter, ObjectOutputStream salidaRecive, int opcion) {
+	public static void getTopFavoritos(Iterator<Entry<String, JsonElement>> iter, ObjectOutputStream salidaRecive,
+			int opcion) {
 
 		String hql = "";
 
 		String provincia = iter.next().getValue().getAsString();
-		
+
 		SessionFactory sessionFac = HibernateUtil.getSessionFactory();
 		Session session = sessionFac.openSession();
 
@@ -499,11 +512,11 @@ public class ControllerV2 {
 		}
 
 		Query q = session.createSQLQuery(hql);
-		if(opcion==1) {
-			
+		if (opcion == 1) {
+
 			q.setString("provincia", provincia);
 		}
-		
+
 		List<String> items = q.list();
 		session.close();
 
@@ -681,8 +694,9 @@ public class ControllerV2 {
 			e.printStackTrace();
 		}
 	}
-	
-	public static void getNombreMunicipioPorEspacio(Iterator<Entry<String, JsonElement>> iter, ObjectOutputStream salidaRecive) {
+
+	public static void getNombreMunicipioPorEspacio(Iterator<Entry<String, JsonElement>> iter,
+			ObjectOutputStream salidaRecive) {
 
 		String espacio = iter.next().getValue().getAsString();
 		String hql = "SELECT m.nombre FROM `espacios_naturales` JOIN municipio m ON m.id=espacios_naturales.idmunicipio WHERE espacios_naturales.nombre = :espacio ";
@@ -692,14 +706,119 @@ public class ControllerV2 {
 
 		Query q = session.createSQLQuery(hql);
 		q.setString("espacio", espacio);
-		
+
 		String municipio = (String) q.uniqueResult();
 		session.close();
 
-		//String jsonEsFvorito = " + municipio + "'}]}";
+		// String jsonEsFvorito = " + municipio + "'}]}";
 
 		sender(municipio, salidaRecive);
 
 	}
+
+	public static void getCalidadHorario(Iterator<Entry<String, JsonElement>> iter, ObjectOutputStream salidaRecive) {
+		String station = iter.next().getValue().getAsString();
+		String date = iter.next().getValue().getAsString();
+		String hour = "%" + iter.next().getValue().getAsString() + "%";
+		
+		String hql = "FROM CalidadAireHorario"
+				+ " WHERE estacion = (FROM Estacion WHERE nombre = :nombrestacion) AND fecha = :fecha AND hora LIKE :horas";
+		
+		SessionFactory sessionFac = HibernateUtil.getSessionFactory();
+		Session session = sessionFac.openSession();
+		
+		Query q = session.createQuery(hql);
+		q.setString("nombrestacion", station);
+		q.setString("fecha", date);
+		q.setString("horas", hour);
+		
+		CalidadAireHorario item = (CalidadAireHorario) q.uniqueResult();
+		
+		String jsonToSend = "";
+		
+		if(item == null) {
+			jsonToSend = "{ 'jsonData': [{ 'Error': 'No hay registros'}]}";
+		} else {
+			jsonToSend = "{ 'jsonData': [{ 'hora': '" + item.getHora() + "'," +
+					"'COmgm3': '" + item.getComgm3() + "'," +
+					"'NOgm3': '" + item.getNogm3() + "'," +
+					"'NO2gm3': '" + item.getNo2gm3() + "'," +
+					"'NOXgm3': '" + item.getNoxgm3() + "'," +
+					"'PM10gm3': '" + item.getPm10gm3() + "'," +
+					"'PM25gm3': '" + item.getPm25gm3() + "'," +
+					"'SO2gm3': '" + item.getSo2gm3() + "'}]}";
+		}
+		
+		sender(jsonToSend, salidaRecive);
+	}
+
+	public static void getCalidadDiaria(Iterator<Entry<String, JsonElement>> iter, ObjectOutputStream salidaRecive) {
+		String station = iter.next().getValue().getAsString();
+		String date = iter.next().getValue().getAsString();
+		
+		String hql = "FROM CalidadAireDiario"
+				+ " WHERE estacion = (FROM Estacion WHERE nombre = :nombrestacion) AND fecha = :fecha";
+		
+		SessionFactory sessionFac = HibernateUtil.getSessionFactory();
+		Session session = sessionFac.openSession();
+		
+		Query q = session.createQuery(hql);
+		q.setString("nombrestacion", station);
+		q.setString("fecha", date);
+		
+		CalidadAireDiario item = (CalidadAireDiario) q.uniqueResult();
+		
+		String jsonToSend = "";
+		
+		if(item == null) {
+			jsonToSend = "{ 'jsonData': [{ 'Error': 'No hay registros'}]}";
+		} else {
+			jsonToSend = "{ 'jsonData': [{ 'Fecha': '" + item.getFecha() + "'," +
+					"'NOgm3': '" + item.getNogm3() + "'," +
+					"'NO2gm3': '" + item.getNo2gm3() + "'," +
+					"'NOXgm3': '" + item.getNoxgm3() + "'," +
+					"'PM10gm3': '" + item.getPm10gm3() + "'," +
+					"'PM25gm3': '" + item.getPm25gm3() + "'}]}";
+		}
+		
+		sender(jsonToSend, salidaRecive);	
+	}
+
+	public static void getCalidadIndice(Iterator<Entry<String, JsonElement>> iter, ObjectOutputStream salidaRecive) {
+		String station = iter.next().getValue().getAsString();
+		String date = iter.next().getValue().getAsString();
+		String hour = "%" + iter.next().getValue().getAsString() + "%";
+		
+		String hql = "FROM CalidadAireIndice"
+				+ " WHERE estacion = (FROM Estacion WHERE nombre = :nombrestacion) AND fecha = :fecha AND hora LIKE :horas";
+		
+		SessionFactory sessionFac = HibernateUtil.getSessionFactory();
+		Session session = sessionFac.openSession();
+		
+		Query q = session.createQuery(hql);
+		q.setString("nombrestacion", station);
+		q.setString("fecha", date);
+		q.setString("horas", hour);
+		
+		CalidadAireIndice item = (CalidadAireIndice) q.uniqueResult();
+		
+		String jsonToSend = "";
+		
+		if(item == null) {
+			jsonToSend = "{ 'jsonData': [{ 'Error': 'No hay registros'}]}";
+		} else {
+			jsonToSend = "{ 'jsonData': [{ 'hora': '" + item.getHora() + "'," +
+					"'NO2ICA': '" + item.getNo2ica() + "'," +
+					"'NOXgm3': '" + item.getNoxgm3() + "'," +
+					"'PM10ICA': '" + item.getPm10ica() + "'," +
+					"'PM25ICA': '" + item.getPm25ica() + "'," +
+					"'SO2ICA': '" + item.getSo2ica() + "'," +
+					"'ICAEstacion': '" + item.getIcaestacion() + "'}]}";
+		}
+		
+		sender(jsonToSend, salidaRecive);	
+	}
+	
+	
 	
 }

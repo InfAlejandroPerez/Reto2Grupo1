@@ -94,6 +94,15 @@ public class ServerJsonRead {
 				ControllerV2.getTopFavoritos(iterKey, salidaRecive, 1);
 			case "municipio_por_espacio":
 				ControllerV2.getNombreMunicipioPorEspacio(iterKey, salidaRecive);
+			case "detalles_horario":
+				ControllerV2.getCalidadHorario(iterKey, salidaRecive);
+				break;
+			case "detalles_diario":
+				ControllerV2.getCalidadDiaria(iterKey, salidaRecive);
+				break;
+			case "detalles_indice":
+				ControllerV2.getCalidadIndice(iterKey, salidaRecive);
+				break;
 			}
 			
 		}

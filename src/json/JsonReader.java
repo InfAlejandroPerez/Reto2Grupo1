@@ -312,12 +312,26 @@ public class JsonReader {
 
 					if (accentRemoved.equals("Mª DIAZ HARO")) {
 						accentRemoved = "Maria Diaz de Haro";
+					} else if(accentRemoved.equals("ALGORTA (BBIZI2)")) {
+						accentRemoved = "ALGORTA BBIZI2";
+					} else if(accentRemoved.equals("ARRAIZ (Monte)")) {
+						accentRemoved = "ARRAIZ Monte";
+					} else if(accentRemoved.equals("FERIA (meteo)")) {
+						accentRemoved = "FERIA meteo";
+					} else if(accentRemoved.equals("ZIERBENA (Puerto)")) {
+						accentRemoved = "ZIERBENA Puerto";
+					} else if(accentRemoved.contains(".")) {
+						accentRemoved = accentRemoved.replace(".", "");
+					} else if(accentRemoved.equals("BANDERAS (meteo)")) {
+						accentRemoved = "BANDERAS meteo";
 					}
 
 					estacion.setNombre(accentRemoved);
 					break;
 				case "Province":
-					estacion.setProvincia(value);
+					String normalizeds = Normalizer.normalize(value, Normalizer.Form.NFD);
+					String accentRemoveds = normalizeds.replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
+					estacion.setProvincia(accentRemoveds);
 					break;
 				case "Town":
 					idMunicipio = value;
@@ -380,7 +394,7 @@ public class JsonReader {
 		Iterator<JsonElement> iter = array.iterator();
 
 		int count = 0;
-
+		
 		while (iter.hasNext()) {
 			JsonElement entrada = iter.next();
 			JsonObject objeto = entrada.getAsJsonObject();
@@ -402,7 +416,7 @@ public class JsonReader {
 				break;
 			case 1:
 				// diarios
-
+				
 				datosDiarioGenerator(nameEstacion, jsonStringUrl);
 
 				count++;
@@ -411,12 +425,11 @@ public class JsonReader {
 				// indice
 
 				datosIndiceGenerator(nameEstacion, jsonStringUrl);
-
 				count = 0;
 				break;
 			}
-
-			if (!iter.hasNext()) {
+			
+			if(!iter.hasNext()) {
 				s.close();
 				return;
 			}
@@ -434,7 +447,9 @@ public class JsonReader {
 
 		JsonArray array = (JsonArray) datos.get("jsonData");
 		Iterator<JsonElement> iter = array.iterator();
-
+		
+		int delimitador = 0;
+		
 		while (iter.hasNext()) {
 			JsonElement entrada = iter.next();
 			JsonObject objeto = entrada.getAsJsonObject();
@@ -470,6 +485,35 @@ public class JsonReader {
 					aire.setPm25gm3(value);
 					break;
 				}
+				
+				if (name.equals("ABANTO")) {
+					switch (key) {
+					case "Date":
+						try {
+							aire.setFecha(new SimpleDateFormat("dd/MM/yyyy").parse(value));
+						} catch (ParseException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						break;
+					case "NOgm3":
+						aire.setNogm3(value);
+						break;
+					case "NO2gm3":
+						aire.setNo2gm3(value);
+						break;
+					case "NOXgm3":
+						aire.setNoxgm3(value);
+						break;
+					case "PM10gm3":
+						aire.setPm10gm3(value);
+						break;
+					case "SH2gm3":
+						aire.setPm25gm3(value);
+						break;
+					}
+				}
+				
 
 				if (!iter2.hasNext()) {
 					Transaction tx = s.beginTransaction();
@@ -491,9 +535,12 @@ public class JsonReader {
 						// Actualizar información en la base de datos
 						tx.commit();
 						aire = new CalidadAireDiario();
+						delimitador++;
+						
+						if(delimitador == 24) {
+							return;
+						}
 					}
-
-					return;
 				}
 			}
 		}
@@ -510,8 +557,9 @@ public class JsonReader {
 
 		JsonArray array = (JsonArray) datos.get("jsonData");
 		Iterator<JsonElement> iter = array.iterator();
-
-		int count = 0;
+		
+		int delimiter = 0;
+		
 		while (iter.hasNext()) {
 			JsonElement entrada = iter.next();
 			JsonObject objeto = entrada.getAsJsonObject();
@@ -574,12 +622,12 @@ public class JsonReader {
 						// Actualizar información en la base de datos
 						tx.commit();
 						aire = new CalidadAireIndice();
+						delimiter++;
+						
+						if(delimiter == 48) {
+							return;
+						}
 					}
-					count++;
-				}
-
-				if (count == 24) {
-					return;
 				}
 			}
 		}
@@ -596,9 +644,9 @@ public class JsonReader {
 
 		JsonArray array = (JsonArray) datos.get("jsonData");
 		Iterator<JsonElement> iter = array.iterator();
-
-		int count = 0;
-
+		
+		int delimiter = 0;
+		
 		while (iter.hasNext()) {
 			JsonElement entrada = iter.next();
 			JsonObject objeto = entrada.getAsJsonObject();
@@ -658,14 +706,14 @@ public class JsonReader {
 						// Actualizar información en la base de datos
 						tx.commit();
 						aire = new CalidadAireHorario();
+						
+						delimiter++;
+						
+						if(delimiter == 48) {
+							return;
+						}
 					}
 				}
-			}
-
-			count++;
-
-			if (count == 24) {
-				return;
 			}
 		}
 	}
